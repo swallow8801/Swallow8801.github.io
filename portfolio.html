@@ -1,0 +1,113 @@
+---
+layout: default
+title: "Portfolio"
+description: "AI Full Stack Developer Swallow8801의 프로젝트 포트폴리오"
+---
+
+<!-- 프로필 헤더 -->
+<div class="port-profile">
+  <div class="port-profile__av">SW</div>
+  <div class="port-profile__info">
+    <div class="port-profile__name">Swallow8801</div>
+    <div class="port-profile__role">AI Full Stack Developer &nbsp;·&nbsp; LLM · RAG · Vector Search · Web · Infra</div>
+    <div class="port-profile__bio">LLM 기반 프로덕션 시스템부터 풀스택 웹 서비스까지 직접 설계하고 구축합니다.</div>
+  </div>
+  <div class="port-profile__stats">
+    <div>
+      <div class="port-profile__stat-num">{{ site.data.projects | size }}</div>
+      <div class="port-profile__stat-lbl">Projects</div>
+    </div>
+    <div>
+      <div class="port-profile__stat-num">2.4k</div>
+      <div class="port-profile__stat-lbl">Stars</div>
+    </div>
+    <div>
+      <div class="port-profile__stat-num">1,200+</div>
+      <div class="port-profile__stat-lbl">Commits</div>
+    </div>
+  </div>
+  <div class="port-profile__links">
+    <a href="https://github.com/{{ site.author.github }}" class="port-profile__link" target="_blank">GitHub</a>
+    <a href="https://linkedin.com/in/{{ site.author.linkedin }}" class="port-profile__link" target="_blank">LinkedIn</a>
+  </div>
+</div>
+
+<div class="page-wrap">
+  <!-- 필터 -->
+  <div class="port-filter">
+    <button class="port-filter__btn port-filter__btn--active" data-filter="all">전체</button>
+    <button class="port-filter__btn" data-filter="ai">AI / LLM</button>
+    <button class="port-filter__btn" data-filter="web">Web App</button>
+    <button class="port-filter__btn" data-filter="tool">Tool / Infra</button>
+  </div>
+
+  <!-- 프로젝트 그리드 -->
+  <div class="proj-grid">
+    {% for project in site.data.projects %}
+      {% if project.featured %}
+      <!-- Featured 카드 -->
+      <div class="proj-featured" data-category="{{ project.type }}">
+        <div class="proj-featured__head">
+          <div class="proj-featured__label">Featured · {{ project.type | upcase }}</div>
+          <div class="proj-featured__name">{{ project.name }}</div>
+          <div class="proj-featured__sub">{{ project.subtitle }}</div>
+        </div>
+        <div class="proj-featured__body">
+          <p class="proj-featured__desc">{{ project.description }}</p>
+          <div class="proj-featured__tags">
+            {% for tag in project.tags %}
+            <span class="tag-badge {% unless tag.ai %}tag-badge--neutral{% endunless %}">{{ tag.name }}</span>
+            {% endfor %}
+          </div>
+          <div class="proj-featured__links">
+            {% if project.demo != '#' %}
+            <a href="{{ project.demo }}" class="btn-primary" target="_blank">Demo 보기</a>
+            {% endif %}
+            <a href="{{ project.github }}" class="btn-secondary" target="_blank">GitHub →</a>
+            <span class="proj-featured__stars">★ {{ project.stars }}</span>
+          </div>
+        </div>
+      </div>
+
+      {% else %}
+      <!-- 일반 카드 -->
+      <div class="proj-card" data-category="{{ project.type }}">
+        <div class="proj-card__top">
+          <span class="proj-card__type">{{ project.type | upcase }}</span>
+          <span class="proj-card__stars">★ {{ project.stars }}</span>
+        </div>
+        <div class="proj-card__name">{{ project.name }}</div>
+        <p class="proj-card__desc">{{ project.description }}</p>
+        <div class="proj-card__foot">
+          {% for tag in project.tags %}
+          <span class="proj-card__tag">{{ tag.name }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <!-- 스킬 섹션 -->
+  <div class="skills-wrap">
+    <div class="skills-wrap__title">Tech Stack</div>
+    <div class="skill-grid">
+      {% for group in site.data.skills %}
+      <div>
+        <div class="skill-group__label">{{ group.group }}</div>
+        <div class="skill-items">
+          {% for skill in group.items %}
+          <div class="skill-row">
+            <span class="skill-row__name">{{ skill.name }}</span>
+            <div class="skill-bar">
+              <div class="skill-bar__fill" style="width: {{ skill.level }}%"></div>
+            </div>
+            <span class="skill-row__pct">{{ skill.level }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>

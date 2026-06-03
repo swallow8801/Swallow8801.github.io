@@ -1,0 +1,103 @@
+# 포트폴리오 프로젝트 데이터
+# type: ai | web | tool (필터 카테고리)
+# featured: true 인 첫 번째 항목이 2열 Featured 카드로 표시
+
+- id: codereview-ai
+  name: "CodeReview AI"
+  subtitle: "LLM 기반 GitHub PR 자동 코드 리뷰 시스템"
+  type: ai
+  featured: true
+  description: "Claude API Tool Use + GitHub Actions로 PR 생성 시 자동 코드 리뷰가 달리는 시스템. 팀 코딩 컨벤션을 학습해 맞춤 피드백을 제공하며, 보안 취약점·로직 오류·개선안을 구조적으로 분석합니다."
+  tags:
+    - { name: "Claude API", ai: true }
+    - { name: "Tool Use", ai: true }
+    - { name: "LangChain", ai: true }
+    - { name: "FastAPI", ai: false }
+    - { name: "GitHub Actions", ai: false }
+  demo: "#"
+  github: "#"
+  stars: 312
+
+- id: documind
+  name: "DocuMind"
+  subtitle: "RAG 문서 어시스턴트"
+  type: ai
+  featured: false
+  description: "사내 문서에 질문하면 정확한 답변을 찾아주는 RAG 시스템. pgvector + Claude로 구축. 청킹 전략 최적화로 hallucination 최소화."
+  tags:
+    - { name: "RAG", ai: true }
+    - { name: "pgvector", ai: true }
+    - { name: "FastAPI", ai: false }
+  demo: "#"
+  github: "#"
+  stars: 187
+
+- id: semantic-search
+  name: "SemanticSearch"
+  subtitle: "임베딩 기반 벡터 검색 엔진"
+  type: ai
+  featured: false
+  description: "임베딩 기반 시맨틱 검색 엔진. Pinecone·pgvector·Weaviate 직접 벤치마킹 후 최적 구성 제안."
+  tags:
+    - { name: "Embeddings", ai: true }
+    - { name: "HNSW", ai: false }
+    - { name: "Python", ai: false }
+  demo: "#"
+  github: "#"
+  stars: 143
+
+- id: promptlab
+  name: "PromptLab"
+  subtitle: "프롬프트 버전 관리 및 A/B 테스트 도구"
+  type: tool
+  featured: false
+  description: "팀에서 프롬프트를 체계적으로 관리하고 A/B 테스트하는 웹 도구. 성능 지표와 비용 추적 포함."
+  tags:
+    - { name: "Prompt Eng.", ai: true }
+    - { name: "React", ai: false }
+    - { name: "Node.js", ai: false }
+  demo: "#"
+  github: "#"
+  stars: 165
+
+- id: ai-dashboard
+  name: "AI Analytics Dashboard"
+  subtitle: "ML 예측 + 실시간 데이터 대시보드"
+  type: web
+  featured: false
+  description: "ML 예측 모델 + 실시간 데이터 결합 대시보드. 이상 감지 알고리즘으로 주요 지표 변동 자동 알림."
+  tags:
+    - { name: "Next.js", ai: false }
+    - { name: "Python ML", ai: true }
+    - { name: "PostgreSQL", ai: false }
+  demo: "#"
+  github: "#"
+  stars: 94
+
+- id: mlserve
+  name: "MLServe"
+  subtitle: "ML 모델 프로덕션 서빙 보일러플레이트"
+  type: tool
+  featured: false
+  description: "ML 모델 프로덕션 배포용 FastAPI 템플릿. A/B 테스트, 모니터링, 자동 스케일링 내장."
+  tags:
+    - { name: "FastAPI", ai: false }
+    - { name: "Docker", ai: false }
+    - { name: "AWS", ai: false }
+  demo: "#"
+  github: "#"
+  stars: 218
+
+- id: ecoshop
+  name: "EcoShop"
+  subtitle: "AI 추천 엔진 탑재 풀스택 커머스"
+  type: web
+  featured: false
+  description: "협업 필터링 + LLM 설명 기반 추천 엔진 탑재 커머스. 구매 전환율 23% 개선 달성."
+  tags:
+    - { name: "Next.js", ai: false }
+    - { name: "Rec. System", ai: true }
+    - { name: "MongoDB", ai: false }
+  demo: "#"
+  github: "#"
+  stars: 76

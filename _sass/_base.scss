@@ -1,0 +1,123 @@
+// ── 리셋 & 공통 ───────────────────────────────────
+*, *::before, *::after {
+  margin: 0; padding: 0; box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: $font;
+  background: $bg;
+  color: $t1;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+button { font-family: $font; }
+
+// ── 공통 컴포넌트 ─────────────────────────────────
+
+// 태그 뱃지
+.tag-badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  background: $blue-bg;
+  color: $blue;
+  border: 1px solid $blue-bd;
+
+  &--neutral {
+    background: $surface2;
+    color: $t2;
+    border-color: $border;
+  }
+}
+
+// 스킬 바
+.skill-bar {
+  flex: 1;
+  height: 5px;
+  background: $surface2;
+  border-radius: 3px;
+  overflow: hidden;
+
+  &__fill {
+    height: 100%;
+    background: linear-gradient(90deg, $blue, #60a5fa);
+    border-radius: 3px;
+  }
+}
+
+// 페이지 컨테이너
+.page-wrap {
+  max-width: $max-w;
+  margin: 0 auto;
+  padding: 44px $pad;
+
+  @media (max-width: $tablet) { padding: 32px 32px; }
+  @media (max-width: $mobile) { padding: 24px 20px; }
+}
+
+// 코드 블록 (Rouge)
+.highlight {
+  position: relative;
+  background: #1e293b;
+  border-radius: 8px;
+  margin: 24px 0;
+  overflow: hidden;
+
+  .code-lang {
+    position: absolute;
+    top: 10px;
+    left: 16px;
+    font-size: 11px;
+    color: #64748b;
+    font-family: monospace;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.12);
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .15s;
+    &:hover { background: rgba(255,255,255,.15); color: #e2e8f0; }
+    &.copied { color: #4ade80; border-color: rgba(74,222,128,.3); }
+  }
+
+  pre {
+    padding: 40px 16px 16px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #e2e8f0;
+    font-family: 'SF Mono', 'Consolas', 'Courier New', monospace;
+  }
+}
+
+// 인라인 코드
+code:not(.highlight code) {
+  background: $surface2;
+  border: 1px solid $border;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: .88em;
+  color: $blue;
+  font-family: 'SF Mono', 'Consolas', monospace;
+}
+
+// 반응형 유틸
+.hide-mobile { @media (max-width: $mobile) { display: none !important; } }

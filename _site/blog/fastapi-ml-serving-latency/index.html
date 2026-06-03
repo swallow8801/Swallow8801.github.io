@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FastAPI ML 모델 프로덕션 서빙 — 레이턴시 최적화 가이드 — Swallow8801</title>
+<meta name="description" content="모델 웜업·배치 처리·비동기 큐·A/B 테스트까지. 실제 운영에서 찾아낸 레이턴시 단축 노하우를 정리했습니다.">
+
+<!-- Pretendard 폰트 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+
+<!-- CSS -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!-- SEO -->
+<meta property="og:title" content="FastAPI ML 모델 프로덕션 서빙 — 레이턴시 최적화 가이드 — Swallow8801">
+<meta property="og:description" content="모델 웜업·배치 처리·비동기 큐·A/B 테스트까지. 실제 운영에서 찾아낸 레이턴시 단축 노하우를 정리했습니다.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://localhost:4000/blog/fastapi-ml-serving-latency/">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- jekyll-seo-tag -->
+<!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>FastAPI ML 모델 프로덕션 서빙 — 레이턴시 최적화 가이드 | Swallow8801</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="FastAPI ML 모델 프로덕션 서빙 — 레이턴시 최적화 가이드" />
+<meta name="author" content="Swallow8801" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="모델 웜업·배치 처리·비동기 큐·A/B 테스트까지. 실제 운영에서 찾아낸 레이턴시 단축 노하우를 정리했습니다." />
+<meta name="twitter:description" property="og:description" content="모델 웜업·배치 처리·비동기 큐·A/B 테스트까지. 실제 운영에서 찾아낸 레이턴시 단축 노하우를 정리했습니다." />
+<link rel="canonical" href="http://localhost:4000/blog/fastapi-ml-serving-latency/" />
+<meta property="og:url" content="http://localhost:4000/blog/fastapi-ml-serving-latency/" />
+<meta property="og:site_name" content="Swallow8801" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-05-08T00:00:00+09:00" />
+<meta property="article:modified_time" content="2026-05-08T00:00:00+09:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="FastAPI ML 모델 프로덕션 서빙 — 레이턴시 최적화 가이드" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Swallow8801"},"dateModified":"2026-05-08T00:00:00+09:00","datePublished":"2026-05-08T00:00:00+09:00","description":"모델 웜업·배치 처리·비동기 큐·A/B 테스트까지. 실제 운영에서 찾아낸 레이턴시 단축 노하우를 정리했습니다.","headline":"FastAPI ML 모델 프로덕션 서빙 — 레이턴시 최적화 가이드","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/fastapi-ml-serving-latency/"},"url":"http://localhost:4000/blog/fastapi-ml-serving-latency/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<!-- RSS -->
+<link rel="alternate" type="application/rss+xml" title="Swallow8801" href="/feed.xml">
+
+<!-- Favicon (추후 교체) -->
+<link rel="icon" type="image/png" href="/favicon.png">
+
+  <style>
+    #pg-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #050b18;
+      opacity: 1; pointer-events: all;
+      transition: opacity .7s cubic-bezier(.4,0,.2,1);
+    }
+    #pg-overlay.hidden { opacity: 0; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <!-- 페이지 전환 오버레이 -->
+  <div id="pg-overlay"></div>
+
+  <nav class="site-nav">
+  <a href="/" class="site-nav__logo">Swallow<em>.</em>dev</a>
+
+  <div class="site-nav__tabs">
+    <a href="/portfolio"
+       class="site-nav__tab ">
+      Portfolio
+    </a>
+    <a href="/blog"
+       class="site-nav__tab site-nav__tab--active">
+      Blog
+    </a>
+  </div>
+
+  <div class="site-nav__right">
+    <a href="/#about" class="site-nav__link">About</a>
+    <a href="https://github.com/swallow8801" class="site-nav__link" target="_blank">GitHub</a>
+    <a href="mailto:swallow8801@gmail.com" class="site-nav__link">Contact</a>
+  </div>
+</nav>
+
+
+  <div class="post-layout">
+
+  <article>
+    <header class="post-header">
+      <span class="post-header__cat">Backend</span>
+      <h1 class="post-header__title">FastAPI ML 모델 프로덕션 서빙 — 레이턴시 최적화 가이드</h1>
+      <div class="post-header__meta">
+        <span class="post-header__date">2026-05-08</span>
+        <span class="post-header__sep"></span>
+        <span class="post-header__time">14분 읽기</span>
+      </div>
+      
+      <div class="post-header__tags">
+        
+        <span class="post-header__tag">#fastapi</span>
+        
+        <span class="post-header__tag">#python</span>
+        
+        <span class="post-header__tag">#ml-serving</span>
+        
+        <span class="post-header__tag">#async</span>
+        
+        <span class="post-header__tag">#optimization</span>
+        
+        <span class="post-header__tag">#docker</span>
+        
+      </div>
+      
+    </header>
+
+    <div class="post-content">
+      <h2 id="시작-전-상황">시작 전 상황</h2>
+
+<p>FastAPI로 텍스트 분류 모델을 서빙하고 있었는데, p99 레이턴시가 2.3초였습니다. 사용자 경험상 허용 가능한 수준은 500ms였습니다. 어떻게 1/5로 줄였는지 정리합니다.</p>
+
+<hr />
+
+<h2 id="1-모델-웜업-cold-start-제거">1. 모델 웜업 (Cold Start 제거)</h2>
+
+<p>가장 먼저 확인할 것은 Cold Start입니다. FastAPI 앱이 첫 요청을 받을 때 모델을 로드하면 그 요청이 몇 초씩 걸립니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">contextlib</span> <span class="kn">import</span> <span class="n">asynccontextmanager</span>
+<span class="kn">from</span> <span class="n">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+<span class="kn">import</span> <span class="n">torch</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="nd">@asynccontextmanager</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">model</span>
+    <span class="c1"># 앱 시작 시 모델 로드
+</span>    <span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">load</span><span class="p">(</span><span class="sh">"</span><span class="s">model.pt</span><span class="sh">"</span><span class="p">)</span>
+    <span class="n">model</span><span class="p">.</span><span class="nf">eval</span><span class="p">()</span>
+
+    <span class="c1"># 더미 입력으로 JIT 웜업
+</span>    <span class="n">dummy</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nf">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="nf">no_grad</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="nf">model</span><span class="p">(</span><span class="n">dummy</span><span class="p">)</span>
+
+    <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Model warmed up</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">yield</span>
+    <span class="c1"># 앱 종료 시 정리
+</span>    <span class="k">del</span> <span class="n">model</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="nc">FastAPI</span><span class="p">(</span><span class="n">lifespan</span><span class="o">=</span><span class="n">lifespan</span><span class="p">)</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="2-배치-처리로-처리량-극대화">2. 배치 처리로 처리량 극대화</h2>
+
+<p>요청을 하나씩 처리하는 대신, 일정 시간 동안 요청을 모아서 한번에 처리합니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">asyncio</span>
+<span class="kn">from</span> <span class="n">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">InferenceRequest</span><span class="p">:</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">future</span><span class="p">:</span> <span class="n">asyncio</span><span class="p">.</span><span class="n">Future</span>
+
+<span class="k">class</span> <span class="nc">BatchProcessor</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">max_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span> <span class="n">max_wait_ms</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">queue</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">InferenceRequest</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">max_batch_size</span> <span class="o">=</span> <span class="n">max_batch_size</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">max_wait_ms</span> <span class="o">=</span> <span class="n">max_wait_ms</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="nc">Lock</span><span class="p">()</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">add_request</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="nf">get_event_loop</span><span class="p">()</span>
+        <span class="n">future</span> <span class="o">=</span> <span class="n">loop</span><span class="p">.</span><span class="nf">create_future</span><span class="p">()</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="nc">InferenceRequest</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="n">future</span><span class="p">)</span>
+
+        <span class="k">async</span> <span class="k">with</span> <span class="n">self</span><span class="p">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">queue</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">self</span><span class="p">.</span><span class="n">max_batch_size</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">self</span><span class="p">.</span><span class="nf">_process_batch</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">future</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_process_batch</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">self</span><span class="p">.</span><span class="n">queue</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">queue</span><span class="p">[:</span><span class="n">self</span><span class="p">.</span><span class="n">max_batch_size</span><span class="p">]</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">queue</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">queue</span><span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">max_batch_size</span><span class="p">:]</span>
+
+        <span class="n">texts</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">]</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="nf">run_inference_batch</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>  <span class="c1"># 배치 추론
+</span>
+        <span class="k">for</span> <span class="n">req</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="nf">zip</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
+            <span class="n">req</span><span class="p">.</span><span class="n">future</span><span class="p">.</span><span class="nf">set_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="3-비동기-큐--워커-분리">3. 비동기 큐 + 워커 분리</h2>
+
+<p>CPU/GPU 집약적인 추론을 메인 이벤트 루프에서 분리합니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+<span class="kn">from</span> <span class="n">concurrent.futures</span> <span class="kn">import</span> <span class="n">ProcessPoolExecutor</span>
+<span class="kn">import</span> <span class="n">asyncio</span>
+
+<span class="n">executor</span> <span class="o">=</span> <span class="nc">ProcessPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="nd">@app.post</span><span class="p">(</span><span class="sh">"</span><span class="s">/predict</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">PredictRequest</span><span class="p">):</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="nf">get_event_loop</span><span class="p">()</span>
+    <span class="c1"># CPU 집약 작업을 별도 프로세스에서 실행
+</span>    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">loop</span><span class="p">.</span><span class="nf">run_in_executor</span><span class="p">(</span>
+        <span class="n">executor</span><span class="p">,</span>
+        <span class="n">run_inference</span><span class="p">,</span>
+        <span class="n">request</span><span class="p">.</span><span class="n">text</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="sh">"</span><span class="s">result</span><span class="sh">"</span><span class="p">:</span> <span class="n">result</span><span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="4-응답-캐싱">4. 응답 캐싱</h2>
+
+<p>동일한 입력에 대한 반복 요청을 Redis로 캐싱합니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">redis</span>
+<span class="kn">import</span> <span class="n">hashlib</span>
+<span class="kn">import</span> <span class="n">json</span>
+
+<span class="n">cache</span> <span class="o">=</span> <span class="n">redis</span><span class="p">.</span><span class="nc">Redis</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="sh">"</span><span class="s">localhost</span><span class="sh">"</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">6379</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">CACHE_TTL</span> <span class="o">=</span> <span class="mi">3600</span>  <span class="c1"># 1시간
+</span>
+<span class="k">def</span> <span class="nf">get_cache_key</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="sh">"</span><span class="s">inference:</span><span class="si">{</span><span class="n">hashlib</span><span class="p">.</span><span class="nf">md5</span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="nf">encode</span><span class="p">()).</span><span class="nf">hexdigest</span><span class="p">()</span><span class="si">}</span><span class="sh">"</span>
+
+<span class="nd">@app.post</span><span class="p">(</span><span class="sh">"</span><span class="s">/predict</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">PredictRequest</span><span class="p">):</span>
+    <span class="n">cache_key</span> <span class="o">=</span> <span class="nf">get_cache_key</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="c1"># 캐시 확인
+</span>    <span class="n">cached</span> <span class="o">=</span> <span class="n">cache</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">cache_key</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cached</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">json</span><span class="p">.</span><span class="nf">loads</span><span class="p">(</span><span class="n">cached</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="nf">run_inference_async</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="c1"># 캐시 저장
+</span>    <span class="n">cache</span><span class="p">.</span><span class="nf">setex</span><span class="p">(</span><span class="n">cache_key</span><span class="p">,</span> <span class="n">CACHE_TTL</span><span class="p">,</span> <span class="n">json</span><span class="p">.</span><span class="nf">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="5-최적화-결과">5. 최적화 결과</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>최적화 항목</th>
+      <th>p50 레이턴시</th>
+      <th>p99 레이턴시</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>기본 (최적화 전)</td>
+      <td>850ms</td>
+      <td>2,300ms</td>
+    </tr>
+    <tr>
+      <td>+ 모델 웜업</td>
+      <td>420ms</td>
+      <td>1,100ms</td>
+    </tr>
+    <tr>
+      <td>+ 배치 처리</td>
+      <td>180ms</td>
+      <td>380ms</td>
+    </tr>
+    <tr>
+      <td>+ 프로세스 분리</td>
+      <td>140ms</td>
+      <td>290ms</td>
+    </tr>
+    <tr>
+      <td>+ Redis 캐싱</td>
+      <td><strong>95ms</strong></td>
+      <td><strong>210ms</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>p99 기준 2,300ms → 210ms, <strong>약 11배 개선</strong>되었습니다.</p>
+
+    </div>
+
+    <!-- 이전/다음 포스트 -->
+    <nav class="post-nav">
+      
+      <a href="/blog/langchain-vs-llamaindex/" class="post-nav__item post-nav__item--prev">
+        <div class="post-nav__dir">← 이전 글</div>
+        <div class="post-nav__title">LangChain vs LlamaIndex — 프로덕션에서 뭘 써야 하나</div>
+      </a>
+      
+
+      
+      <a href="/blog/react-llm-streaming-sse/" class="post-nav__item post-nav__item--next">
+        <div class="post-nav__dir">다음 글 →</div>
+        <div class="post-nav__title">React에서 LLM 스트리밍 응답 처리 — SSE와 AbortController</div>
+      </a>
+      
+    </nav>
+
+    <!-- 관련 포스트 -->
+    
+    
+    <div class="related-posts">
+      <div class="related-posts__title">같은 카테고리 글</div>
+      <div class="related-posts__grid">
+        
+        <a href="/blog/pgvector-hnsw-tuning/" class="related-post-card">
+          <div class="related-post-card__cat">Backend</div>
+          <div class="related-post-card__title">PostgreSQL pgvector — HNSW 인덱스 성능 튜닝</div>
+          <div class="related-post-card__date">2026-04-22</div>
+        </a>
+        
+      </div>
+    </div>
+    
+  </article>
+
+  <!-- TOC 사이드바 -->
+  <aside class="post-toc">
+    <div class="post-toc__title">목차</div>
+    <ul class="toc-list" id="toc-list"></ul>
+  </aside>
+
+</div>
+
+<script src="/assets/js/toc.js"></script>
+<script src="/assets/js/copy-code.js"></script>
+
+
+  <footer class="site-footer">
+  <div class="site-footer__logo">Swallow<em>.</em>dev</div>
+  <div>© 2026 Swallow8801</div>
+  <div class="site-footer__links">
+    <a href="https://github.com/swallow8801" target="_blank">GitHub</a>
+    <a href="/feed.xml">RSS</a>
+    <a href="https://linkedin.com/in/swallow8801" target="_blank">LinkedIn</a>
+  </div>
+</footer>
+
+
+  <script src="/assets/js/filter.js"></script>
+
+  <script>
+  (function () {
+    var ov = document.getElementById('pg-overlay');
+    /* 진입: 페이드 아웃 */
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { ov.classList.add('hidden'); });
+    });
+    /* 이탈: 링크 클릭 시 페이드 인 후 이동 */
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href]');
+      if (!a || !a.href || a.target === '_blank') return;
+      var href = a.href;
+      if (href === window.location.href || href.indexOf('#') !== -1) return;
+      e.preventDefault();
+      ov.style.transition = 'opacity .5s cubic-bezier(.4,0,.2,1)';
+      ov.classList.remove('hidden');
+      setTimeout(function () { window.location.href = href; }, 540);
+    });
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+# 기술 스택 숙련도
+# level: 0~100
+
+- group: "AI / LLM"
+  key: ai
+  items:
+    - name: "Claude API"
+      level: 92
+    - name: "LangChain"
+      level: 85
+    - name: "RAG / Embeddings"
+      level: 88
+    - name: "Prompt Engineering"
+      level: 90
+    - name: "HuggingFace"
+      level: 70
+
+- group: "Frontend"
+  key: frontend
+  items:
+    - name: "React"
+      level: 88
+    - name: "TypeScript"
+      level: 84
+    - name: "Next.js"
+      level: 80
+    - name: "Streaming UI"
+      level: 82
+
+- group: "Backend / DB"
+  key: backend
+  items:
+    - name: "Python / FastAPI"
+      level: 90
+    - name: "Node.js"
+      level: 75
+    - name: "PostgreSQL + pgvector"
+      level: 84
+    - name: "Redis"
+      level: 68
+
+- group: "Infra / DevOps"
+  key: infra
+  items:
+    - name: "Docker"
+      level: 82
+    - name: "AWS"
+      level: 72
+    - name: "GitHub Actions"
+      level: 78
+    - name: "Monitoring"
+      level: 65

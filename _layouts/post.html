@@ -1,0 +1,74 @@
+---
+layout: default
+---
+<div class="post-layout">
+
+  <article>
+    <header class="post-header">
+      <span class="post-header__cat">{{ page.category }}</span>
+      <h1 class="post-header__title">{{ page.title }}</h1>
+      <div class="post-header__meta">
+        <span class="post-header__date">{{ page.date | date: "%Y-%m-%d" }}</span>
+        <span class="post-header__sep"></span>
+        <span class="post-header__time">{{ page.read_time }}분 읽기</span>
+      </div>
+      {% if page.tags %}
+      <div class="post-header__tags">
+        {% for tag in page.tags %}
+        <span class="post-header__tag">#{{ tag }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </header>
+
+    <div class="post-content">
+      {{ content }}
+    </div>
+
+    <!-- 이전/다음 포스트 -->
+    <nav class="post-nav">
+      {% if page.previous.url %}
+      <a href="{{ page.previous.url | relative_url }}" class="post-nav__item post-nav__item--prev">
+        <div class="post-nav__dir">← 이전 글</div>
+        <div class="post-nav__title">{{ page.previous.title }}</div>
+      </a>
+      {% else %}
+      <div></div>
+      {% endif %}
+
+      {% if page.next.url %}
+      <a href="{{ page.next.url | relative_url }}" class="post-nav__item post-nav__item--next">
+        <div class="post-nav__dir">다음 글 →</div>
+        <div class="post-nav__title">{{ page.next.title }}</div>
+      </a>
+      {% endif %}
+    </nav>
+
+    <!-- 관련 포스트 -->
+    {% assign related = site.posts | where: "category", page.category | where_exp: "p", "p.url != page.url" | limit: 3 %}
+    {% if related.size > 0 %}
+    <div class="related-posts">
+      <div class="related-posts__title">같은 카테고리 글</div>
+      <div class="related-posts__grid">
+        {% for post in related %}
+        <a href="{{ post.url | relative_url }}" class="related-post-card">
+          <div class="related-post-card__cat">{{ post.category }}</div>
+          <div class="related-post-card__title">{{ post.title }}</div>
+          <div class="related-post-card__date">{{ post.date | date: "%Y-%m-%d" }}</div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </article>
+
+  <!-- TOC 사이드바 -->
+  <aside class="post-toc">
+    <div class="post-toc__title">목차</div>
+    <ul class="toc-list" id="toc-list"></ul>
+  </aside>
+
+</div>
+
+<script src="{{ '/assets/js/toc.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/copy-code.js' | relative_url }}"></script>

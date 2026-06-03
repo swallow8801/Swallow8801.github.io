@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Swallow8801</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+/* ═══════════════════════════════════════════
+   Base — Light Theme
+═══════════════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
+  background:#eef2f7;
+  color:#0f1f3d;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+a { text-decoration:none; color:inherit; }
+
+/* ═══════════════════════════════════════════
+   Nav
+═══════════════════════════════════════════ */
+.site-nav {
+  background:#fff; border-bottom:1px solid #d8e3f0;
+  padding:0 60px; display:flex; justify-content:space-between; align-items:center;
+  height:58px; position:sticky; top:0; z-index:100;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.nav-logo { font-size:16px; font-weight:800; color:#0f1f3d; letter-spacing:-.4px; }
+.nav-logo em { font-style:normal; color:#2563eb; }
+.nav-tabs { display:flex; }
+.nav-tab {
+  padding:0 20px; height:58px; display:flex; align-items:center;
+  font-size:14px; font-weight:600; color:#8fa3bf;
+  border-bottom:2.5px solid transparent; transition:all .15s;
+}
+.nav-tab:hover { color:#0f1f3d; }
+.nav-tab.on { color:#2563eb; border-bottom-color:#2563eb; }
+.nav-right { display:flex; gap:16px; align-items:center; }
+.nav-link { font-size:14px; color:#4a6080; font-weight:500; transition:color .15s; }
+.nav-link:hover { color:#0f1f3d; }
+.nav-search {
+  display:flex; align-items:center; gap:7px;
+  padding:7px 14px; border:1.5px solid #d8e3f0; border-radius:7px;
+  background:#f4f7fb; font-size:13px; color:#8fa3bf; cursor:text;
+}
+.nav-search:hover { border-color:#bfdbfe; }
+
+/* ═══════════════════════════════════════════
+   Featured Hero
+═══════════════════════════════════════════ */
+.hero {
+  display:grid; grid-template-columns:5fr 7fr;
+  min-height:320px; border-bottom:1px solid #d8e3f0;
+}
+.hero-left {
+  background:linear-gradient(145deg, #0a1628 0%, #0f2347 45%, #1a3a7a 100%);
+  padding:40px 44px; display:flex; flex-direction:column; justify-content:space-between;
+  position:relative; overflow:hidden;
+}
+.hero-left::before {
+  content:''; position:absolute; inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.hero-left::after {
+  content:''; position:absolute; top:-80px; right:-60px;
+  width:220px; height:220px; border-radius:50%;
+  background:radial-gradient(circle,rgba(59,130,246,.22) 0%,transparent 65%);
+}
+.hero-badges { position:relative;z-index:1; display:flex;gap:7px; }
+.hero-badge { padding:4px 10px; border-radius:5px; font-size:10px; font-weight:700; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18); color:rgba(255,255,255,.85); }
+.hero-preview { position:relative;z-index:1; }
+.hero-preview-label { font-size:10px; font-weight:700; color:rgba(255,255,255,.35); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:8px; }
+.hero-preview-title { font-size:19px; font-weight:800; color:#fff; line-height:1.3; letter-spacing:-.3px; }
+.hero-preview-stats { display:flex; gap:16px; margin-top:14px; padding-top:14px; border-top:1px solid rgba(255,255,255,.1); }
+.hero-stat { font-size:12px; color:rgba(255,255,255,.45); }
+.hero-stat em { font-style:normal; color:rgba(255,255,255,.85); font-weight:600; }
+.hero-right { background:#fff; padding:40px 44px; display:flex; flex-direction:column; justify-content:center; border-left:1px solid #d8e3f0; }
+.hero-cat { font-size:11px; font-weight:700; color:#2563eb; text-transform:uppercase; letter-spacing:1px; margin-bottom:14px; }
+.hero-title { font-size:23px; font-weight:900; line-height:1.3; letter-spacing:-.4px; margin-bottom:12px; color:#0f1f3d; }
+.hero-desc { font-size:14px; color:#4a6080; line-height:1.8; margin-bottom:18px; }
+.hero-tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:22px; }
+.hero-tag { font-size:12px; color:#2563eb; background:#eff6ff; padding:3px 9px; border-radius:5px; border:1px solid #bfdbfe; font-weight:500; }
+.hero-meta { display:flex; align-items:center; gap:10px; }
+.hero-av { width:30px; height:30px; border-radius:7px; background:linear-gradient(135deg,#1d4ed8,#2563eb); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; color:#fff; flex-shrink:0; }
+.hero-meta-info { font-size:12px; color:#8fa3bf; flex:1; }
+.hero-meta-name { font-weight:600; color:#4a6080; }
+.hero-read-btn { padding:8px 18px; border-radius:7px; background:#2563eb; color:#fff; font-size:12px; font-weight:700; border:none; cursor:pointer; font-family:inherit; white-space:nowrap; transition:background .15s; }
+.hero-read-btn:hover { background:#1d4ed8; }
+
+/* ═══════════════════════════════════════════
+   Category Filter Bar — 대분류 / 소분류
+═══════════════════════════════════════════ */
+.cat-bar {
+  background:#fff; border-bottom:1px solid #d8e3f0;
+  padding:0 60px; display:flex; align-items:center;
+  position:sticky; top:58px; z-index:10;
+  box-shadow:0 1px 4px rgba(0,0,0,.04); overflow-x:auto;
+}
+.cat-all { display:flex; align-items:center; gap:5px; padding:13px 16px; font-size:12px; font-weight:700; color:#8fa3bf; cursor:pointer; border-bottom:2.5px solid transparent; white-space:nowrap; flex-shrink:0; transition:all .15s; }
+.cat-all:hover { color:#0f1f3d; }
+.cat-all.on { color:#2563eb; border-bottom-color:#2563eb; }
+.cat-sep { width:1px; height:16px; background:#d8e3f0; margin:0 10px; flex-shrink:0; }
+.cat-group { display:flex; align-items:center; gap:2px; }
+.cat-group-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; padding:13px 8px 13px 4px; white-space:nowrap; flex-shrink:0; }
+.cat-group-label.study    { color:#2563eb; opacity:.55; }
+.cat-group-label.devnotes { color:#7c3aed; opacity:.55; }
+.cat-btn { display:flex; align-items:center; gap:4px; padding:5px 10px; margin:10px 2px; border-radius:6px; font-size:11px; font-weight:600; color:#4a6080; background:transparent; border:none; cursor:pointer; font-family:inherit; white-space:nowrap; transition:all .15s; }
+.cat-btn:hover { background:#f0f4f9; color:#0f1f3d; }
+.cat-btn.on { background:#eff6ff; color:#2563eb; }
+.devnotes-group .cat-btn.on { background:#faf5ff; color:#7c3aed; }
+.cat-cnt { font-size:10px; background:rgba(0,0,0,.06); padding:1px 5px; border-radius:8px; }
+.cat-btn.on .cat-cnt { background:rgba(37,99,235,.12); color:#2563eb; }
+.cat-bar-tail { margin-left:auto; font-size:11px; color:#8fa3bf; padding-left:12px; flex-shrink:0; }
+
+/* ═══════════════════════════════════════════
+   Body Layout
+═══════════════════════════════════════════ */
+.blog-body { max-width:1200px; margin:0 auto; padding:28px 60px; display:grid; grid-template-columns:1fr 272px; gap:26px; align-items:start; }
+
+/* ═══════════════════════════════════════════
+   POST CARDS — 1열 가로형 + 썸네일
+═══════════════════════════════════════════ */
+.posts-list { display:flex; flex-direction:column; gap:12px; }
+
+.post-card {
+  display:flex; border-radius:14px; overflow:hidden;
+  background:#fff; border:1px solid #d8e3f0;
+  cursor:pointer; text-decoration:none; color:inherit;
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+  transition:transform .28s cubic-bezier(.22,.68,0,1.2), box-shadow .28s, border-color .2s;
+  min-height:138px;
+}
+.post-card:hover {
+  transform:translateX(4px);
+  border-color:#bfdbfe;
+  box-shadow:0 4px 20px rgba(37,99,235,.1);
+}
+.post-card:hover .post-title { color:#2563eb; }
+
+/* ── 썸네일 영역 ── */
+.post-thumb {
+  width:196px; flex-shrink:0;
+  position:relative; overflow:hidden;
+  display:flex; align-items:flex-end; padding:14px;
+}
+
+/* 실제 이미지 */
+.post-thumb img { position:absolute;inset:0;width:100%;height:100%;object-fit:cover; }
+
+/* 이미지 없을 때: 카테고리별 다크 그라디언트 (라이트 카드 위에서 대비 효과) */
+.post-card[data-category="AI·LLM"]  .post-thumb { background:linear-gradient(145deg,#050f26,#0a1e50); }
+.post-card[data-category="Backend"] .post-thumb { background:linear-gradient(145deg,#04160b,#072618); }
+.post-card[data-category="Frontend"].post-thumb { background:linear-gradient(145deg,#04121f,#071b38); }
+.post-card[data-category="DevOps"]  .post-thumb { background:linear-gradient(145deg,#150d04,#261806); }
+.post-card[data-category="TIL"]     .post-thumb { background:linear-gradient(145deg,#100520,#1c0a36); }
+.post-card[data-category="Snippets"].post-thumb { background:linear-gradient(145deg,#080c18,#101828); }
+
+/* 썸네일 내부 dot 패턴 */
+.post-thumb::before {
+  content:''; position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.055) 1px,transparent 1px);
+  background-size:16px 16px; pointer-events:none;
+}
+/* 썸네일 우상단 glow */
+.post-thumb::after {
+  content:''; position:absolute; top:-40px;right:-40px;
+  width:110px; height:110px; border-radius:50%;
+  background:radial-gradient(circle,rgba(59,130,246,.18) 0%,transparent 65%);
+  pointer-events:none;
+}
+.post-card[data-category="Backend"] .post-thumb::after { background:radial-gradient(circle,rgba(5,150,105,.18) 0%,transparent 65%); }
+.post-card[data-category="DevOps"]  .post-thumb::after { background:radial-gradient(circle,rgba(217,119,6,.18) 0%,transparent 65%); }
+.post-card[data-category="TIL"]     .post-thumb::after { background:radial-gradient(circle,rgba(124,58,237,.2) 0%,transparent 65%); }
+
+/* 썸네일 카테고리 레이블 */
+.post-thumb-cat {
+  position:relative; z-index:1;
+  font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px;
+  padding:3px 8px; border-radius:4px;
+}
+.post-card[data-category="AI·LLM"]  .post-thumb-cat { color:rgba(147,197,253,.7); background:rgba(59,130,246,.15); border:1px solid rgba(59,130,246,.2); }
+.post-card[data-category="Backend"] .post-thumb-cat { color:rgba(110,231,183,.7); background:rgba(5,150,105,.15); border:1px solid rgba(5,150,105,.2); }
+.post-card[data-category="Frontend"].post-thumb-cat { color:rgba(125,211,252,.7); background:rgba(14,165,233,.12); border:1px solid rgba(14,165,233,.2); }
+.post-card[data-category="DevOps"]  .post-thumb-cat { color:rgba(253,186,116,.7); background:rgba(217,119,6,.12); border:1px solid rgba(217,119,6,.2); }
+.post-card[data-category="TIL"]     .post-thumb-cat { color:rgba(196,181,253,.7); background:rgba(124,58,237,.15); border:1px solid rgba(124,58,237,.2); }
+.post-card[data-category="Snippets"].post-thumb-cat { color:rgba(148,163,184,.7); background:rgba(100,116,139,.12); border:1px solid rgba(100,116,139,.18); }
+
+/* ── 카드 본문 ── */
+.post-content { flex:1; padding:20px 22px; display:flex; flex-direction:column; }
+.post-content-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:9px; }
+.post-series-cat { font-size:11px; font-weight:600; color:#8fa3bf; }
+.post-date { font-size:11px; color:#8fa3bf; font-variant-numeric:tabular-nums; }
+.post-title { font-size:15px; font-weight:700; line-height:1.42; margin-bottom:7px; color:#0f1f3d; transition:color .2s; }
+.post-desc { font-size:13px; color:#4a6080; line-height:1.65; flex:1; margin-bottom:14px; }
+.post-content-footer { display:flex; align-items:center; justify-content:space-between; margin-top:auto; }
+.post-tags { display:flex; gap:5px; flex-wrap:wrap; }
+.post-tag { font-size:10px; color:#8fa3bf; background:#f4f7fb; border:1px solid #d8e3f0; padding:2px 7px; border-radius:4px; }
+.post-meta { display:flex; align-items:center; gap:10px; }
+.post-read-time { font-size:11px; color:#2563eb; background:#eff6ff; border:1px solid #bfdbfe; padding:2px 8px; border-radius:4px; font-weight:600; }
+.post-card[data-category="TIL"]     .post-read-time { color:#7c3aed; background:#faf5ff; border-color:#ddd6fe; }
+.post-card[data-category="Snippets"].post-read-time { color:#64748b; background:#f8fafc; border-color:#e2e8f0; }
+.post-arrow { font-size:14px; color:#d8e3f0; transition:transform .2s, color .2s; }
+.post-card:hover .post-arrow { transform:translateX(3px); color:#2563eb; }
+
+/* ═══════════════════════════════════════════
+   Sidebar
+═══════════════════════════════════════════ */
+.sidebar { display:flex; flex-direction:column; gap:12px; position:sticky; top:calc(58px + 45px + 28px); }
+.widget { background:#fff; border:1px solid #d8e3f0; border-radius:12px; padding:18px; box-shadow:0 1px 4px rgba(0,0,0,.04); }
+.widget-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:#8fa3bf; margin-bottom:14px; padding-bottom:10px; border-bottom:1.5px solid #f4f7fb; }
+
+/* About */
+.s-av { width:40px; height:40px; border-radius:10px; background:linear-gradient(135deg,#1d4ed8,#2563eb); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; color:#fff; margin-bottom:10px; }
+.s-name { font-size:13px; font-weight:700; color:#0f1f3d; margin-bottom:2px; }
+.s-role { font-size:11px; color:#2563eb; font-weight:600; margin-bottom:8px; }
+.s-bio { font-size:12px; color:#4a6080; line-height:1.65; margin-bottom:12px; }
+.s-links { display:flex; gap:6px; }
+.s-link { padding:4px 10px; border:1.5px solid #d8e3f0; border-radius:5px; font-size:11px; color:#4a6080; cursor:pointer; background:transparent; font-family:inherit; font-weight:500; transition:all .15s; }
+.s-link:hover { border-color:#2563eb; color:#2563eb; }
+
+/* Category tree */
+.cat-tree { display:flex; flex-direction:column; gap:10px; }
+.cat-tree-group { display:flex; flex-direction:column; }
+.cat-tree-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-bottom:5px; }
+.cat-tree-label.study    { color:rgba(37,99,235,.6); }
+.cat-tree-label.devnotes { color:rgba(124,58,237,.6); }
+.cat-tree-item { display:flex; justify-content:space-between; align-items:center; padding:5px 8px; border-radius:5px; cursor:pointer; transition:background .15s; }
+.cat-tree-item:hover { background:#f4f7fb; }
+.cat-tree-item-left { display:flex; align-items:center; gap:7px; }
+.cat-dot { width:6px; height:6px; border-radius:50%; }
+.cat-tree-name { font-size:12px; color:#4a6080; font-weight:500; }
+.cat-tree-item:hover .cat-tree-name { color:#0f1f3d; }
+.cat-tree-cnt { font-size:10px; color:#8fa3bf; background:#f4f7fb; padding:1px 6px; border-radius:8px; }
+
+/* Tags */
+.tag-cloud { display:flex; flex-wrap:wrap; gap:5px; }
+.tag-pill { padding:4px 9px; border-radius:5px; background:#f4f7fb; border:1px solid #d8e3f0; font-size:11px; color:#4a6080; cursor:pointer; font-weight:500; transition:all .15s; }
+.tag-pill:hover { background:#eff6ff; border-color:#bfdbfe; color:#2563eb; }
+.tag-pill.hot { background:#eff6ff; border-color:#bfdbfe; color:#2563eb; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-logo">Swallow<em>.</em>dev</div>
+  <div class="nav-tabs">
+    <a href="portfolio.html" class="nav-tab">Portfolio</a>
+    <a href="blog.html" class="nav-tab on">Blog</a>
+  </div>
+  <div class="nav-right">
+    <a href="landing.html" class="nav-link">About</a>
+    <div class="nav-search">검색...</div>
+  </div>
+</nav>
+
+<!-- Featured Hero -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-badges">
+      <span class="hero-badge">Pinned</span>
+      <span class="hero-badge">Study · AI·LLM</span>
+    </div>
+    <div class="hero-preview">
+      <div class="hero-preview-label">Featured Post</div>
+      <div class="hero-preview-title">RAG 파이프라인 설계:<br>프로덕션에서 배운 것들</div>
+      <div class="hero-preview-stats">
+        <span class="hero-stat">읽기 시간 <em>18분</em></span>
+        <span class="hero-stat">2026-05-30</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-cat">Study · AI·LLM</div>
+    <div class="hero-title">RAG 파이프라인 설계:<br>프로덕션에서 배운 것들</div>
+    <div class="hero-desc">청킹 전략·리랭킹·Hallucination 감지까지. 실제 서비스에서 맞닥뜨린 문제들과 해결 과정을 정리했습니다.</div>
+    <div class="hero-tags">
+      <span class="hero-tag">RAG</span>
+      <span class="hero-tag">LangChain</span>
+      <span class="hero-tag">pgvector</span>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-av">SW</div>
+      <div class="hero-meta-info">
+        <div class="hero-meta-name">Swallow8801</div>
+        <div>2026-05-30 · 18분 읽기</div>
+      </div>
+      <button class="hero-read-btn">읽기 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Category Bar -->
+<div class="cat-bar">
+  <div class="cat-all on" data-filter="all">전체 <span class="cat-cnt">11</span></div>
+  <span class="cat-sep"></span>
+  <div class="cat-group">
+    <span class="cat-group-label study">Study</span>
+    <button class="cat-btn" data-series="Study" data-category="AI·LLM">AI·LLM <span class="cat-cnt">5</span></button>
+    <button class="cat-btn" data-series="Study" data-category="Backend">Backend <span class="cat-cnt">2</span></button>
+    <button class="cat-btn" data-series="Study" data-category="Frontend">Frontend <span class="cat-cnt">1</span></button>
+    <button class="cat-btn" data-series="Study" data-category="DevOps">DevOps <span class="cat-cnt">1</span></button>
+  </div>
+  <span class="cat-sep"></span>
+  <div class="cat-group devnotes-group">
+    <span class="cat-group-label devnotes">DevNotes</span>
+    <button class="cat-btn" data-series="DevNotes" data-category="TIL">TIL <span class="cat-cnt">1</span></button>
+    <button class="cat-btn" data-series="DevNotes" data-category="Snippets">Snippets <span class="cat-cnt">1</span></button>
+  </div>
+  <span class="cat-bar-tail">11개의 글</span>
+</div>
+
+<!-- Body -->
+<div class="blog-body">
+
+  <div class="posts-list">
+
+    <a href="#" class="post-card" data-series="Study" data-category="AI·LLM">
+      <div class="post-thumb"><span class="post-thumb-cat">AI·LLM</span></div>
+      <div class="post-content">
+        <div class="post-content-top"><span class="post-series-cat">Study · AI·LLM</span><span class="post-date">2026-05-30</span></div>
+        <div class="post-title">RAG 파이프라인 설계: 프로덕션에서 배운 것들</div>
+        <div class="post-desc">청킹 전략·리랭킹·Hallucination 감지까지. 실제 서비스에서 맞닥뜨린 문제들과 해결 과정. 1M 문서 기준 성능 비교 포함.</div>
+        <div class="post-content-footer">
+          <div class="post-tags"><span class="post-tag">rag</span><span class="post-tag">pgvector</span><span class="post-tag">langchain</span></div>
+          <div class="post-meta"><span class="post-read-time">18분</span><span class="post-arrow">→</span></div>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="post-card" data-series="Study" data-category="AI·LLM">
+      <div class="post-thumb"><span class="post-thumb-cat">AI·LLM</span></div>
+      <div class="post-content">
+        <div class="post-content-top"><span class="post-series-cat">Study · AI·LLM</span><span class="post-date">2026-05-28</span></div>
+        <div class="post-title">Claude API로 GitHub PR 자동 리뷰 봇 만들기</div>
+        <div class="post-desc">Tool Use + GitHub Actions로 PR 생성 시 코드 리뷰가 자동으로 달리는 시스템. 팀 컨벤션 학습 방법까지.</div>
+        <div class="post-content-footer">
+          <div class="post-tags"><span class="post-tag">claude-api</span><span class="post-tag">tool-use</span></div>
+          <div class="post-meta"><span class="post-read-time">12분</span><span class="post-arrow">→</span></div>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="post-card" data-series="Study" data-category="AI·LLM">
+      <div class="post-thumb"><span class="post-thumb-cat">AI·LLM</span></div>
+      <div class="post-content">
+        <div class="post-content-top"><span class="post-series-cat">Study · AI·LLM</span><span class="post-date">2026-05-20</span></div>
+        <div class="post-title">Vector DB 비교: Pinecone vs Weaviate vs pgvector 실전 벤치마크</div>
+        <div class="post-desc">같은 데이터셋으로 직접 벤치마킹. 비용·속도·정확도 비교와 상황별 선택 기준 정리.</div>
+        <div class="post-content-footer">
+          <div class="post-tags"><span class="post-tag">vector-db</span><span class="post-tag">benchmark</span></div>
+          <div class="post-meta"><span class="post-read-time">16분</span><span class="post-arrow">→</span></div>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="post-card" data-series="Study" data-category="Frontend">
+      <div class="post-thumb"><span class="post-thumb-cat">Frontend</span></div>
+      <div class="post-content">
+        <div class="post-content-top"><span class="post-series-cat">Study · Frontend</span><span class="post-date">2026-05-14</span></div>
+        <div class="post-title">React에서 LLM 스트리밍 응답 처리 — SSE와 AbortController</div>
+        <div class="post-desc">ChatGPT처럼 글자가 하나씩 출력되는 UI 구현. 스트림 중단 처리와 에러 복구까지.</div>
+        <div class="post-content-footer">
+          <div class="post-tags"><span class="post-tag">react</span><span class="post-tag">sse</span></div>
+          <div class="post-meta"><span class="post-read-time">10분</span><span class="post-arrow">→</span></div>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="post-card" data-series="Study" data-category="Backend">
+      <div class="post-thumb"><span class="post-thumb-cat">Backend</span></div>
+      <div class="post-content">
+        <div class="post-content-top"><span class="post-series-cat">Study · Backend</span><span class="post-date">2026-05-08</span></div>
+        <div class="post-title">FastAPI ML 모델 프로덕션 서빙 — 레이턴시 최적화 가이드</div>
+        <div class="post-desc">모델 웜업·배치 처리·비동기 큐·A/B 테스트. 실제 운영에서 찾아낸 레이턴시 단축 노하우.</div>
+        <div class="post-content-footer">
+          <div class="post-tags"><span class="post-tag">fastapi</span><span class="post-tag">ml-serving</span></div>
+          <div class="post-meta"><span class="post-read-time">14분</span><span class="post-arrow">→</span></div>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="post-card" data-series="Study" data-category="AI·LLM">
+      <div class="post-thumb"><span class="post-thumb-cat">AI·LLM</span></div>
+      <div class="post-content">
+        <div class="post-content-top"><span class="post-series-cat">Study · AI·LLM</span><span class="post-date">2026-05-01</span></div>
+        <div class="post-title">LangChain vs LlamaIndex — 프로덕션에서 뭘 써야 하나</div>
+        <div class="post-desc">두 프레임워크의 철학 차이부터 실제 RAG 구현 시 상황별 선택 기준을 직접 써본 경험 기반으로 비교.</div>
+        <div class="post-content-footer">
+          <div class="post-tags"><span class="post-tag">langchain</span><span class="post-tag">llamaindex</span></div>
+          <div class="post-meta"><span class="post-read-time">13분</span><span class="post-arrow">→</span></div>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="post-card" data-series="Study" data-category="Backend">
+      <div class="post-thumb"><span class="post-thumb-cat">Backend</span></div>
+      <div class="post-content">
+        <div class="post-content-top"><span class="post-series-cat">Study · Backend</span><span class="post-date">2026-04-22</span></div>
+        <div class="post-title">PostgreSQL pgvector — HNSW 인덱스 성능 튜닝</div>
+        <div class="post-desc">외부 벡터 DB 없이 PostgreSQL만으로. HNSW vs IVFFlat 비교, 1M 벡터 기준 실측 결과.</div>
+        <div class="post-content-footer">
+          <div class="post-tags"><span class="post-tag">pgvector</span><span class="post-tag">hnsw</span></div>
+          <div class="post-meta"><span class="post-read-time">15분</span><span class="post-arrow">→</span></div>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="post-card" data-series="Study" data-category="AI·LLM">
+      <div class="post-thumb"><span class="post-thumb-cat">AI·LLM</span></div>
+      <div class="post-content">
+        <div class="post-content-top"><span class="post-series-cat">Study · AI·LLM</span><span class="post-date">2026-04-15</span></div>
+        <div class="post-title">프롬프트 엔지니어링 실전 패턴 10가지 — 코드와 함께</div>
+        <div class="post-desc">Chain-of-thought, Few-shot, Role prompting 등 프로덕션에서 효과를 검증한 패턴들. 원리와 함께.</div>
+        <div class="post-content-footer">
+          <div class="post-tags"><span class="post-tag">prompt-eng</span><span class="post-tag">cot</span></div>
+          <div class="post-meta"><span class="post-read-time">20분</span><span class="post-arrow">→</span></div>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="post-card" data-series="Study" data-category="DevOps">
+      <div class="post-thumb"><span class="post-thumb-cat">DevOps</span></div>
+      <div class="post-content">
+        <div class="post-content-top"><span class="post-series-cat">Study · DevOps</span><span class="post-date">2026-04-08</span></div>
+        <div class="post-title">LLM 앱 Docker 배포 — GPU 환경 세팅과 비용 최적화</div>
+        <div class="post-desc">GPU 인스턴스 위에 LLM 서빙 컨테이너를 올리고 비용을 절반으로 줄이기. AWS 세팅 파일 공유.</div>
+        <div class="post-content-footer">
+          <div class="post-tags"><span class="post-tag">docker</span><span class="post-tag">aws</span></div>
+          <div class="post-meta"><span class="post-read-time">11분</span><span class="post-arrow">→</span></div>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="post-card" data-series="DevNotes" data-category="TIL">
+      <div class="post-thumb"><span class="post-thumb-cat">TIL</span></div>
+      <div class="post-content">
+        <div class="post-content-top"><span class="post-series-cat">DevNotes · TIL</span><span class="post-date">2026-05-25</span></div>
+        <div class="post-title">pgvector 설치부터 HNSW 인덱스 생성까지 Quick Guide</div>
+        <div class="post-desc">PostgreSQL에 pgvector를 붙이고 HNSW 인덱스를 생성하는 핵심 명령어만 정리.</div>
+        <div class="post-content-footer">
+          <div class="post-tags"><span class="post-tag">pgvector</span><span class="post-tag">til</span></div>
+          <div class="post-meta"><span class="post-read-time">3분</span><span class="post-arrow">→</span></div>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="post-card" data-series="DevNotes" data-category="Snippets">
+      <div class="post-thumb"><span class="post-thumb-cat">Snippets</span></div>
+      <div class="post-content">
+        <div class="post-content-top"><span class="post-series-cat">DevNotes · Snippets</span><span class="post-date">2026-05-22</span></div>
+        <div class="post-title">Claude API 스트리밍 응답 FastAPI 보일러플레이트</div>
+        <div class="post-desc">SSE 스트리밍을 FastAPI에서 바로 쓸 수 있는 재사용 코드 조각. 복붙용.</div>
+        <div class="post-content-footer">
+          <div class="post-tags"><span class="post-tag">claude-api</span><span class="post-tag">fastapi</span></div>
+          <div class="post-meta"><span class="post-read-time">2분</span><span class="post-arrow">→</span></div>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="widget">
+      <div class="widget-title">About</div>
+      <div class="s-av">SW</div>
+      <div class="s-name">Swallow8801</div>
+      <div class="s-role">AI Full Stack Developer</div>
+      <div class="s-bio">LLM, RAG, 벡터 검색부터 풀스택 웹까지. 프로덕션에서 직접 겪은 것들만 씁니다.</div>
+      <div class="s-links">
+        <button class="s-link">GitHub</button>
+        <button class="s-link">Portfolio</button>
+      </div>
+    </div>
+
+    <div class="widget">
+      <div class="widget-title">카테고리</div>
+      <div class="cat-tree">
+        <div class="cat-tree-group">
+          <div class="cat-tree-label study">Study</div>
+          <div class="cat-tree-item"><div class="cat-tree-item-left"><span class="cat-dot" style="background:#2563eb"></span><span class="cat-tree-name">AI·LLM</span></div><span class="cat-tree-cnt">5</span></div>
+          <div class="cat-tree-item"><div class="cat-tree-item-left"><span class="cat-dot" style="background:#059669"></span><span class="cat-tree-name">Backend</span></div><span class="cat-tree-cnt">2</span></div>
+          <div class="cat-tree-item"><div class="cat-tree-item-left"><span class="cat-dot" style="background:#0891b2"></span><span class="cat-tree-name">Frontend</span></div><span class="cat-tree-cnt">1</span></div>
+          <div class="cat-tree-item"><div class="cat-tree-item-left"><span class="cat-dot" style="background:#d97706"></span><span class="cat-tree-name">DevOps</span></div><span class="cat-tree-cnt">1</span></div>
+        </div>
+        <div class="cat-tree-group">
+          <div class="cat-tree-label devnotes">DevNotes</div>
+          <div class="cat-tree-item"><div class="cat-tree-item-left"><span class="cat-dot" style="background:#7c3aed"></span><span class="cat-tree-name">TIL</span></div><span class="cat-tree-cnt">1</span></div>
+          <div class="cat-tree-item"><div class="cat-tree-item-left"><span class="cat-dot" style="background:#475569"></span><span class="cat-tree-name">Snippets</span></div><span class="cat-tree-cnt">1</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="widget">
+      <div class="widget-title">태그</div>
+      <div class="tag-cloud">
+        <span class="tag-pill hot">claude-api</span>
+        <span class="tag-pill hot">rag</span>
+        <span class="tag-pill hot">langchain</span>
+        <span class="tag-pill">pgvector</span>
+        <span class="tag-pill">fastapi</span>
+        <span class="tag-pill">react</span>
+        <span class="tag-pill">streaming</span>
+        <span class="tag-pill hot">prompt-eng</span>
+        <span class="tag-pill">vector-db</span>
+        <span class="tag-pill">docker</span>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+const allBtn  = document.querySelector('.cat-all');
+const catBtns = document.querySelectorAll('.cat-btn');
+const cards   = document.querySelectorAll('.post-card');
+function setActive(series, category) {
+  allBtn.classList.toggle('on', !series);
+  catBtns.forEach(b => b.classList.remove('on'));
+  if (series) catBtns.forEach(b => { if (b.dataset.series === series && b.dataset.category === category) b.classList.add('on'); });
+  cards.forEach(c => { const show = !series || (c.dataset.series === series && c.dataset.category === category); c.style.display = show ? '' : 'none'; });
+}
+allBtn.addEventListener('click', () => setActive(null, null));
+catBtns.forEach(b => b.addEventListener('click', () => setActive(b.dataset.series, b.dataset.category)));
+</script>
+
+<!-- 전환 오버레이 -->
+<style>
+#pg-overlay { position:fixed;inset:0;z-index:9999;background:#050b18;opacity:1;pointer-events:all;transition:opacity .7s cubic-bezier(.4,0,.2,1); }
+#pg-overlay.hidden { opacity:0; pointer-events:none; }
+</style>
+<div id="pg-overlay"></div>
+<script>
+(function(){
+  var ov = document.getElementById('pg-overlay');
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ ov.classList.add('hidden'); }); });
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href]');
+    if (!a || !a.href || a.href.indexOf('#') !== -1 || a.target === '_blank') return;
+    if (a.href === window.location.href) return;
+    e.preventDefault();
+    ov.style.transition = 'opacity .5s cubic-bezier(.4,0,.2,1)';
+    ov.classList.remove('hidden');
+    setTimeout(function(){ window.location.href = a.href; }, 540);
+  });
+})();
+</script>
+</body>
+</html>

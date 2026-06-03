@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pgvector 설치부터 HNSW 인덱스 생성까지 Quick Guide — Swallow8801</title>
+<meta name="description" content="PostgreSQL에 pgvector를 붙이고 HNSW 인덱스를 생성하는 핵심 명령어만 정리. 매번 찾아보는 게 귀찮아서 기록.">
+
+<!-- Pretendard 폰트 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+
+<!-- CSS -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!-- SEO -->
+<meta property="og:title" content="pgvector 설치부터 HNSW 인덱스 생성까지 Quick Guide — Swallow8801">
+<meta property="og:description" content="PostgreSQL에 pgvector를 붙이고 HNSW 인덱스를 생성하는 핵심 명령어만 정리. 매번 찾아보는 게 귀찮아서 기록.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://localhost:4000/blog/til-pgvector-setup/">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- jekyll-seo-tag -->
+<!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>pgvector 설치부터 HNSW 인덱스 생성까지 Quick Guide | Swallow8801</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="pgvector 설치부터 HNSW 인덱스 생성까지 Quick Guide" />
+<meta name="author" content="Swallow8801" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="PostgreSQL에 pgvector를 붙이고 HNSW 인덱스를 생성하는 핵심 명령어만 정리. 매번 찾아보는 게 귀찮아서 기록." />
+<meta name="twitter:description" property="og:description" content="PostgreSQL에 pgvector를 붙이고 HNSW 인덱스를 생성하는 핵심 명령어만 정리. 매번 찾아보는 게 귀찮아서 기록." />
+<link rel="canonical" href="http://localhost:4000/blog/til-pgvector-setup/" />
+<meta property="og:url" content="http://localhost:4000/blog/til-pgvector-setup/" />
+<meta property="og:site_name" content="Swallow8801" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-05-25T00:00:00+09:00" />
+<meta property="article:modified_time" content="2026-05-25T00:00:00+09:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="pgvector 설치부터 HNSW 인덱스 생성까지 Quick Guide" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Swallow8801"},"dateModified":"2026-05-25T00:00:00+09:00","datePublished":"2026-05-25T00:00:00+09:00","description":"PostgreSQL에 pgvector를 붙이고 HNSW 인덱스를 생성하는 핵심 명령어만 정리. 매번 찾아보는 게 귀찮아서 기록.","headline":"pgvector 설치부터 HNSW 인덱스 생성까지 Quick Guide","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/til-pgvector-setup/"},"url":"http://localhost:4000/blog/til-pgvector-setup/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<!-- RSS -->
+<link rel="alternate" type="application/rss+xml" title="Swallow8801" href="/feed.xml">
+
+<!-- Favicon (추후 교체) -->
+<link rel="icon" type="image/png" href="/favicon.png">
+
+  <style>
+    #pg-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #050b18;
+      opacity: 1; pointer-events: all;
+      transition: opacity .7s cubic-bezier(.4,0,.2,1);
+    }
+    #pg-overlay.hidden { opacity: 0; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <!-- 페이지 전환 오버레이 -->
+  <div id="pg-overlay"></div>
+
+  <nav class="site-nav">
+  <a href="/" class="site-nav__logo">Swallow<em>.</em>dev</a>
+
+  <div class="site-nav__tabs">
+    <a href="/portfolio"
+       class="site-nav__tab ">
+      Portfolio
+    </a>
+    <a href="/blog"
+       class="site-nav__tab site-nav__tab--active">
+      Blog
+    </a>
+  </div>
+
+  <div class="site-nav__right">
+    <a href="/#about" class="site-nav__link">About</a>
+    <a href="https://github.com/swallow8801" class="site-nav__link" target="_blank">GitHub</a>
+    <a href="mailto:swallow8801@gmail.com" class="site-nav__link">Contact</a>
+  </div>
+</nav>
+
+
+  <div class="post-layout">
+
+  <article>
+    <header class="post-header">
+      <span class="post-header__cat">TIL</span>
+      <h1 class="post-header__title">pgvector 설치부터 HNSW 인덱스 생성까지 Quick Guide</h1>
+      <div class="post-header__meta">
+        <span class="post-header__date">2026-05-25</span>
+        <span class="post-header__sep"></span>
+        <span class="post-header__time">3분 읽기</span>
+      </div>
+      
+      <div class="post-header__tags">
+        
+        <span class="post-header__tag">#pgvector</span>
+        
+        <span class="post-header__tag">#postgresql</span>
+        
+        <span class="post-header__tag">#til</span>
+        
+        <span class="post-header__tag">#vector-search</span>
+        
+        <span class="post-header__tag">#hnsw</span>
+        
+      </div>
+      
+    </header>
+
+    <div class="post-content">
+      <p>매번 검색하는 pgvector 세팅 명령어를 한 곳에 정리합니다.</p>
+
+<h2 id="설치">설치</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Ubuntu/Debian</span>
+<span class="nb">sudo </span>apt <span class="nb">install </span>postgresql-15-pgvector
+
+<span class="c"># macOS (Homebrew)</span>
+brew <span class="nb">install </span>pgvector
+
+<span class="c"># Docker</span>
+docker pull pgvector/pgvector:pg15
+</code></pre></div></div>
+
+<h2 id="확장-활성화">확장 활성화</h2>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="n">EXTENSION</span> <span class="n">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">vector</span><span class="p">;</span>
+<span class="c1">-- 확인</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">pg_extension</span> <span class="k">WHERE</span> <span class="n">extname</span> <span class="o">=</span> <span class="s1">'vector'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="테이블--인덱스">테이블 + 인덱스</h2>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- 1536차원 벡터 컬럼 추가</span>
+<span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">documents</span> <span class="k">ADD</span> <span class="k">COLUMN</span> <span class="n">embedding</span> <span class="n">vector</span><span class="p">(</span><span class="mi">1536</span><span class="p">);</span>
+
+<span class="c1">-- HNSW 인덱스 (권장)</span>
+<span class="k">CREATE</span> <span class="k">INDEX</span> <span class="k">ON</span> <span class="n">documents</span>
+<span class="k">USING</span> <span class="n">hnsw</span> <span class="p">(</span><span class="n">embedding</span> <span class="n">vector_cosine_ops</span><span class="p">)</span>
+<span class="k">WITH</span> <span class="p">(</span><span class="n">m</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="n">ef_construction</span> <span class="o">=</span> <span class="mi">64</span><span class="p">);</span>
+
+<span class="c1">-- 검색</span>
+<span class="k">SET</span> <span class="n">hnsw</span><span class="p">.</span><span class="n">ef_search</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="k">SELECT</span> <span class="n">id</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">embedding</span> <span class="o">&lt;=&gt;</span> <span class="err">$</span><span class="mi">1</span><span class="p">::</span><span class="n">vector</span><span class="p">)</span> <span class="k">AS</span> <span class="n">score</span>
+<span class="k">FROM</span> <span class="n">documents</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">embedding</span> <span class="o">&lt;=&gt;</span> <span class="err">$</span><span class="mi">1</span><span class="p">::</span><span class="n">vector</span>
+<span class="k">LIMIT</span> <span class="mi">10</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="거리-함수-종류">거리 함수 종류</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>연산자</th>
+      <th>함수명</th>
+      <th>설명</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">&lt;=&gt;</code></td>
+      <td>cosine distance</td>
+      <td>방향 유사도 (텍스트 임베딩에 추천)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">&lt;-&gt;</code></td>
+      <td>L2 distance</td>
+      <td>유클리드 거리</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">&lt;#&gt;</code></td>
+      <td>inner product</td>
+      <td>내적 (정규화된 벡터에서 cosine과 동일)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="python에서-삽입">Python에서 삽입</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">psycopg2</span>
+
+<span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="p">.</span><span class="nf">connect</span><span class="p">(</span><span class="sh">"</span><span class="s">postgresql://user:pass@localhost/db</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="nf">cursor</span><span class="p">()</span>
+
+<span class="n">embedding</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="p">...]</span>  <span class="c1"># list of float
+</span><span class="n">cur</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span>
+    <span class="sh">"</span><span class="s">UPDATE documents SET embedding = %s WHERE id = %s</span><span class="sh">"</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">embedding</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">conn</span><span class="p">.</span><span class="nf">commit</span><span class="p">()</span>
+</code></pre></div></div>
+
+    </div>
+
+    <!-- 이전/다음 포스트 -->
+    <nav class="post-nav">
+      
+      <a href="/blog/snippet-claude-api-fastapi-streaming/" class="post-nav__item post-nav__item--prev">
+        <div class="post-nav__dir">← 이전 글</div>
+        <div class="post-nav__title">Claude API 스트리밍 응답 FastAPI 보일러플레이트</div>
+      </a>
+      
+
+      
+      <a href="/blog/claude-api-pr-review-bot/" class="post-nav__item post-nav__item--next">
+        <div class="post-nav__dir">다음 글 →</div>
+        <div class="post-nav__title">Claude API로 GitHub PR 자동 리뷰 봇 만들기</div>
+      </a>
+      
+    </nav>
+
+    <!-- 관련 포스트 -->
+    
+    
+  </article>
+
+  <!-- TOC 사이드바 -->
+  <aside class="post-toc">
+    <div class="post-toc__title">목차</div>
+    <ul class="toc-list" id="toc-list"></ul>
+  </aside>
+
+</div>
+
+<script src="/assets/js/toc.js"></script>
+<script src="/assets/js/copy-code.js"></script>
+
+
+  <footer class="site-footer">
+  <div class="site-footer__logo">Swallow<em>.</em>dev</div>
+  <div>© 2026 Swallow8801</div>
+  <div class="site-footer__links">
+    <a href="https://github.com/swallow8801" target="_blank">GitHub</a>
+    <a href="/feed.xml">RSS</a>
+    <a href="https://linkedin.com/in/swallow8801" target="_blank">LinkedIn</a>
+  </div>
+</footer>
+
+
+  <script src="/assets/js/filter.js"></script>
+
+  <script>
+  (function () {
+    var ov = document.getElementById('pg-overlay');
+    /* 진입: 페이드 아웃 */
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { ov.classList.add('hidden'); });
+    });
+    /* 이탈: 링크 클릭 시 페이드 인 후 이동 */
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href]');
+      if (!a || !a.href || a.target === '_blank') return;
+      var href = a.href;
+      if (href === window.location.href || href.indexOf('#') !== -1) return;
+      e.preventDefault();
+      ov.style.transition = 'opacity .5s cubic-bezier(.4,0,.2,1)';
+      ov.classList.remove('hidden');
+      setTimeout(function () { window.location.href = href; }, 540);
+    });
+  })();
+  </script>
+</body>
+</html>

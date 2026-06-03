@@ -1,0 +1,46 @@
+title: "Swallow8801"
+description: "AI Full Stack Developer — LLM · RAG · Vector Search · Web · Infra"
+url: "https://swallow8801.github.io"
+baseurl: ""
+
+author:
+  name: "Swallow8801"
+  email: "swallow8801@gmail.com"
+  github: "swallow8801"
+  linkedin: "swallow8801"
+
+# Build
+markdown: kramdown
+highlighter: rouge
+permalink: /blog/:slug/
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Paginate (blog/index.html 기준)
+paginate: 8
+paginate_path: "/blog/page:num/"
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-paginate
+  - jekyll-seo-tag
+
+# Feed
+feed:
+  path: feed.xml
+
+# Exclude from build
+exclude:
+  - landing.html
+  - portfolio.html
+  - blog.html
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - "*.sh"
+  - node_modules
+  - vendor

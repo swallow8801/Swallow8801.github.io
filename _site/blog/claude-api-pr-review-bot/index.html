@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude API로 GitHub PR 자동 리뷰 봇 만들기 — Swallow8801</title>
+<meta name="description" content="Tool Use와 GitHub Actions를 연결해 PR이 열리면 자동으로 코드 리뷰가 달리는 시스템을 구축했습니다. 팀 컨벤션을 학습시키는 방법까지.">
+
+<!-- Pretendard 폰트 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+
+<!-- CSS -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!-- SEO -->
+<meta property="og:title" content="Claude API로 GitHub PR 자동 리뷰 봇 만들기 — Swallow8801">
+<meta property="og:description" content="Tool Use와 GitHub Actions를 연결해 PR이 열리면 자동으로 코드 리뷰가 달리는 시스템을 구축했습니다. 팀 컨벤션을 학습시키는 방법까지.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://localhost:4000/blog/claude-api-pr-review-bot/">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- jekyll-seo-tag -->
+<!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>Claude API로 GitHub PR 자동 리뷰 봇 만들기 | Swallow8801</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Claude API로 GitHub PR 자동 리뷰 봇 만들기" />
+<meta name="author" content="Swallow8801" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Tool Use와 GitHub Actions를 연결해 PR이 열리면 자동으로 코드 리뷰가 달리는 시스템을 구축했습니다. 팀 컨벤션을 학습시키는 방법까지." />
+<meta name="twitter:description" property="og:description" content="Tool Use와 GitHub Actions를 연결해 PR이 열리면 자동으로 코드 리뷰가 달리는 시스템을 구축했습니다. 팀 컨벤션을 학습시키는 방법까지." />
+<link rel="canonical" href="http://localhost:4000/blog/claude-api-pr-review-bot/" />
+<meta property="og:url" content="http://localhost:4000/blog/claude-api-pr-review-bot/" />
+<meta property="og:site_name" content="Swallow8801" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-05-28T00:00:00+09:00" />
+<meta property="article:modified_time" content="2026-05-28T00:00:00+09:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Claude API로 GitHub PR 자동 리뷰 봇 만들기" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Swallow8801"},"dateModified":"2026-05-28T00:00:00+09:00","datePublished":"2026-05-28T00:00:00+09:00","description":"Tool Use와 GitHub Actions를 연결해 PR이 열리면 자동으로 코드 리뷰가 달리는 시스템을 구축했습니다. 팀 컨벤션을 학습시키는 방법까지.","headline":"Claude API로 GitHub PR 자동 리뷰 봇 만들기","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/claude-api-pr-review-bot/"},"url":"http://localhost:4000/blog/claude-api-pr-review-bot/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<!-- RSS -->
+<link rel="alternate" type="application/rss+xml" title="Swallow8801" href="/feed.xml">
+
+<!-- Favicon (추후 교체) -->
+<link rel="icon" type="image/png" href="/favicon.png">
+
+  <style>
+    #pg-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #050b18;
+      opacity: 1; pointer-events: all;
+      transition: opacity .7s cubic-bezier(.4,0,.2,1);
+    }
+    #pg-overlay.hidden { opacity: 0; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <!-- 페이지 전환 오버레이 -->
+  <div id="pg-overlay"></div>
+
+  <nav class="site-nav">
+  <a href="/" class="site-nav__logo">Swallow<em>.</em>dev</a>
+
+  <div class="site-nav__tabs">
+    <a href="/portfolio"
+       class="site-nav__tab ">
+      Portfolio
+    </a>
+    <a href="/blog"
+       class="site-nav__tab site-nav__tab--active">
+      Blog
+    </a>
+  </div>
+
+  <div class="site-nav__right">
+    <a href="/#about" class="site-nav__link">About</a>
+    <a href="https://github.com/swallow8801" class="site-nav__link" target="_blank">GitHub</a>
+    <a href="mailto:swallow8801@gmail.com" class="site-nav__link">Contact</a>
+  </div>
+</nav>
+
+
+  <div class="post-layout">
+
+  <article>
+    <header class="post-header">
+      <span class="post-header__cat">AI·LLM</span>
+      <h1 class="post-header__title">Claude API로 GitHub PR 자동 리뷰 봇 만들기</h1>
+      <div class="post-header__meta">
+        <span class="post-header__date">2026-05-28</span>
+        <span class="post-header__sep"></span>
+        <span class="post-header__time">12분 읽기</span>
+      </div>
+      
+      <div class="post-header__tags">
+        
+        <span class="post-header__tag">#claude-api</span>
+        
+        <span class="post-header__tag">#tool-use</span>
+        
+        <span class="post-header__tag">#github-actions</span>
+        
+        <span class="post-header__tag">#fastapi</span>
+        
+      </div>
+      
+    </header>
+
+    <div class="post-content">
+      <h2 id="만들게-된-이유">만들게 된 이유</h2>
+
+<p>코드 리뷰는 중요하지만 시간이 많이 걸립니다. 특히 반복적인 스타일 이슈(변수명, 함수 길이, 에러 처리 누락 등)는 자동화하면 팀 리뷰어의 시간을 아낄 수 있습니다.</p>
+
+<p>Claude API의 <strong>Tool Use</strong> 기능을 활용하면 PR의 diff를 분석하고, GitHub API를 호출해 리뷰 코멘트를 달 수 있습니다.</p>
+
+<hr />
+
+<h2 id="아키텍처">아키텍처</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GitHub PR 생성
+    ↓
+GitHub Actions (webhook trigger)
+    ↓
+FastAPI 서버 (리뷰 봇)
+    ↓
+Claude API (Tool Use로 GitHub API 호출)
+    ↓
+PR에 자동 코멘트 게시
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="1-tool-정의">1. Tool 정의</h2>
+
+<p>Claude에게 GitHub API를 도구로 제공합니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tools</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="sh">"</span><span class="s">name</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">get_pr_diff</span><span class="sh">"</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">description</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">PR의 변경된 파일과 diff를 가져옵니다.</span><span class="sh">"</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">input_schema</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sh">"</span><span class="s">type</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">object</span><span class="sh">"</span><span class="p">,</span>
+            <span class="sh">"</span><span class="s">properties</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="sh">"</span><span class="s">pr_number</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">type</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">integer</span><span class="sh">"</span><span class="p">},</span>
+                <span class="sh">"</span><span class="s">repo</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">type</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">string</span><span class="sh">"</span><span class="p">}</span>
+            <span class="p">},</span>
+            <span class="sh">"</span><span class="s">required</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">pr_number</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">repo</span><span class="sh">"</span><span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="sh">"</span><span class="s">name</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">post_review_comment</span><span class="sh">"</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">description</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">PR의 특정 라인에 리뷰 코멘트를 달아줍니다.</span><span class="sh">"</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">input_schema</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sh">"</span><span class="s">type</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">object</span><span class="sh">"</span><span class="p">,</span>
+            <span class="sh">"</span><span class="s">properties</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="sh">"</span><span class="s">body</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">type</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">string</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">description</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">코멘트 내용</span><span class="sh">"</span><span class="p">},</span>
+                <span class="sh">"</span><span class="s">path</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">type</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">string</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">description</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">파일 경로</span><span class="sh">"</span><span class="p">},</span>
+                <span class="sh">"</span><span class="s">line</span><span class="sh">"</span><span class="p">:</span> <span class="p">{</span><span class="sh">"</span><span class="s">type</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">integer</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">description</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">라인 번호</span><span class="sh">"</span><span class="p">}</span>
+            <span class="p">},</span>
+            <span class="sh">"</span><span class="s">required</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">body</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">path</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">line</span><span class="sh">"</span><span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="2-리뷰-실행">2. 리뷰 실행</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">anthropic</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">anthropic</span><span class="p">.</span><span class="nc">Anthropic</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">run_pr_review</span><span class="p">(</span><span class="n">pr_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">repo</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">system_prompt</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">당신은 시니어 개발자입니다. PR diff를 분석하고
+    다음 항목을 중심으로 리뷰하세요:
+    1. 버그 가능성이 있는 코드
+    2. 에러 처리 누락
+    3. 성능 문제
+    4. 팀 컨벤션 위반
+    명확한 문제가 있을 때만 코멘트를 달고, 사소한 스타일은 무시하세요.</span><span class="sh">"""</span>
+
+    <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span>
+        <span class="sh">"</span><span class="s">role</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">user</span><span class="sh">"</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">content</span><span class="sh">"</span><span class="p">:</span> <span class="sa">f</span><span class="sh">"</span><span class="s">PR #</span><span class="si">{</span><span class="n">pr_number</span><span class="si">}</span><span class="s"> (</span><span class="si">{</span><span class="n">repo</span><span class="si">}</span><span class="s">)를 리뷰해주세요.</span><span class="sh">"</span>
+    <span class="p">}]</span>
+
+    <span class="c1"># Tool Use 루프
+</span>    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">messages</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span>
+            <span class="n">model</span><span class="o">=</span><span class="sh">"</span><span class="s">claude-opus-4-8</span><span class="sh">"</span><span class="p">,</span>
+            <span class="n">max_tokens</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span>
+            <span class="n">system</span><span class="o">=</span><span class="n">system_prompt</span><span class="p">,</span>
+            <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span>
+            <span class="n">messages</span><span class="o">=</span><span class="n">messages</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="n">stop_reason</span> <span class="o">==</span> <span class="sh">"</span><span class="s">end_turn</span><span class="sh">"</span><span class="p">:</span>
+            <span class="k">break</span>
+
+        <span class="c1"># Tool 호출 처리
+</span>        <span class="n">tool_results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">response</span><span class="p">.</span><span class="n">content</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">block</span><span class="p">.</span><span class="nb">type</span> <span class="o">==</span> <span class="sh">"</span><span class="s">tool_use</span><span class="sh">"</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="nf">execute_tool</span><span class="p">(</span><span class="n">block</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">block</span><span class="p">.</span><span class="nb">input</span><span class="p">)</span>
+                <span class="n">tool_results</span><span class="p">.</span><span class="nf">append</span><span class="p">({</span>
+                    <span class="sh">"</span><span class="s">type</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">tool_result</span><span class="sh">"</span><span class="p">,</span>
+                    <span class="sh">"</span><span class="s">tool_use_id</span><span class="sh">"</span><span class="p">:</span> <span class="n">block</span><span class="p">.</span><span class="nb">id</span><span class="p">,</span>
+                    <span class="sh">"</span><span class="s">content</span><span class="sh">"</span><span class="p">:</span> <span class="n">result</span>
+                <span class="p">})</span>
+
+        <span class="n">messages</span><span class="p">.</span><span class="nf">append</span><span class="p">({</span><span class="sh">"</span><span class="s">role</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">assistant</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">content</span><span class="sh">"</span><span class="p">:</span> <span class="n">response</span><span class="p">.</span><span class="n">content</span><span class="p">})</span>
+        <span class="n">messages</span><span class="p">.</span><span class="nf">append</span><span class="p">({</span><span class="sh">"</span><span class="s">role</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">user</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">content</span><span class="sh">"</span><span class="p">:</span> <span class="n">tool_results</span><span class="p">})</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="3-github-actions-연동">3. GitHub Actions 연동</h2>
+
+<p><code class="language-plaintext highlighter-rouge">.github/workflows/pr-review.yml</code>:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">AI Code Review</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">pull_request</span><span class="pi">:</span>
+    <span class="na">types</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">opened</span><span class="pi">,</span> <span class="nv">synchronize</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">review</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Trigger Review Bot</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">curl -X POST $/review \</span>
+            <span class="s">-H "Authorization: Bearer $" \</span>
+            <span class="s">-d '{"pr_number": $, "repo": "$"}'</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="팀-컨벤션-학습">팀 컨벤션 학습</h2>
+
+<p>매번 같은 지적을 받지 않도록, 팀 컨벤션 문서를 시스템 프롬프트에 포함했습니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">CONTRIBUTING.md</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">conventions</span> <span class="o">=</span> <span class="n">f</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+
+<span class="n">system_prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"""</span><span class="s">
+</span><span class="si">{</span><span class="n">base_system_prompt</span><span class="si">}</span><span class="s">
+
+## 우리 팀 컨벤션
+</span><span class="si">{</span><span class="n">conventions</span><span class="si">}</span><span class="s">
+</span><span class="sh">"""</span>
+</code></pre></div></div>
+
+<p>컨벤션 문서가 길어지면 RAG로 관련 부분만 추출하는 방식으로 확장할 수 있습니다.</p>
+
+<hr />
+
+<h2 id="결과">결과</h2>
+
+<ul>
+  <li>PR 당 평균 리뷰 시간: 45분 → 20분 단축</li>
+  <li>반복적 스타일 코멘트: 주 평균 12개 → 2개로 감소</li>
+  <li>팀 만족도: “사소한 것 지적 안 해서 좋다”는 피드백 다수</li>
+</ul>
+
+    </div>
+
+    <!-- 이전/다음 포스트 -->
+    <nav class="post-nav">
+      
+      <a href="/blog/til-pgvector-setup/" class="post-nav__item post-nav__item--prev">
+        <div class="post-nav__dir">← 이전 글</div>
+        <div class="post-nav__title">pgvector 설치부터 HNSW 인덱스 생성까지 Quick Guide</div>
+      </a>
+      
+
+      
+      <a href="/blog/rag-pipeline-design/" class="post-nav__item post-nav__item--next">
+        <div class="post-nav__dir">다음 글 →</div>
+        <div class="post-nav__title">RAG 파이프라인 설계: 프로덕션에서 배운 것들</div>
+      </a>
+      
+    </nav>
+
+    <!-- 관련 포스트 -->
+    
+    
+    <div class="related-posts">
+      <div class="related-posts__title">같은 카테고리 글</div>
+      <div class="related-posts__grid">
+        
+        <a href="/blog/rag-pipeline-design/" class="related-post-card">
+          <div class="related-post-card__cat">AI·LLM</div>
+          <div class="related-post-card__title">RAG 파이프라인 설계: 프로덕션에서 배운 것들</div>
+          <div class="related-post-card__date">2026-05-30</div>
+        </a>
+        
+        <a href="/blog/vector-db-benchmark/" class="related-post-card">
+          <div class="related-post-card__cat">AI·LLM</div>
+          <div class="related-post-card__title">Vector DB 비교: Pinecone vs Weaviate vs pgvector 실전 벤치마크</div>
+          <div class="related-post-card__date">2026-05-20</div>
+        </a>
+        
+        <a href="/blog/langchain-vs-llamaindex/" class="related-post-card">
+          <div class="related-post-card__cat">AI·LLM</div>
+          <div class="related-post-card__title">LangChain vs LlamaIndex — 프로덕션에서 뭘 써야 하나</div>
+          <div class="related-post-card__date">2026-05-01</div>
+        </a>
+        
+        <a href="/blog/prompt-engineering-patterns/" class="related-post-card">
+          <div class="related-post-card__cat">AI·LLM</div>
+          <div class="related-post-card__title">프롬프트 엔지니어링 실전 패턴 10가지 — 코드와 함께</div>
+          <div class="related-post-card__date">2026-04-15</div>
+        </a>
+        
+      </div>
+    </div>
+    
+  </article>
+
+  <!-- TOC 사이드바 -->
+  <aside class="post-toc">
+    <div class="post-toc__title">목차</div>
+    <ul class="toc-list" id="toc-list"></ul>
+  </aside>
+
+</div>
+
+<script src="/assets/js/toc.js"></script>
+<script src="/assets/js/copy-code.js"></script>
+
+
+  <footer class="site-footer">
+  <div class="site-footer__logo">Swallow<em>.</em>dev</div>
+  <div>© 2026 Swallow8801</div>
+  <div class="site-footer__links">
+    <a href="https://github.com/swallow8801" target="_blank">GitHub</a>
+    <a href="/feed.xml">RSS</a>
+    <a href="https://linkedin.com/in/swallow8801" target="_blank">LinkedIn</a>
+  </div>
+</footer>
+
+
+  <script src="/assets/js/filter.js"></script>
+
+  <script>
+  (function () {
+    var ov = document.getElementById('pg-overlay');
+    /* 진입: 페이드 아웃 */
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { ov.classList.add('hidden'); });
+    });
+    /* 이탈: 링크 클릭 시 페이드 인 후 이동 */
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href]');
+      if (!a || !a.href || a.target === '_blank') return;
+      var href = a.href;
+      if (href === window.location.href || href.indexOf('#') !== -1) return;
+      e.preventDefault();
+      ov.style.transition = 'opacity .5s cubic-bezier(.4,0,.2,1)';
+      ov.classList.remove('hidden');
+      setTimeout(function () { window.location.href = href; }, 540);
+    });
+  })();
+  </script>
+</body>
+</html>

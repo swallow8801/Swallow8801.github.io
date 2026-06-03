@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM 앱 Docker 배포 — GPU 환경 세팅과 비용 최적화 — Swallow8801</title>
+<meta name="description" content="GPU 인스턴스 위에 LLM 서빙 컨테이너를 올리고 비용을 절반으로 줄이기까지. 실제 AWS 세팅 파일 공유.">
+
+<!-- Pretendard 폰트 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+
+<!-- CSS -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!-- SEO -->
+<meta property="og:title" content="LLM 앱 Docker 배포 — GPU 환경 세팅과 비용 최적화 — Swallow8801">
+<meta property="og:description" content="GPU 인스턴스 위에 LLM 서빙 컨테이너를 올리고 비용을 절반으로 줄이기까지. 실제 AWS 세팅 파일 공유.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://localhost:4000/blog/docker-llm-gpu-deploy/">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- jekyll-seo-tag -->
+<!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>LLM 앱 Docker 배포 — GPU 환경 세팅과 비용 최적화 | Swallow8801</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="LLM 앱 Docker 배포 — GPU 환경 세팅과 비용 최적화" />
+<meta name="author" content="Swallow8801" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="GPU 인스턴스 위에 LLM 서빙 컨테이너를 올리고 비용을 절반으로 줄이기까지. 실제 AWS 세팅 파일 공유." />
+<meta name="twitter:description" property="og:description" content="GPU 인스턴스 위에 LLM 서빙 컨테이너를 올리고 비용을 절반으로 줄이기까지. 실제 AWS 세팅 파일 공유." />
+<link rel="canonical" href="http://localhost:4000/blog/docker-llm-gpu-deploy/" />
+<meta property="og:url" content="http://localhost:4000/blog/docker-llm-gpu-deploy/" />
+<meta property="og:site_name" content="Swallow8801" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-04-08T00:00:00+09:00" />
+<meta property="article:modified_time" content="2026-04-08T00:00:00+09:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="LLM 앱 Docker 배포 — GPU 환경 세팅과 비용 최적화" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Swallow8801"},"dateModified":"2026-04-08T00:00:00+09:00","datePublished":"2026-04-08T00:00:00+09:00","description":"GPU 인스턴스 위에 LLM 서빙 컨테이너를 올리고 비용을 절반으로 줄이기까지. 실제 AWS 세팅 파일 공유.","headline":"LLM 앱 Docker 배포 — GPU 환경 세팅과 비용 최적화","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/docker-llm-gpu-deploy/"},"url":"http://localhost:4000/blog/docker-llm-gpu-deploy/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<!-- RSS -->
+<link rel="alternate" type="application/rss+xml" title="Swallow8801" href="/feed.xml">
+
+<!-- Favicon (추후 교체) -->
+<link rel="icon" type="image/png" href="/favicon.png">
+
+  <style>
+    #pg-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #050b18;
+      opacity: 1; pointer-events: all;
+      transition: opacity .7s cubic-bezier(.4,0,.2,1);
+    }
+    #pg-overlay.hidden { opacity: 0; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <!-- 페이지 전환 오버레이 -->
+  <div id="pg-overlay"></div>
+
+  <nav class="site-nav">
+  <a href="/" class="site-nav__logo">Swallow<em>.</em>dev</a>
+
+  <div class="site-nav__tabs">
+    <a href="/portfolio"
+       class="site-nav__tab ">
+      Portfolio
+    </a>
+    <a href="/blog"
+       class="site-nav__tab site-nav__tab--active">
+      Blog
+    </a>
+  </div>
+
+  <div class="site-nav__right">
+    <a href="/#about" class="site-nav__link">About</a>
+    <a href="https://github.com/swallow8801" class="site-nav__link" target="_blank">GitHub</a>
+    <a href="mailto:swallow8801@gmail.com" class="site-nav__link">Contact</a>
+  </div>
+</nav>
+
+
+  <div class="post-layout">
+
+  <article>
+    <header class="post-header">
+      <span class="post-header__cat">DevOps</span>
+      <h1 class="post-header__title">LLM 앱 Docker 배포 — GPU 환경 세팅과 비용 최적화</h1>
+      <div class="post-header__meta">
+        <span class="post-header__date">2026-04-08</span>
+        <span class="post-header__sep"></span>
+        <span class="post-header__time">11분 읽기</span>
+      </div>
+      
+      <div class="post-header__tags">
+        
+        <span class="post-header__tag">#docker</span>
+        
+        <span class="post-header__tag">#aws</span>
+        
+        <span class="post-header__tag">#gpu</span>
+        
+        <span class="post-header__tag">#llm</span>
+        
+        <span class="post-header__tag">#deployment</span>
+        
+        <span class="post-header__tag">#cost-optimization</span>
+        
+      </div>
+      
+    </header>
+
+    <div class="post-content">
+      <h2 id="배포-목표">배포 목표</h2>
+
+<p>자체 호스팅 LLM(Llama 3, Mistral 등)을 AWS에 배포하면서 비용을 최소화하는 방법입니다. Spot Instance + 자동 스케일링으로 On-Demand 대비 70% 비용을 절감했습니다.</p>
+
+<hr />
+
+<h2 id="1-docker-이미지-준비">1. Docker 이미지 준비</h2>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># GPU 지원 베이스 이미지</span>
+<span class="k">FROM</span><span class="s"> nvidia/cuda:12.1-cudnn8-runtime-ubuntu22.04</span>
+
+<span class="k">RUN </span>apt-get update <span class="o">&amp;&amp;</span> apt-get <span class="nb">install</span> <span class="nt">-y</span> <span class="se">\
+</span>    python3.11 python3-pip <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-rf</span> /var/lib/apt/lists/<span class="k">*</span>
+
+<span class="k">WORKDIR</span><span class="s"> /app</span>
+
+<span class="k">COPY</span><span class="s"> requirements.txt .</span>
+<span class="k">RUN </span>pip <span class="nb">install</span> <span class="nt">--no-cache-dir</span> <span class="nt">-r</span> requirements.txt
+
+<span class="k">COPY</span><span class="s"> . .</span>
+
+<span class="c"># NVIDIA GPU 메모리 최적화</span>
+<span class="k">ENV</span><span class="s"> PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512</span>
+<span class="k">ENV</span><span class="s"> CUDA_VISIBLE_DEVICES=0</span>
+
+<span class="k">EXPOSE</span><span class="s"> 8000</span>
+<span class="k">CMD</span><span class="s"> ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># requirements.txt
+fastapi==0.104.0
+uvicorn[standard]==0.24.0
+torch==2.1.0+cu121
+transformers==4.35.0
+accelerate==0.24.0
+bitsandbytes==0.41.1   # 4-bit 양자화
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="2-4-bit-양자화로-메모리-절반-절감">2. 4-bit 양자화로 메모리 절반 절감</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">transformers</span> <span class="kn">import</span> <span class="n">AutoModelForCausalLM</span><span class="p">,</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">BitsAndBytesConfig</span>
+<span class="kn">import</span> <span class="n">torch</span>
+
+<span class="c1"># 4-bit 양자화 설정 — VRAM 사용량 약 50% 감소
+</span><span class="n">bnb_config</span> <span class="o">=</span> <span class="nc">BitsAndBytesConfig</span><span class="p">(</span>
+    <span class="n">load_in_4bit</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">bnb_4bit_compute_dtype</span><span class="o">=</span><span class="n">torch</span><span class="p">.</span><span class="n">float16</span><span class="p">,</span>
+    <span class="n">bnb_4bit_quant_type</span><span class="o">=</span><span class="sh">"</span><span class="s">nf4</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">bnb_4bit_use_double_quant</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="p">.</span><span class="nf">from_pretrained</span><span class="p">(</span>
+    <span class="sh">"</span><span class="s">meta-llama/Meta-Llama-3-8B-Instruct</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">quantization_config</span><span class="o">=</span><span class="n">bnb_config</span><span class="p">,</span>
+    <span class="n">device_map</span><span class="o">=</span><span class="sh">"</span><span class="s">auto</span><span class="sh">"</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th>모델</th>
+      <th>원본 VRAM</th>
+      <th>4-bit 양자화 VRAM</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Llama 3 8B</td>
+      <td>~16GB</td>
+      <td>~5GB</td>
+    </tr>
+    <tr>
+      <td>Llama 3 70B</td>
+      <td>~140GB</td>
+      <td>~40GB</td>
+    </tr>
+    <tr>
+      <td>Mistral 7B</td>
+      <td>~14GB</td>
+      <td>~4.5GB</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="3-aws-배포--ec2--spot-instance">3. AWS 배포 — EC2 + Spot Instance</h2>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># docker-compose.yml (GPU 지원)</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.8'</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">llm-server</span><span class="pi">:</span>
+    <span class="na">build</span><span class="pi">:</span> <span class="s">.</span>
+    <span class="na">deploy</span><span class="pi">:</span>
+      <span class="na">resources</span><span class="pi">:</span>
+        <span class="na">reservations</span><span class="pi">:</span>
+          <span class="na">devices</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">driver</span><span class="pi">:</span> <span class="s">nvidia</span>
+              <span class="na">count</span><span class="pi">:</span> <span class="m">1</span>
+              <span class="na">capabilities</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">gpu</span><span class="pi">]</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">8000:8000"</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">MODEL_NAME=meta-llama/Meta-Llama-3-8B-Instruct</span>
+      <span class="pi">-</span> <span class="s">MAX_CONCURRENT_REQUESTS=4</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">model-cache:/root/.cache/huggingface</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">unless-stopped</span>
+
+<span class="na">volumes</span><span class="pi">:</span>
+  <span class="na">model-cache</span><span class="pi">:</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="4-spot-instance-활용-비용-절감의-핵심">4. Spot Instance 활용 (비용 절감의 핵심)</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># AWS CLI로 Spot Instance 요청</span>
+aws ec2 run-instances <span class="se">\</span>
+  <span class="nt">--image-id</span> ami-0xxxxxxxxxxxxx <span class="se">\</span>
+  <span class="nt">--instance-type</span> g4dn.xlarge <span class="se">\</span>
+  <span class="nt">--instance-market-options</span> <span class="s1">'{
+    "MarketType": "spot",
+    "SpotOptions": {
+      "MaxPrice": "0.5",
+      "SpotInstanceType": "persistent",
+      "InstanceInterruptionBehavior": "stop"
+    }
+  }'</span> <span class="se">\</span>
+  <span class="nt">--iam-instance-profile</span> <span class="nv">Name</span><span class="o">=</span>EC2-LLM-Profile <span class="se">\</span>
+  <span class="nt">--user-data</span> file://startup.sh
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># startup.sh — 인스턴스 시작 시 자동 실행</span>
+<span class="c">#!/bin/bash</span>
+<span class="nb">cd</span> /home/ubuntu/llm-server
+docker-compose up <span class="nt">-d</span>
+
+<span class="c"># Spot 중단 신호 감지 후 Graceful Shutdown</span>
+<span class="k">while </span><span class="nb">true</span><span class="p">;</span> <span class="k">do
+  if </span>curl <span class="nt">-s</span> http://169.254.169.254/latest/meta-data/spot/termination-time 2&gt;&amp;1 | <span class="nb">grep</span> <span class="nt">-q</span> <span class="s1">'T'</span><span class="p">;</span> <span class="k">then
+    </span>docker-compose stop <span class="nt">--timeout</span> 30
+    <span class="nb">break
+  </span><span class="k">fi
+  </span><span class="nb">sleep </span>5
+<span class="k">done</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="5-비용-비교">5. 비용 비교</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>인스턴스 타입</th>
+      <th>On-Demand 시간당</th>
+      <th>Spot 시간당</th>
+      <th>절감율</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>g4dn.xlarge (T4 GPU)</td>
+      <td>$0.526</td>
+      <td><strong>$0.158</strong></td>
+      <td>70%</td>
+    </tr>
+    <tr>
+      <td>g4dn.2xlarge</td>
+      <td>$1.052</td>
+      <td><strong>$0.316</strong></td>
+      <td>70%</td>
+    </tr>
+    <tr>
+      <td>g5.xlarge (A10G GPU)</td>
+      <td>$1.006</td>
+      <td><strong>$0.302</strong></td>
+      <td>70%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>월 720시간 g4dn.xlarge 기준:</p>
+<ul>
+  <li>On-Demand: $379/월</li>
+  <li>Spot: <strong>$114/월</strong> (약 $265 절감)</li>
+</ul>
+
+    </div>
+
+    <!-- 이전/다음 포스트 -->
+    <nav class="post-nav">
+      
+      <div></div>
+      
+
+      
+      <a href="/blog/prompt-engineering-patterns/" class="post-nav__item post-nav__item--next">
+        <div class="post-nav__dir">다음 글 →</div>
+        <div class="post-nav__title">프롬프트 엔지니어링 실전 패턴 10가지 — 코드와 함께</div>
+      </a>
+      
+    </nav>
+
+    <!-- 관련 포스트 -->
+    
+    
+  </article>
+
+  <!-- TOC 사이드바 -->
+  <aside class="post-toc">
+    <div class="post-toc__title">목차</div>
+    <ul class="toc-list" id="toc-list"></ul>
+  </aside>
+
+</div>
+
+<script src="/assets/js/toc.js"></script>
+<script src="/assets/js/copy-code.js"></script>
+
+
+  <footer class="site-footer">
+  <div class="site-footer__logo">Swallow<em>.</em>dev</div>
+  <div>© 2026 Swallow8801</div>
+  <div class="site-footer__links">
+    <a href="https://github.com/swallow8801" target="_blank">GitHub</a>
+    <a href="/feed.xml">RSS</a>
+    <a href="https://linkedin.com/in/swallow8801" target="_blank">LinkedIn</a>
+  </div>
+</footer>
+
+
+  <script src="/assets/js/filter.js"></script>
+
+  <script>
+  (function () {
+    var ov = document.getElementById('pg-overlay');
+    /* 진입: 페이드 아웃 */
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { ov.classList.add('hidden'); });
+    });
+    /* 이탈: 링크 클릭 시 페이드 인 후 이동 */
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href]');
+      if (!a || !a.href || a.target === '_blank') return;
+      var href = a.href;
+      if (href === window.location.href || href.indexOf('#') !== -1) return;
+      e.preventDefault();
+      ov.style.transition = 'opacity .5s cubic-bezier(.4,0,.2,1)';
+      ov.classList.remove('hidden');
+      setTimeout(function () { window.location.href = href; }, 540);
+    });
+  })();
+  </script>
+</body>
+</html>

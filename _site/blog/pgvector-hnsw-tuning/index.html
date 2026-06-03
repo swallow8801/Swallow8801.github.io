@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PostgreSQL pgvector — HNSW 인덱스 성능 튜닝 — Swallow8801</title>
+<meta name="description" content="외부 벡터 DB 없이 PostgreSQL만으로 시맨틱 검색을 구현하는 방법. HNSW vs IVFFlat 인덱스 비교, 실제 1M 벡터 기준 성능 측정 결과 포함.">
+
+<!-- Pretendard 폰트 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+
+<!-- CSS -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!-- SEO -->
+<meta property="og:title" content="PostgreSQL pgvector — HNSW 인덱스 성능 튜닝 — Swallow8801">
+<meta property="og:description" content="외부 벡터 DB 없이 PostgreSQL만으로 시맨틱 검색을 구현하는 방법. HNSW vs IVFFlat 인덱스 비교, 실제 1M 벡터 기준 성능 측정 결과 포함.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://localhost:4000/blog/pgvector-hnsw-tuning/">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- jekyll-seo-tag -->
+<!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>PostgreSQL pgvector — HNSW 인덱스 성능 튜닝 | Swallow8801</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="PostgreSQL pgvector — HNSW 인덱스 성능 튜닝" />
+<meta name="author" content="Swallow8801" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="외부 벡터 DB 없이 PostgreSQL만으로 시맨틱 검색을 구현하는 방법. HNSW vs IVFFlat 인덱스 비교, 실제 1M 벡터 기준 성능 측정 결과 포함." />
+<meta name="twitter:description" property="og:description" content="외부 벡터 DB 없이 PostgreSQL만으로 시맨틱 검색을 구현하는 방법. HNSW vs IVFFlat 인덱스 비교, 실제 1M 벡터 기준 성능 측정 결과 포함." />
+<link rel="canonical" href="http://localhost:4000/blog/pgvector-hnsw-tuning/" />
+<meta property="og:url" content="http://localhost:4000/blog/pgvector-hnsw-tuning/" />
+<meta property="og:site_name" content="Swallow8801" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-04-22T00:00:00+09:00" />
+<meta property="article:modified_time" content="2026-04-22T00:00:00+09:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="PostgreSQL pgvector — HNSW 인덱스 성능 튜닝" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Swallow8801"},"dateModified":"2026-04-22T00:00:00+09:00","datePublished":"2026-04-22T00:00:00+09:00","description":"외부 벡터 DB 없이 PostgreSQL만으로 시맨틱 검색을 구현하는 방법. HNSW vs IVFFlat 인덱스 비교, 실제 1M 벡터 기준 성능 측정 결과 포함.","headline":"PostgreSQL pgvector — HNSW 인덱스 성능 튜닝","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/pgvector-hnsw-tuning/"},"url":"http://localhost:4000/blog/pgvector-hnsw-tuning/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<!-- RSS -->
+<link rel="alternate" type="application/rss+xml" title="Swallow8801" href="/feed.xml">
+
+<!-- Favicon (추후 교체) -->
+<link rel="icon" type="image/png" href="/favicon.png">
+
+  <style>
+    #pg-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #050b18;
+      opacity: 1; pointer-events: all;
+      transition: opacity .7s cubic-bezier(.4,0,.2,1);
+    }
+    #pg-overlay.hidden { opacity: 0; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <!-- 페이지 전환 오버레이 -->
+  <div id="pg-overlay"></div>
+
+  <nav class="site-nav">
+  <a href="/" class="site-nav__logo">Swallow<em>.</em>dev</a>
+
+  <div class="site-nav__tabs">
+    <a href="/portfolio"
+       class="site-nav__tab ">
+      Portfolio
+    </a>
+    <a href="/blog"
+       class="site-nav__tab site-nav__tab--active">
+      Blog
+    </a>
+  </div>
+
+  <div class="site-nav__right">
+    <a href="/#about" class="site-nav__link">About</a>
+    <a href="https://github.com/swallow8801" class="site-nav__link" target="_blank">GitHub</a>
+    <a href="mailto:swallow8801@gmail.com" class="site-nav__link">Contact</a>
+  </div>
+</nav>
+
+
+  <div class="post-layout">
+
+  <article>
+    <header class="post-header">
+      <span class="post-header__cat">Backend</span>
+      <h1 class="post-header__title">PostgreSQL pgvector — HNSW 인덱스 성능 튜닝</h1>
+      <div class="post-header__meta">
+        <span class="post-header__date">2026-04-22</span>
+        <span class="post-header__sep"></span>
+        <span class="post-header__time">15분 읽기</span>
+      </div>
+      
+      <div class="post-header__tags">
+        
+        <span class="post-header__tag">#postgresql</span>
+        
+        <span class="post-header__tag">#pgvector</span>
+        
+        <span class="post-header__tag">#hnsw</span>
+        
+        <span class="post-header__tag">#vector-search</span>
+        
+        <span class="post-header__tag">#index</span>
+        
+        <span class="post-header__tag">#performance</span>
+        
+      </div>
+      
+    </header>
+
+    <div class="post-content">
+      <h2 id="pgvector-선택-이유">pgvector 선택 이유</h2>
+
+<p>외부 벡터 DB(Pinecone, Weaviate)를 쓰지 않아도 PostgreSQL에서 벡터 검색이 가능합니다. 이미 PostgreSQL을 쓰고 있다면 인프라를 추가하지 않아도 됩니다.</p>
+
+<hr />
+
+<h2 id="1-설치-및-기본-설정">1. 설치 및 기본 설정</h2>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- PostgreSQL 15+ 기준</span>
+<span class="k">CREATE</span> <span class="n">EXTENSION</span> <span class="n">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="n">vector</span><span class="p">;</span>
+
+<span class="c1">-- 테이블 생성</span>
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">documents</span> <span class="p">(</span>
+    <span class="n">id</span>          <span class="n">BIGSERIAL</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span>
+    <span class="n">content</span>     <span class="nb">TEXT</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+    <span class="n">embedding</span>   <span class="n">vector</span><span class="p">(</span><span class="mi">1536</span><span class="p">),</span>      <span class="c1">-- OpenAI text-embedding-3-small</span>
+    <span class="n">metadata</span>    <span class="n">JSONB</span> <span class="k">DEFAULT</span> <span class="s1">'{}'</span><span class="p">,</span>
+    <span class="n">created_at</span>  <span class="n">TIMESTAMPTZ</span> <span class="k">DEFAULT</span> <span class="n">NOW</span><span class="p">()</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="2-hnsw-vs-ivfflat-인덱스-비교">2. HNSW vs IVFFlat 인덱스 비교</h2>
+
+<p>pgvector는 두 가지 ANN(Approximate Nearest Neighbor) 인덱스를 지원합니다.</p>
+
+<h3 id="hnsw-hierarchical-navigable-small-world">HNSW (Hierarchical Navigable Small World)</h3>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">INDEX</span> <span class="n">idx_documents_embedding_hnsw</span>
+<span class="k">ON</span> <span class="n">documents</span>
+<span class="k">USING</span> <span class="n">hnsw</span> <span class="p">(</span><span class="n">embedding</span> <span class="n">vector_cosine_ops</span><span class="p">)</span>
+<span class="k">WITH</span> <span class="p">(</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>              <span class="c1">-- 노드당 최대 연결 수 (기본: 16)</span>
+    <span class="n">ef_construction</span> <span class="o">=</span> <span class="mi">64</span> <span class="c1">-- 인덱스 빌드 시 탐색 크기 (기본: 64)</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="ivfflat-inverted-file-with-flat-quantization">IVFFlat (Inverted File with Flat quantization)</h3>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- 인덱스 생성 전에 데이터가 먼저 있어야 함</span>
+<span class="k">CREATE</span> <span class="k">INDEX</span> <span class="n">idx_documents_embedding_ivfflat</span>
+<span class="k">ON</span> <span class="n">documents</span>
+<span class="k">USING</span> <span class="n">ivfflat</span> <span class="p">(</span><span class="n">embedding</span> <span class="n">vector_cosine_ops</span><span class="p">)</span>
+<span class="k">WITH</span> <span class="p">(</span><span class="n">lists</span> <span class="o">=</span> <span class="mi">100</span><span class="p">);</span>  <span class="c1">-- sqrt(데이터 수) 권장</span>
+</code></pre></div></div>
+
+<h3 id="성능-비교-1m-벡터-1536차원">성능 비교 (1M 벡터, 1536차원)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>항목</th>
+      <th>HNSW</th>
+      <th>IVFFlat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>검색 레이턴시 (p50)</td>
+      <td><strong>12ms</strong></td>
+      <td>28ms</td>
+    </tr>
+    <tr>
+      <td>검색 레이턴시 (p99)</td>
+      <td><strong>38ms</strong></td>
+      <td>85ms</td>
+    </tr>
+    <tr>
+      <td>인덱스 빌드 시간</td>
+      <td>45분</td>
+      <td><strong>8분</strong></td>
+    </tr>
+    <tr>
+      <td>인덱스 크기</td>
+      <td>8.2GB</td>
+      <td><strong>4.1GB</strong></td>
+    </tr>
+    <tr>
+      <td>Recall@10</td>
+      <td><strong>91%</strong></td>
+      <td>85%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>결론:</strong> 검색 성능 우선이면 HNSW, 인덱스 빌드 속도·용량 우선이면 IVFFlat</p>
+
+<hr />
+
+<h2 id="3-hnsw-파라미터-튜닝">3. HNSW 파라미터 튜닝</h2>
+
+<h3 id="m-연결-수">m (연결 수)</h3>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- m=8: 빠른 빌드, 낮은 정확도</span>
+<span class="c1">-- m=16: 기본값, 균형</span>
+<span class="c1">-- m=32: 느린 빌드, 높은 정확도 (메모리 2배)</span>
+</code></pre></div></div>
+
+<p>실험 결과 (Recall@10 기준):</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>m 값</th>
+      <th>Recall@10</th>
+      <th>인덱스 크기</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>8</td>
+      <td>84%</td>
+      <td>4.8GB</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>91%</td>
+      <td>8.2GB</td>
+    </tr>
+    <tr>
+      <td>32</td>
+      <td>95%</td>
+      <td>16GB</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="ef_search-쿼리-탐색-범위">ef_search (쿼리 탐색 범위)</h3>
+
+<p>런타임에 변경 가능해서 정확도와 속도를 조절할 수 있습니다.</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- 기본값 40 — 빠르지만 정확도 낮음</span>
+<span class="k">SET</span> <span class="n">hnsw</span><span class="p">.</span><span class="n">ef_search</span> <span class="o">=</span> <span class="mi">40</span><span class="p">;</span>
+
+<span class="c1">-- 100 — 균형</span>
+<span class="k">SET</span> <span class="n">hnsw</span><span class="p">.</span><span class="n">ef_search</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+
+<span class="c1">-- 200 — 느리지만 정확도 높음</span>
+<span class="k">SET</span> <span class="n">hnsw</span><span class="p">.</span><span class="n">ef_search</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+</code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th>ef_search</th>
+      <th>Recall@10</th>
+      <th>레이턴시 (p50)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>40</td>
+      <td>87%</td>
+      <td>8ms</td>
+    </tr>
+    <tr>
+      <td>100</td>
+      <td>91%</td>
+      <td>12ms</td>
+    </tr>
+    <tr>
+      <td>200</td>
+      <td>94%</td>
+      <td>22ms</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="4-메타데이터-필터링--벡터-검색">4. 메타데이터 필터링 + 벡터 검색</h2>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- 특정 카테고리 내에서만 검색</span>
+<span class="k">SELECT</span>
+    <span class="n">id</span><span class="p">,</span>
+    <span class="n">content</span><span class="p">,</span>
+    <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">embedding</span> <span class="o">&lt;=&gt;</span> <span class="err">$</span><span class="mi">1</span><span class="p">)</span> <span class="k">AS</span> <span class="n">similarity</span>
+<span class="k">FROM</span> <span class="n">documents</span>
+<span class="k">WHERE</span>
+    <span class="n">metadata</span><span class="o">-&gt;&gt;</span><span class="s1">'category'</span> <span class="o">=</span> <span class="s1">'backend'</span>   <span class="c1">-- 메타데이터 필터</span>
+    <span class="k">AND</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">embedding</span> <span class="o">&lt;=&gt;</span> <span class="err">$</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">.</span><span class="mi">7</span>    <span class="c1">-- 최소 유사도 임계값</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">embedding</span> <span class="o">&lt;=&gt;</span> <span class="err">$</span><span class="mi">1</span>
+<span class="k">LIMIT</span> <span class="mi">10</span><span class="p">;</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="5-대량-삽입-최적화">5. 대량 삽입 최적화</h2>
+
+<p>인덱스가 있는 상태에서 대량 삽입하면 매우 느립니다. 데이터를 먼저 삽입하고 인덱스를 나중에 만드세요.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Python에서 배치 삽입
+</span><span class="kn">import</span> <span class="n">psycopg2</span>
+<span class="kn">from</span> <span class="n">psycopg2.extras</span> <span class="kn">import</span> <span class="n">execute_values</span>
+
+<span class="k">def</span> <span class="nf">bulk_insert</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">records</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]):</span>
+    <span class="k">with</span> <span class="n">conn</span><span class="p">.</span><span class="nf">cursor</span><span class="p">()</span> <span class="k">as</span> <span class="n">cur</span><span class="p">:</span>
+        <span class="nf">execute_values</span><span class="p">(</span>
+            <span class="n">cur</span><span class="p">,</span>
+            <span class="sh">"</span><span class="s">INSERT INTO documents (content, embedding, metadata) VALUES %s</span><span class="sh">"</span><span class="p">,</span>
+            <span class="p">[(</span><span class="n">r</span><span class="p">[</span><span class="sh">'</span><span class="s">content</span><span class="sh">'</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="sh">'</span><span class="s">embedding</span><span class="sh">'</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="sh">'</span><span class="s">metadata</span><span class="sh">'</span><span class="p">])</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span><span class="p">],</span>
+            <span class="n">template</span><span class="o">=</span><span class="sh">"</span><span class="s">(%s, %s::vector, %s::jsonb)</span><span class="sh">"</span>
+        <span class="p">)</span>
+    <span class="n">conn</span><span class="p">.</span><span class="nf">commit</span><span class="p">()</span>
+
+<span class="c1"># 인덱스는 삽입 완료 후 생성
+# CREATE INDEX ... USING hnsw ...
+</span></code></pre></div></div>
+
+    </div>
+
+    <!-- 이전/다음 포스트 -->
+    <nav class="post-nav">
+      
+      <a href="/blog/prompt-engineering-patterns/" class="post-nav__item post-nav__item--prev">
+        <div class="post-nav__dir">← 이전 글</div>
+        <div class="post-nav__title">프롬프트 엔지니어링 실전 패턴 10가지 — 코드와 함께</div>
+      </a>
+      
+
+      
+      <a href="/blog/langchain-vs-llamaindex/" class="post-nav__item post-nav__item--next">
+        <div class="post-nav__dir">다음 글 →</div>
+        <div class="post-nav__title">LangChain vs LlamaIndex — 프로덕션에서 뭘 써야 하나</div>
+      </a>
+      
+    </nav>
+
+    <!-- 관련 포스트 -->
+    
+    
+    <div class="related-posts">
+      <div class="related-posts__title">같은 카테고리 글</div>
+      <div class="related-posts__grid">
+        
+        <a href="/blog/fastapi-ml-serving-latency/" class="related-post-card">
+          <div class="related-post-card__cat">Backend</div>
+          <div class="related-post-card__title">FastAPI ML 모델 프로덕션 서빙 — 레이턴시 최적화 가이드</div>
+          <div class="related-post-card__date">2026-05-08</div>
+        </a>
+        
+      </div>
+    </div>
+    
+  </article>
+
+  <!-- TOC 사이드바 -->
+  <aside class="post-toc">
+    <div class="post-toc__title">목차</div>
+    <ul class="toc-list" id="toc-list"></ul>
+  </aside>
+
+</div>
+
+<script src="/assets/js/toc.js"></script>
+<script src="/assets/js/copy-code.js"></script>
+
+
+  <footer class="site-footer">
+  <div class="site-footer__logo">Swallow<em>.</em>dev</div>
+  <div>© 2026 Swallow8801</div>
+  <div class="site-footer__links">
+    <a href="https://github.com/swallow8801" target="_blank">GitHub</a>
+    <a href="/feed.xml">RSS</a>
+    <a href="https://linkedin.com/in/swallow8801" target="_blank">LinkedIn</a>
+  </div>
+</footer>
+
+
+  <script src="/assets/js/filter.js"></script>
+
+  <script>
+  (function () {
+    var ov = document.getElementById('pg-overlay');
+    /* 진입: 페이드 아웃 */
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { ov.classList.add('hidden'); });
+    });
+    /* 이탈: 링크 클릭 시 페이드 인 후 이동 */
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href]');
+      if (!a || !a.href || a.target === '_blank') return;
+      var href = a.href;
+      if (href === window.location.href || href.indexOf('#') !== -1) return;
+      e.preventDefault();
+      ov.style.transition = 'opacity .5s cubic-bezier(.4,0,.2,1)';
+      ov.classList.remove('hidden');
+      setTimeout(function () { window.location.href = href; }, 540);
+    });
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React에서 LLM 스트리밍 응답 처리 — SSE와 AbortController — Swallow8801</title>
+<meta name="description" content="ChatGPT처럼 글자가 하나씩 출력되는 UI를 어떻게 구현하는지, 스트림 중단 처리와 에러 복구까지 실전 코드와 함께 설명합니다.">
+
+<!-- Pretendard 폰트 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+
+<!-- CSS -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!-- SEO -->
+<meta property="og:title" content="React에서 LLM 스트리밍 응답 처리 — SSE와 AbortController — Swallow8801">
+<meta property="og:description" content="ChatGPT처럼 글자가 하나씩 출력되는 UI를 어떻게 구현하는지, 스트림 중단 처리와 에러 복구까지 실전 코드와 함께 설명합니다.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://localhost:4000/blog/react-llm-streaming-sse/">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- jekyll-seo-tag -->
+<!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>React에서 LLM 스트리밍 응답 처리 — SSE와 AbortController | Swallow8801</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="React에서 LLM 스트리밍 응답 처리 — SSE와 AbortController" />
+<meta name="author" content="Swallow8801" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="ChatGPT처럼 글자가 하나씩 출력되는 UI를 어떻게 구현하는지, 스트림 중단 처리와 에러 복구까지 실전 코드와 함께 설명합니다." />
+<meta name="twitter:description" property="og:description" content="ChatGPT처럼 글자가 하나씩 출력되는 UI를 어떻게 구현하는지, 스트림 중단 처리와 에러 복구까지 실전 코드와 함께 설명합니다." />
+<link rel="canonical" href="http://localhost:4000/blog/react-llm-streaming-sse/" />
+<meta property="og:url" content="http://localhost:4000/blog/react-llm-streaming-sse/" />
+<meta property="og:site_name" content="Swallow8801" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-05-14T00:00:00+09:00" />
+<meta property="article:modified_time" content="2026-05-14T00:00:00+09:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="React에서 LLM 스트리밍 응답 처리 — SSE와 AbortController" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Swallow8801"},"dateModified":"2026-05-14T00:00:00+09:00","datePublished":"2026-05-14T00:00:00+09:00","description":"ChatGPT처럼 글자가 하나씩 출력되는 UI를 어떻게 구현하는지, 스트림 중단 처리와 에러 복구까지 실전 코드와 함께 설명합니다.","headline":"React에서 LLM 스트리밍 응답 처리 — SSE와 AbortController","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/react-llm-streaming-sse/"},"url":"http://localhost:4000/blog/react-llm-streaming-sse/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<!-- RSS -->
+<link rel="alternate" type="application/rss+xml" title="Swallow8801" href="/feed.xml">
+
+<!-- Favicon (추후 교체) -->
+<link rel="icon" type="image/png" href="/favicon.png">
+
+  <style>
+    #pg-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #050b18;
+      opacity: 1; pointer-events: all;
+      transition: opacity .7s cubic-bezier(.4,0,.2,1);
+    }
+    #pg-overlay.hidden { opacity: 0; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <!-- 페이지 전환 오버레이 -->
+  <div id="pg-overlay"></div>
+
+  <nav class="site-nav">
+  <a href="/" class="site-nav__logo">Swallow<em>.</em>dev</a>
+
+  <div class="site-nav__tabs">
+    <a href="/portfolio"
+       class="site-nav__tab ">
+      Portfolio
+    </a>
+    <a href="/blog"
+       class="site-nav__tab site-nav__tab--active">
+      Blog
+    </a>
+  </div>
+
+  <div class="site-nav__right">
+    <a href="/#about" class="site-nav__link">About</a>
+    <a href="https://github.com/swallow8801" class="site-nav__link" target="_blank">GitHub</a>
+    <a href="mailto:swallow8801@gmail.com" class="site-nav__link">Contact</a>
+  </div>
+</nav>
+
+
+  <div class="post-layout">
+
+  <article>
+    <header class="post-header">
+      <span class="post-header__cat">Frontend</span>
+      <h1 class="post-header__title">React에서 LLM 스트리밍 응답 처리 — SSE와 AbortController</h1>
+      <div class="post-header__meta">
+        <span class="post-header__date">2026-05-14</span>
+        <span class="post-header__sep"></span>
+        <span class="post-header__time">10분 읽기</span>
+      </div>
+      
+      <div class="post-header__tags">
+        
+        <span class="post-header__tag">#react</span>
+        
+        <span class="post-header__tag">#sse</span>
+        
+        <span class="post-header__tag">#streaming</span>
+        
+        <span class="post-header__tag">#llm</span>
+        
+        <span class="post-header__tag">#abortcontroller</span>
+        
+        <span class="post-header__tag">#typescript</span>
+        
+      </div>
+      
+    </header>
+
+    <div class="post-content">
+      <h2 id="스트리밍-ui가-필요한-이유">스트리밍 UI가 필요한 이유</h2>
+
+<p>LLM API는 응답 생성에 수 초~수십 초가 걸립니다. 모든 응답을 받고 나서 한번에 보여주면 사용자 입장에서는 그 시간 동안 아무것도 없는 화면만 보게 됩니다.</p>
+
+<p>스트리밍은 토큰이 생성되는 즉시 화면에 출력해서 체감 대기 시간을 크게 줄여줍니다. Claude, ChatGPT 모두 이 방식을 사용합니다.</p>
+
+<hr />
+
+<h2 id="1-백엔드--fastapi-sse-스트리밍">1. 백엔드 — FastAPI SSE 스트리밍</h2>
+
+<p>먼저 서버에서 SSE(Server-Sent Events) 형식으로 응답을 스트리밍합니다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+<span class="kn">from</span> <span class="n">fastapi.responses</span> <span class="kn">import</span> <span class="n">StreamingResponse</span>
+<span class="kn">import</span> <span class="n">anthropic</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="nc">FastAPI</span><span class="p">()</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">anthropic</span><span class="p">.</span><span class="nc">Anthropic</span><span class="p">()</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">stream_response</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">client</span><span class="p">.</span><span class="n">messages</span><span class="p">.</span><span class="nf">stream</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="sh">"</span><span class="s">claude-sonnet-4-6</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">max_tokens</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span>
+        <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="sh">"</span><span class="s">role</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">user</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">content</span><span class="sh">"</span><span class="p">:</span> <span class="n">message</span><span class="p">}]</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">.</span><span class="n">text_stream</span><span class="p">:</span>
+            <span class="c1"># SSE 형식: "data: {text}\n\n"
+</span>            <span class="k">yield</span> <span class="sa">f</span><span class="sh">"</span><span class="s">data: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="se">\n\n</span><span class="sh">"</span>
+    <span class="k">yield</span> <span class="sh">"</span><span class="s">data: [DONE]</span><span class="se">\n\n</span><span class="sh">"</span>
+
+<span class="nd">@app.post</span><span class="p">(</span><span class="sh">"</span><span class="s">/chat</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">chat</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">ChatRequest</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nc">StreamingResponse</span><span class="p">(</span>
+        <span class="nf">stream_response</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">message</span><span class="p">),</span>
+        <span class="n">media_type</span><span class="o">=</span><span class="sh">"</span><span class="s">text/event-stream</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="sh">"</span><span class="s">Cache-Control</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">no-cache</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">X-Accel-Buffering</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">no</span><span class="sh">"</span><span class="p">}</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="2-프론트엔드--react-훅">2. 프론트엔드 — React 훅</h2>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">useState</span><span class="p">,</span> <span class="nx">useRef</span><span class="p">,</span> <span class="nx">useCallback</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kr">interface</span> <span class="nx">UseStreamingReturn</span> <span class="p">{</span>
+  <span class="nl">text</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+  <span class="nl">isStreaming</span><span class="p">:</span> <span class="nx">boolean</span><span class="p">;</span>
+  <span class="nl">error</span><span class="p">:</span> <span class="kr">string</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="nl">startStream</span><span class="p">:</span> <span class="p">(</span><span class="nx">message</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">Promise</span><span class="o">&lt;</span><span class="k">void</span><span class="o">&gt;</span><span class="p">;</span>
+  <span class="nl">stopStream</span><span class="p">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="k">void</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nf">useStreaming</span><span class="p">(</span><span class="nx">apiUrl</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nx">UseStreamingReturn</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">text</span><span class="p">,</span> <span class="nx">setText</span><span class="p">]</span> <span class="o">=</span> <span class="nf">useState</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">isStreaming</span><span class="p">,</span> <span class="nx">setIsStreaming</span><span class="p">]</span> <span class="o">=</span> <span class="nf">useState</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">error</span><span class="p">,</span> <span class="nx">setError</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="o">&lt;</span><span class="kr">string</span> <span class="o">|</span> <span class="kc">null</span><span class="o">&gt;</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">abortControllerRef</span> <span class="o">=</span> <span class="nx">useRef</span><span class="o">&lt;</span><span class="nx">AbortController</span> <span class="o">|</span> <span class="kc">null</span><span class="o">&gt;</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+
+  <span class="kd">const</span> <span class="nx">startStream</span> <span class="o">=</span> <span class="nf">useCallback</span><span class="p">(</span><span class="k">async </span><span class="p">(</span><span class="nx">message</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// 이전 스트림 중단</span>
+    <span class="nx">abortControllerRef</span><span class="p">.</span><span class="nx">current</span><span class="p">?.</span><span class="nf">abort</span><span class="p">();</span>
+
+    <span class="kd">const</span> <span class="nx">controller</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AbortController</span><span class="p">();</span>
+    <span class="nx">abortControllerRef</span><span class="p">.</span><span class="nx">current</span> <span class="o">=</span> <span class="nx">controller</span><span class="p">;</span>
+
+    <span class="nf">setText</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
+    <span class="nf">setIsStreaming</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+    <span class="nf">setError</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+
+    <span class="k">try</span> <span class="p">{</span>
+      <span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nf">fetch</span><span class="p">(</span><span class="nx">apiUrl</span><span class="p">,</span> <span class="p">{</span>
+        <span class="na">method</span><span class="p">:</span> <span class="dl">'</span><span class="s1">POST</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">headers</span><span class="p">:</span> <span class="p">{</span> <span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span> <span class="p">},</span>
+        <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nf">stringify</span><span class="p">({</span> <span class="nx">message</span> <span class="p">}),</span>
+        <span class="na">signal</span><span class="p">:</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">signal</span><span class="p">,</span>
+      <span class="p">});</span>
+
+      <span class="k">if </span><span class="p">(</span><span class="o">!</span><span class="nx">response</span><span class="p">.</span><span class="nx">ok</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">Error</span><span class="p">(</span><span class="s2">`HTTP </span><span class="p">${</span><span class="nx">response</span><span class="p">.</span><span class="nx">status</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+      <span class="k">if </span><span class="p">(</span><span class="o">!</span><span class="nx">response</span><span class="p">.</span><span class="nx">body</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">ReadableStream 미지원</span><span class="dl">'</span><span class="p">);</span>
+
+      <span class="kd">const</span> <span class="nx">reader</span> <span class="o">=</span> <span class="nx">response</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nf">getReader</span><span class="p">();</span>
+      <span class="kd">const</span> <span class="nx">decoder</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TextDecoder</span><span class="p">();</span>
+
+      <span class="k">while </span><span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="p">{</span> <span class="nx">done</span><span class="p">,</span> <span class="nx">value</span> <span class="p">}</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">reader</span><span class="p">.</span><span class="nf">read</span><span class="p">();</span>
+        <span class="k">if </span><span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+
+        <span class="kd">const</span> <span class="nx">chunk</span> <span class="o">=</span> <span class="nx">decoder</span><span class="p">.</span><span class="nf">decode</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="p">{</span> <span class="na">stream</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
+        <span class="kd">const</span> <span class="nx">lines</span> <span class="o">=</span> <span class="nx">chunk</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="dl">'</span><span class="se">\n</span><span class="dl">'</span><span class="p">);</span>
+
+        <span class="k">for </span><span class="p">(</span><span class="kd">const</span> <span class="nx">line</span> <span class="k">of</span> <span class="nx">lines</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">if </span><span class="p">(</span><span class="o">!</span><span class="nx">line</span><span class="p">.</span><span class="nf">startsWith</span><span class="p">(</span><span class="dl">'</span><span class="s1">data: </span><span class="dl">'</span><span class="p">))</span> <span class="k">continue</span><span class="p">;</span>
+          <span class="kd">const</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">line</span><span class="p">.</span><span class="nf">slice</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+          <span class="k">if </span><span class="p">(</span><span class="nx">data</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">[DONE]</span><span class="dl">'</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+          <span class="nf">setText</span><span class="p">(</span><span class="nx">prev</span> <span class="o">=&gt;</span> <span class="nx">prev</span> <span class="o">+</span> <span class="nx">data</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span> <span class="k">catch </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if </span><span class="p">((</span><span class="nx">err</span> <span class="kd">as </span><span class="nb">Error</span><span class="p">).</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">AbortError</span><span class="dl">'</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span> <span class="c1">// 사용자가 중단</span>
+      <span class="nf">setError</span><span class="p">((</span><span class="nx">err</span> <span class="kd">as </span><span class="nb">Error</span><span class="p">).</span><span class="nx">message</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">finally</span> <span class="p">{</span>
+      <span class="nf">setIsStreaming</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="p">[</span><span class="nx">apiUrl</span><span class="p">]);</span>
+
+  <span class="kd">const</span> <span class="nx">stopStream</span> <span class="o">=</span> <span class="nf">useCallback</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">abortControllerRef</span><span class="p">.</span><span class="nx">current</span><span class="p">?.</span><span class="nf">abort</span><span class="p">();</span>
+    <span class="nf">setIsStreaming</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+  <span class="p">},</span> <span class="p">[]);</span>
+
+  <span class="k">return</span> <span class="p">{</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">isStreaming</span><span class="p">,</span> <span class="nx">error</span><span class="p">,</span> <span class="nx">startStream</span><span class="p">,</span> <span class="nx">stopStream</span> <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="3-컴포넌트-사용">3. 컴포넌트 사용</h2>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">ChatUI</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">input</span><span class="p">,</span> <span class="nx">setInput</span><span class="p">]</span> <span class="o">=</span> <span class="nf">useState</span><span class="p">(</span><span class="dl">''</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="p">{</span> <span class="nx">text</span><span class="p">,</span> <span class="nx">isStreaming</span><span class="p">,</span> <span class="nx">error</span><span class="p">,</span> <span class="nx">startStream</span><span class="p">,</span> <span class="nx">stopStream</span> <span class="p">}</span> <span class="o">=</span> <span class="nf">useStreaming</span><span class="p">(</span><span class="dl">'</span><span class="s1">/api/chat</span><span class="dl">'</span><span class="p">);</span>
+
+  <span class="k">return </span><span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">className</span><span class="p">=</span><span class="s">"response"</span><span class="p">&gt;</span>
+        <span class="si">{</span><span class="nx">text</span><span class="si">}</span>
+        <span class="si">{</span><span class="nx">isStreaming</span> <span class="o">&amp;&amp;</span> <span class="p">&lt;</span><span class="nt">span</span> <span class="na">className</span><span class="p">=</span><span class="s">"cursor"</span><span class="p">&gt;</span>|<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span><span class="si">}</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+      <span class="si">{</span><span class="nx">error</span> <span class="o">&amp;&amp;</span> <span class="p">&lt;</span><span class="nt">div</span> <span class="na">className</span><span class="p">=</span><span class="s">"error"</span><span class="p">&gt;</span><span class="si">{</span><span class="nx">error</span><span class="si">}</span><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span><span class="si">}</span>
+
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">className</span><span class="p">=</span><span class="s">"input-row"</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">input</span>
+          <span class="na">value</span><span class="p">=</span><span class="si">{</span><span class="nx">input</span><span class="si">}</span>
+          <span class="na">onChange</span><span class="p">=</span><span class="si">{</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="nf">setInput</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span><span class="si">}</span>
+          <span class="na">onKeyDown</span><span class="p">=</span><span class="si">{</span><span class="nx">e</span> <span class="o">=&gt;</span> <span class="nx">e</span><span class="p">.</span><span class="nx">key</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">Enter</span><span class="dl">'</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">isStreaming</span> <span class="o">&amp;&amp;</span> <span class="nf">startStream</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span><span class="si">}</span>
+          <span class="na">placeholder</span><span class="p">=</span><span class="s">"메시지를 입력하세요..."</span>
+        <span class="p">/&gt;</span>
+        <span class="si">{</span><span class="nx">isStreaming</span>
+          <span class="p">?</span> <span class="p">&lt;</span><span class="nt">button</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">stopStream</span><span class="si">}</span><span class="p">&gt;</span>중단<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+          <span class="p">:</span> <span class="p">&lt;</span><span class="nt">button</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="p">()</span> <span class="o">=&gt;</span> <span class="nf">startStream</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span><span class="si">}</span><span class="p">&gt;</span>전송<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+        <span class="si">}</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="4-커서-깜빡이기-css">4. 커서 깜빡이기 CSS</h2>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.cursor</span> <span class="p">{</span>
+  <span class="nl">display</span><span class="p">:</span> <span class="nb">inline-block</span><span class="p">;</span>
+  <span class="nl">width</span><span class="p">:</span> <span class="m">2px</span><span class="p">;</span>
+  <span class="nl">height</span><span class="p">:</span> <span class="m">1em</span><span class="p">;</span>
+  <span class="nl">background</span><span class="p">:</span> <span class="n">currentColor</span><span class="p">;</span>
+  <span class="nl">margin-left</span><span class="p">:</span> <span class="m">1px</span><span class="p">;</span>
+  <span class="nl">vertical-align</span><span class="p">:</span> <span class="nb">text-bottom</span><span class="p">;</span>
+  <span class="nl">animation</span><span class="p">:</span> <span class="nb">blink</span> <span class="m">1s</span> <span class="n">step-end</span> <span class="nb">infinite</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">@keyframes</span> <span class="nb">blink</span> <span class="p">{</span>
+  <span class="m">0%</span><span class="o">,</span> <span class="m">100%</span> <span class="p">{</span> <span class="nl">opacity</span><span class="p">:</span> <span class="m">1</span><span class="p">;</span> <span class="p">}</span>
+  <span class="m">50%</span> <span class="p">{</span> <span class="nl">opacity</span><span class="p">:</span> <span class="m">0</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="주의사항">주의사항</h2>
+
+<ol>
+  <li><strong>CORS 설정</strong>: SSE 스트리밍에서 CORS 헤더가 올바르지 않으면 연결이 즉시 끊깁니다.</li>
+  <li><strong>nginx 버퍼링</strong>: <code class="language-plaintext highlighter-rouge">X-Accel-Buffering: no</code> 헤더를 반드시 설정해야 nginx가 SSE를 버퍼링하지 않습니다.</li>
+  <li><strong>React Strict Mode</strong>: 개발 환경에서 훅이 두 번 실행되면서 중복 요청이 발생할 수 있습니다. <code class="language-plaintext highlighter-rouge">AbortController</code>로 이전 요청을 취소하는 로직이 필수입니다.</li>
+</ol>
+
+    </div>
+
+    <!-- 이전/다음 포스트 -->
+    <nav class="post-nav">
+      
+      <a href="/blog/fastapi-ml-serving-latency/" class="post-nav__item post-nav__item--prev">
+        <div class="post-nav__dir">← 이전 글</div>
+        <div class="post-nav__title">FastAPI ML 모델 프로덕션 서빙 — 레이턴시 최적화 가이드</div>
+      </a>
+      
+
+      
+      <a href="/blog/vector-db-benchmark/" class="post-nav__item post-nav__item--next">
+        <div class="post-nav__dir">다음 글 →</div>
+        <div class="post-nav__title">Vector DB 비교: Pinecone vs Weaviate vs pgvector 실전 벤치마크</div>
+      </a>
+      
+    </nav>
+
+    <!-- 관련 포스트 -->
+    
+    
+  </article>
+
+  <!-- TOC 사이드바 -->
+  <aside class="post-toc">
+    <div class="post-toc__title">목차</div>
+    <ul class="toc-list" id="toc-list"></ul>
+  </aside>
+
+</div>
+
+<script src="/assets/js/toc.js"></script>
+<script src="/assets/js/copy-code.js"></script>
+
+
+  <footer class="site-footer">
+  <div class="site-footer__logo">Swallow<em>.</em>dev</div>
+  <div>© 2026 Swallow8801</div>
+  <div class="site-footer__links">
+    <a href="https://github.com/swallow8801" target="_blank">GitHub</a>
+    <a href="/feed.xml">RSS</a>
+    <a href="https://linkedin.com/in/swallow8801" target="_blank">LinkedIn</a>
+  </div>
+</footer>
+
+
+  <script src="/assets/js/filter.js"></script>
+
+  <script>
+  (function () {
+    var ov = document.getElementById('pg-overlay');
+    /* 진입: 페이드 아웃 */
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { ov.classList.add('hidden'); });
+    });
+    /* 이탈: 링크 클릭 시 페이드 인 후 이동 */
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href]');
+      if (!a || !a.href || a.target === '_blank') return;
+      var href = a.href;
+      if (href === window.location.href || href.indexOf('#') !== -1) return;
+      e.preventDefault();
+      ov.style.transition = 'opacity .5s cubic-bezier(.4,0,.2,1)';
+      ov.classList.remove('hidden');
+      setTimeout(function () { window.location.href = href; }, 540);
+    });
+  })();
+  </script>
+</body>
+</html>
