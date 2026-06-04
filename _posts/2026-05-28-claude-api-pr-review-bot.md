@@ -3,7 +3,8 @@ layout: post
 title: "Claude API로 GitHub PR 자동 리뷰 봇 만들기"
 date: 2026-05-28
 series: "Study"
-category: "AI·LLM"
+category: "AI"
+subcategory: "LLM"
 tags: [claude-api, tool-use, github-actions, fastapi]
 description: "Tool Use와 GitHub Actions를 연결해 PR이 열리면 자동으로 코드 리뷰가 달리는 시스템을 구축했습니다. 팀 컨벤션을 학습시키는 방법까지."
 pinned: false

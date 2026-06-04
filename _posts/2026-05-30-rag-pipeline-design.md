@@ -3,7 +3,8 @@ layout: post
 title: "RAG 파이프라인 설계: 프로덕션에서 배운 것들"
 date: 2026-05-30
 series: "Study"
-category: "AI·LLM"
+category: "AI"
+subcategory: "RAG"
 tags: [rag, langchain, pgvector, hallucination, chunking]
 description: "단순한 벡터 검색을 넘어서, 청킹 전략·리랭킹·Hallucination 감지까지. 실제 서비스에서 맞닥뜨린 문제들과 해결 과정을 정리했습니다."
 pinned: true

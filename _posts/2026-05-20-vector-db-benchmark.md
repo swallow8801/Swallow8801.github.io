@@ -3,7 +3,8 @@ layout: post
 title: "Vector DB 비교: Pinecone vs Weaviate vs pgvector 실전 벤치마크"
 date: 2026-05-20
 series: "Study"
-category: "AI·LLM"
+category: "AI"
+subcategory: "RAG"
 tags: [vector-db, pinecone, weaviate, pgvector, benchmark, rag]
 description: "같은 데이터셋으로 세 가지 벡터 DB를 직접 벤치마킹했습니다. 비용, 검색 속도, 정확도 비교와 상황별 선택 기준 정리."
 pinned: false

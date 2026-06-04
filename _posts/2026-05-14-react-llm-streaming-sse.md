@@ -4,6 +4,7 @@ title: "React에서 LLM 스트리밍 응답 처리 — SSE와 AbortController"
 date: 2026-05-14
 series: "Study"
 category: "Frontend"
+subcategory: "React"
 tags: [react, sse, streaming, llm, abortcontroller, typescript]
 description: "ChatGPT처럼 글자가 하나씩 출력되는 UI를 어떻게 구현하는지, 스트림 중단 처리와 에러 복구까지 실전 코드와 함께 설명합니다."
 pinned: false

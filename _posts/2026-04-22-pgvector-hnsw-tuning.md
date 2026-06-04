@@ -4,6 +4,7 @@ title: "PostgreSQL pgvector — HNSW 인덱스 성능 튜닝"
 date: 2026-04-22
 series: "Study"
 category: "Backend"
+subcategory: "PostgreSQL"
 tags: [postgresql, pgvector, hnsw, vector-search, index, performance]
 description: "외부 벡터 DB 없이 PostgreSQL만으로 시맨틱 검색을 구현하는 방법. HNSW vs IVFFlat 인덱스 비교, 실제 1M 벡터 기준 성능 측정 결과 포함."
 pinned: false

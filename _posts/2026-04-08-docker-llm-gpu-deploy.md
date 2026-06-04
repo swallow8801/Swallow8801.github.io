@@ -4,6 +4,7 @@ title: "LLM 앱 Docker 배포 — GPU 환경 세팅과 비용 최적화"
 date: 2026-04-08
 series: "Study"
 category: "DevOps"
+subcategory: "Docker"
 tags: [docker, aws, gpu, llm, deployment, cost-optimization]
 description: "GPU 인스턴스 위에 LLM 서빙 컨테이너를 올리고 비용을 절반으로 줄이기까지. 실제 AWS 세팅 파일 공유."
 pinned: false

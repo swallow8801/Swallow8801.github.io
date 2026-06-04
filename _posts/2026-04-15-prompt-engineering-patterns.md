@@ -3,7 +3,8 @@ layout: post
 title: "프롬프트 엔지니어링 실전 패턴 10가지 — 코드와 함께"
 date: 2026-04-15
 series: "Study"
-category: "AI·LLM"
+category: "AI"
+subcategory: "LLM"
 tags: [prompt-engineering, claude-api, llm, cot, few-shot, python]
 description: "Chain-of-thought, Few-shot, Role prompting 등 실제 프로덕션에서 효과를 검증한 패턴들. 각 패턴이 왜 동작하는지 원리와 함께 설명합니다."
 pinned: false

@@ -3,7 +3,8 @@ layout: post
 title: "LangChain vs LlamaIndex — 프로덕션에서 뭘 써야 하나"
 date: 2026-05-01
 series: "Study"
-category: "AI·LLM"
+category: "AI"
+subcategory: "RAG"
 tags: [langchain, llamaindex, rag, llm, python]
 description: "두 프레임워크의 철학 차이부터 실제 RAG 구현 시 어떤 상황에 무엇을 선택해야 하는지 직접 써본 경험 기반으로 비교합니다."
 pinned: false

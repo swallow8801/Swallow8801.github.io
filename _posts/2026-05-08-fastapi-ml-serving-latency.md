@@ -4,6 +4,7 @@ title: "FastAPI ML 모델 프로덕션 서빙 — 레이턴시 최적화 가이�
 date: 2026-05-08
 series: "Study"
 category: "Backend"
+subcategory: "FastAPI"
 tags: [fastapi, python, ml-serving, async, optimization, docker]
 description: "모델 웜업·배치 처리·비동기 큐·A/B 테스트까지. 실제 운영에서 찾아낸 레이턴시 단축 노하우를 정리했습니다."
 pinned: false

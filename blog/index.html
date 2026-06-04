@@ -4,10 +4,7 @@ title: "Blog"
 description: "개발 과정의 실험, 판단, 회고를 기록합니다."
 ---
 
-{% assign all_posts     = site.posts %}
-{% assign study_posts   = site.posts | where: "series", "Study" %}
-{% assign devnotes_posts= site.posts | where: "series", "DevNotes" %}
-{% assign project_posts = site.posts | where: "series", "Projects" %}
+{% assign all_posts = site.posts %}
 
 <!-- ── 블로그 헤더 ── -->
 <div class="blog-page-header">
@@ -34,58 +31,61 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
 <!-- ── Body ── -->
 <div class="blog-body">
 
-  <!-- 포스트 목록 -->
-  <div class="posts-list">
-    {% for post in paginator.posts %}
+  <!-- 포스트 영역 (소분류 바 + 리스트) -->
+  <div class="posts-area">
 
-      {% case post.category %}
-        {% when "AI·LLM" %}   {% assign thumb_class = "ai"  %}
-        {% when "Backend" %}  {% assign thumb_class = "be"  %}
-        {% when "Frontend" %} {% assign thumb_class = "fe"  %}
-        {% when "DevOps" %}   {% assign thumb_class = "ops" %}
-        {% when "Database" %} {% assign thumb_class = "db"  %}
-        {% when "Snippets" %} {% assign thumb_class = "sn"  %}
-        {% when "Errors" %}   {% assign thumb_class = "err" %}
-        {% when "Projects" %} {% assign thumb_class = "prj" %}
-        {% else %}            {% assign thumb_class = "ai"  %}
-      {% endcase %}
+    <!-- 소분류 필터 바 (카테고리 선택 시 JS로 표시) -->
+    <div class="subcat-bar" id="subcatBar">
+      <!-- JS가 동적으로 채움 -->
+    </div>
 
-      <a href="{{ post.url | relative_url }}"
-         class="post-card post-card--{{ thumb_class }}"
-         data-series="{{ post.series }}"
-         data-category="{{ post.category }}">
+    <!-- 포스트 목록 -->
+    <div class="posts-list" id="postsList">
+      {% for post in paginator.posts %}
 
-        <div class="post-card__thumb">
-          {% if post.image %}
-          <img src="{{ post.image | relative_url }}" alt="{{ post.title }}">
-          {% endif %}
-          <span class="post-card__thumb-cat">{{ post.category }}</span>
-        </div>
+        {% case post.category %}
+          {% when "AI" %}       {% assign thumb_class = "ai"  %}
+          {% when "Backend" %}  {% assign thumb_class = "be"  %}
+          {% when "Frontend" %} {% assign thumb_class = "fe"  %}
+          {% when "DevOps" %}   {% assign thumb_class = "ops" %}
+          {% when "Database" %} {% assign thumb_class = "db"  %}
+          {% when "Snippets" %} {% assign thumb_class = "sn"  %}
+          {% when "Errors" %}   {% assign thumb_class = "err" %}
+          {% else %}            {% assign thumb_class = "ai"  %}
+        {% endcase %}
 
-        <div class="post-card__content">
-          <div class="post-card__top">
-            <span class="post-card__series">{{ post.series }} · {{ post.category }}</span>
-            <span class="post-card__date">{{ post.date | date: "%Y-%m-%d" }}</span>
+        <a href="{{ post.url | relative_url }}"
+           class="post-card post-card--{{ thumb_class }}"
+           data-series="{{ post.series }}"
+           data-category="{{ post.category }}"
+           data-subcategory="{{ post.subcategory }}">
+
+          <div class="post-card__thumb">
+            {% if post.image %}<img src="{{ post.image | relative_url }}" alt="{{ post.title }}">{% endif %}
+            <span class="post-card__thumb-cat">{{ post.category }}{% if post.subcategory %} · {{ post.subcategory }}{% endif %}</span>
           </div>
-          <div class="post-card__title">{{ post.title }}</div>
-          {% if post.description %}
-          <p class="post-card__desc">{{ post.description }}</p>
-          {% endif %}
-          <div class="post-card__foot">
-            <div class="post-card__tags">
-              {% for tag in post.tags limit: 3 %}
-              <span class="post-card__tag">{{ tag }}</span>
-              {% endfor %}
+
+          <div class="post-card__content">
+            <div class="post-card__top">
+              <span class="post-card__series">{{ post.series }} · {{ post.category }}{% if post.subcategory %} / {{ post.subcategory }}{% endif %}</span>
+              <span class="post-card__date">{{ post.date | date: "%Y-%m-%d" }}</span>
             </div>
-            <div class="post-card__meta">
-              <span class="post-card__time">{{ post.read_time }}분</span>
-              <span class="post-card__arrow">→</span>
+            <div class="post-card__title">{{ post.title }}</div>
+            {% if post.description %}<p class="post-card__desc">{{ post.description }}</p>{% endif %}
+            <div class="post-card__foot">
+              <div class="post-card__tags">
+                {% for tag in post.tags limit: 3 %}<span class="post-card__tag">{{ tag }}</span>{% endfor %}
+              </div>
+              <div class="post-card__meta">
+                <span class="post-card__time">{{ post.read_time }}분</span>
+                <span class="post-card__arrow">→</span>
+              </div>
             </div>
           </div>
-        </div>
 
-      </a>
-    {% endfor %}
+        </a>
+      {% endfor %}
+    </div>
   </div>
 
   <!-- 사이드바 -->
@@ -110,11 +110,14 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
         <!-- Study -->
         <div class="cat-tree__group">
           <div class="cat-tree__label cat-tree__label--study">Study</div>
-          {% assign study_cats   = "AI·LLM,Backend,Frontend,DevOps,Database" | split: "," %}
+          {% assign study_cats   = "AI,Backend,Frontend,DevOps,Database" | split: "," %}
           {% assign study_colors = "#2563eb,#059669,#0891b2,#d97706,#7c3aed" | split: "," %}
           {% for cat in study_cats %}
             {% assign cnt = site.posts | where: "series","Study" | where: "category", cat | size %}
-            <div class="cat-tree__item" data-series="Study" data-category="{{ cat }}">
+            <div class="cat-tree__item"
+                 data-series="Study"
+                 data-category="{{ cat }}"
+                 data-subcats="{{ site.posts | where:'series','Study' | where:'category',cat | map:'subcategory' | uniq | join:',' }}">
               <div class="cat-tree__item-left">
                 <span class="cat-tree__dot" style="background: {{ study_colors[forloop.index0] }}"></span>
                 <span class="cat-tree__name">{{ cat }}</span>
@@ -128,7 +131,7 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
         <div class="cat-tree__group">
           <div class="cat-tree__label cat-tree__label--devnotes">DevNotes</div>
           {% assign dn_cats   = "Snippets,Errors" | split: "," %}
-          {% assign dn_colors = "#475569,#dc2626" | split: "," %}
+          {% assign dn_colors = "#475569,#dc2626"  | split: "," %}
           {% for cat in dn_cats %}
             {% assign cnt = site.posts | where: "series","DevNotes" | where: "category", cat | size %}
             <div class="cat-tree__item" data-series="DevNotes" data-category="{{ cat }}">
@@ -148,13 +151,13 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
           {% if proj_cnt == 0 %}
           <div class="cat-tree__empty">아직 글이 없습니다.</div>
           {% else %}
-            <div class="cat-tree__item" data-series="Projects" data-category="Projects">
-              <div class="cat-tree__item-left">
-                <span class="cat-tree__dot" style="background:#f59e0b"></span>
-                <span class="cat-tree__name">개발일지</span>
-              </div>
-              <span class="cat-tree__cnt">{{ proj_cnt }}</span>
+          <div class="cat-tree__item" data-series="Projects" data-category="Projects">
+            <div class="cat-tree__item-left">
+              <span class="cat-tree__dot" style="background:#f59e0b"></span>
+              <span class="cat-tree__name">개발일지</span>
             </div>
+            <span class="cat-tree__cnt">{{ proj_cnt }}</span>
+          </div>
           {% endif %}
         </div>
 
@@ -177,52 +180,115 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
 <!-- 페이지네이션 -->
 {% if paginator.total_pages > 1 %}
 <div class="pagination">
-  {% if paginator.previous_page %}
-  <a href="{{ paginator.previous_page_path | relative_url }}">← 이전</a>
-  {% endif %}
+  {% if paginator.previous_page %}<a href="{{ paginator.previous_page_path | relative_url }}">← 이전</a>{% endif %}
   {% for i in (1..paginator.total_pages) %}
     {% if i == paginator.page %}<span class="current">{{ i }}</span>
     {% elsif i == 1 %}<a href="{{ '/blog/' | relative_url }}">{{ i }}</a>
     {% else %}<a href="{{ site.paginate_path | relative_url | replace: ':num', i }}">{{ i }}</a>
     {% endif %}
   {% endfor %}
-  {% if paginator.next_page %}
-  <a href="{{ paginator.next_page_path | relative_url }}">다음 →</a>
-  {% endif %}
+  {% if paginator.next_page %}<a href="{{ paginator.next_page_path | relative_url }}">다음 →</a>{% endif %}
 </div>
 {% endif %}
 
 <script>
 (function () {
-  var cards = document.querySelectorAll('.post-card');
+  var cards      = document.querySelectorAll('.post-card');
+  var subcatBar  = document.getElementById('subcatBar');
+  var activeItem = null;
 
-  /* 사이드바 카테고리 클릭 → 해당 시리즈+카테고리 포스트만 표시 */
-  document.querySelectorAll('.cat-tree__item[data-series]').forEach(function (item) {
-    item.addEventListener('click', function () {
-      var series   = item.dataset.series;
-      var category = item.dataset.category;
+  /* 소분류 바 생성 + 표시 */
+  function showSubcatBar(series, category, allSubcats) {
+    subcatBar.innerHTML = '';
 
-      document.querySelectorAll('.cat-tree__item').forEach(function(i) {
+    var subcats = allSubcats.filter(function(s){ return s && s.trim(); });
+    if (subcats.length === 0) { subcatBar.classList.remove('visible'); return; }
+
+    var label = document.createElement('span');
+    label.className = 'subcat-bar__label';
+    label.textContent = category + ' /';
+    subcatBar.appendChild(label);
+
+    /* 전체 버튼 */
+    var allBtn = document.createElement('button');
+    allBtn.className = 'subcat-btn on';
+    allBtn.textContent = '전체';
+    allBtn.addEventListener('click', function(){
+      document.querySelectorAll('.subcat-btn').forEach(function(b){ b.classList.remove('on'); });
+      allBtn.classList.add('on');
+      cards.forEach(function(c){
+        c.style.display = (c.dataset.series === series && c.dataset.category === category) ? '' : 'none';
+      });
+    });
+    subcatBar.appendChild(allBtn);
+
+    /* 소분류 버튼 */
+    subcats.forEach(function(sub){
+      var btn = document.createElement('button');
+      btn.className = 'subcat-btn';
+      btn.textContent = sub;
+      btn.addEventListener('click', function(){
+        document.querySelectorAll('.subcat-btn').forEach(function(b){ b.classList.remove('on'); });
+        btn.classList.add('on');
+        cards.forEach(function(c){
+          var show = c.dataset.series === series &&
+                     c.dataset.category === category &&
+                     c.dataset.subcategory === sub;
+          c.style.display = show ? '' : 'none';
+        });
+      });
+      subcatBar.appendChild(btn);
+    });
+
+    subcatBar.classList.add('visible');
+  }
+
+  /* 카테고리 아이템 클릭 */
+  document.querySelectorAll('.cat-tree__item[data-series]').forEach(function(item){
+    item.addEventListener('click', function(){
+
+      /* 같은 항목 재클릭 → 전체 복원 */
+      if (activeItem === item) {
+        activeItem = null;
+        item.classList.remove('cat-tree__item--active');
+        cards.forEach(function(c){ c.style.display = ''; });
+        subcatBar.classList.remove('visible');
+        subcatBar.innerHTML = '';
+        return;
+      }
+
+      /* 활성 항목 전환 */
+      document.querySelectorAll('.cat-tree__item').forEach(function(i){
         i.classList.remove('cat-tree__item--active');
       });
       item.classList.add('cat-tree__item--active');
+      activeItem = item;
 
-      cards.forEach(function (c) {
-        var show = c.dataset.series === series &&
-          (category === 'all' || c.dataset.category === category);
-        c.style.display = show ? '' : 'none';
+      var series   = item.dataset.series;
+      var category = item.dataset.category;
+
+      /* 카드 필터 */
+      cards.forEach(function(c){
+        c.style.display = (c.dataset.series === series && c.dataset.category === category) ? '' : 'none';
       });
+
+      /* 소분류 수집 (data-subcats 또는 카드에서) */
+      var subcats = [];
+      cards.forEach(function(c){
+        if (c.dataset.series === series && c.dataset.category === category) {
+          var sub = c.dataset.subcategory;
+          if (sub && subcats.indexOf(sub) === -1) subcats.push(sub);
+        }
+      });
+
+      showSubcatBar(series, category, subcats);
+
+      /* 소분류 바로 스크롤 */
+      if (subcatBar.classList.contains('visible')) {
+        subcatBar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     });
   });
 
-  /* 'About' 위젯 링크 등 클릭 시 전체 복원 */
-  document.querySelector('.widget-about__av') &&
-    document.querySelector('.blog-page-header') &&
-    document.querySelector('.blog-page-header').addEventListener('click', function() {
-      cards.forEach(function(c) { c.style.display = ''; });
-      document.querySelectorAll('.cat-tree__item').forEach(function(i) {
-        i.classList.remove('cat-tree__item--active');
-      });
-    });
 })();
 </script>

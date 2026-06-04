@@ -40,7 +40,7 @@
   @media (max-width: $mobile) { padding: 24px 20px; }
 }
 
-.blog-page-header__info {}
+.blog-page-header__info { flex: 1; }
 
 .blog-page-header__title {
   font-size: 26px; font-weight: 900; letter-spacing: -1px;
@@ -60,6 +60,35 @@
 }
 .blog-page-header__count-lbl {
   font-size: 13px; color: $t3; font-weight: 500;
+}
+
+// ─── 소분류 필터 바 (카테고리 선택 시 표시) ──────
+.subcat-bar {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 0;
+  margin-bottom: 16px;
+  border-bottom: 1px solid $border;
+  flex-wrap: wrap;
+
+  &.visible { display: flex; }
+}
+
+.subcat-bar__label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.5px; color: $t3; margin-right: 4px; white-space: nowrap;
+}
+
+.subcat-btn {
+  padding: 5px 12px; border-radius: 20px;
+  font-size: 12px; font-weight: 600;
+  border: 1.5px solid $border; background: $surface;
+  color: $t2; cursor: pointer; font-family: $font;
+  transition: all .15s; white-space: nowrap;
+
+  &:hover { border-color: $blue-bd; color: $blue; }
+  &.on    { background: $blue; border-color: $blue; color: #fff; }
 }
 
 // ─── 기존 Featured Hero (하위 호환 유지) ─────────
@@ -296,7 +325,7 @@
   @media (max-width: $mobile) { width: 100%; min-height: 100px; }
 }
 
-// 카테고리별 썸네일 그라디언트
+// 카테고리별 썸네일 그라디언트 (--ai = Study/AI 포함)
 .post-card--ai  .post-card__thumb { background: linear-gradient(145deg, #050f26, #0a1e50); }
 .post-card--be  .post-card__thumb { background: linear-gradient(145deg, #04160b, #072618); }
 .post-card--fe  .post-card__thumb { background: linear-gradient(145deg, #04121f, #071b38); }
