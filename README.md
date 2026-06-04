@@ -150,7 +150,6 @@ category: "AI·LLM"      # AI·LLM | Backend | Frontend | DevOps
 tags: [claude-api, rag]
 description: "한 줄 요약"
 pinned: false            # true 시 블로그 히어로에 표시
-read_time: 12            # 분 단위
 ---
 ```
 

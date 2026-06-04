@@ -9,8 +9,6 @@ layout: default
       <h1 class="post-header__title">{{ page.title }}</h1>
       <div class="post-header__meta">
         <span class="post-header__date">{{ page.date | date: "%Y-%m-%d" }}</span>
-        <span class="post-header__sep"></span>
-        <span class="post-header__time">{{ page.read_time }}분 읽기</span>
       </div>
       {% if page.tags %}
       <div class="post-header__tags">

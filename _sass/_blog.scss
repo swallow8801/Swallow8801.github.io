@@ -381,12 +381,6 @@
   padding: 2px 7px; border-radius: 4px;
 }
 .post-card__meta { display: flex; align-items: center; gap: 10px; }
-.post-card__time {
-  font-size: 11px; color: $blue; background: $blue-bg;
-  border: 1px solid $blue-bd; padding: 2px 8px; border-radius: 4px; font-weight: 600;
-}
-.post-card--til .post-card__time { color: #7c3aed; background: #faf5ff; border-color: #ddd6fe; }
-.post-card--sn  .post-card__time { color: #64748b; background: #f8fafc; border-color: #e2e8f0; }
 .post-card__arrow {
   font-size: 14px; color: $border; transition: transform .2s, color .2s;
 }

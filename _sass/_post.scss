@@ -58,17 +58,6 @@
 
 .post-header__date { font-size: 13px; color: $t3; }
 
-.post-header__time {
-  font-size: 12px;
-  color: $blue;
-  background: $blue-bg;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-weight: 600;
-}
-
-.post-header__sep { width: 4px; height: 4px; border-radius: 50%; background: $border; }
-
 .post-header__tags {
   display: flex;
   gap: 6px;

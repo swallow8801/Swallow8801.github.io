@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Vision AI inspection thumbnail">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="0.55" stop-color="#1d4ed8"/>
+      <stop offset="1" stop-color="#14b8a6"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#g)"/>
+  <rect x="90" y="100" width="760" height="340" rx="20" fill="#0b1220" opacity=".78"/>
+  <path d="M150 350h660" stroke="#334155" stroke-width="8"/>
+  <path d="M180 320c120-80 210 70 320-10s180 70 280-18" fill="none" stroke="#f8fafc" stroke-width="22" stroke-linecap="round"/>
+  <rect x="255" y="190" width="210" height="130" rx="8" fill="none" stroke="#22d3ee" stroke-width="8"/>
+  <rect x="570" y="168" width="150" height="92" rx="8" fill="none" stroke="#facc15" stroke-width="8"/>
+  <circle cx="360" cy="255" r="18" fill="#ef4444"/>
+  <text x="90" y="70" fill="#e0f2fe" font-family="Arial, sans-serif" font-size="34" font-weight="700">Vision AI Inspection</text>
+</svg>

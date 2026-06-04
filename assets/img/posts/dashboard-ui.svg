@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Dashboard UI thumbnail">
+  <rect width="960" height="540" fill="#101827"/>
+  <rect x="70" y="72" width="860" height="396" rx="22" fill="#f8fafc"/>
+  <rect x="95" y="105" width="170" height="330" rx="14" fill="#0f172a"/>
+  <rect x="295" y="105" width="590" height="88" rx="14" fill="#dbeafe"/>
+  <rect x="295" y="220" width="280" height="215" rx="14" fill="#e2e8f0"/>
+  <rect x="605" y="220" width="280" height="215" rx="14" fill="#e2e8f0"/>
+  <circle cx="805" cy="150" r="28" fill="#ef4444"/>
+  <path d="M330 360c50-80 95 45 140-20s80 35 120-42" fill="none" stroke="#2563eb" stroke-width="10" stroke-linecap="round"/>
+  <text x="70" y="52" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="34" font-weight="700">AI Dashboard UX</text>
+</svg>

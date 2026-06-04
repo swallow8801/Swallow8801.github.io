@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Image preprocessing thumbnail">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset=".5" stop-color="#059669"/>
+      <stop offset="1" stop-color="#f8fafc"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#g)"/>
+  <rect x="105" y="135" width="310" height="260" rx="18" fill="#111827" opacity=".72"/>
+  <rect x="545" y="135" width="310" height="260" rx="18" fill="#f8fafc" opacity=".92"/>
+  <path d="M455 270h90" stroke="#facc15" stroke-width="12" stroke-linecap="round"/>
+  <path d="M525 240l35 30-35 30" fill="none" stroke="#facc15" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="260" cy="265" r="78" fill="#64748b"/>
+  <circle cx="700" cy="265" r="78" fill="#0ea5e9"/>
+  <path d="M185 330c65-55 130-55 195 0" stroke="#94a3b8" stroke-width="10" fill="none"/>
+  <path d="M625 330c65-55 130-55 195 0" stroke="#0f172a" stroke-width="10" fill="none"/>
+  <text x="105" y="92" fill="#f8fafc" font-family="Arial, sans-serif" font-size="34" font-weight="700">Industrial Image Preprocessing</text>
+</svg>

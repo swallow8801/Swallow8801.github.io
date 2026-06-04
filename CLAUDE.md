@@ -75,15 +75,21 @@ _layouts/default.html   ← 모든 페이지의 공통 껍데기 (nav + head + f
 layout: post
 title: "제목"
 date: YYYY-MM-DD
-category: "AI·LLM"   # AI·LLM | Backend | Frontend | DevOps
+series: "Study"      # Study | DevNotes | Projects
+category: "AI·LLM"   # 아래 series별 목록 참고
 tags: [tag1, tag2]
 description: "카드·SEO용 한 줄 요약"
-pinned: false         # true → 블로그 목록 최상단 히어로에 표시
-read_time: 12         # 분, 수동 입력
+pinned: false        # 강조 플래그 (true는 하나만 유지)
 ---
 ```
 
-`pinned: true`인 포스트가 없으면 블로그 목록 히어로가 비어 보일 수 있으니 항상 하나는 지정한다.
+`series`와 `category`는 `blog/index.html` 사이드바가 그룹핑·카운트에 사용하므로 다음 조합을 정확히 따른다(문자열 일치 필수):
+
+- **Study**: `AI` | `Backend` | `Frontend` | `DevOps` | `Database`
+- **DevNotes**: `Snippets` | `Errors`
+- **Projects**: 개발일지 (series만 `Projects`)
+
+`pinned: true`는 강조용 플래그다. 현재 `blog/index.html`은 pinned를 별도 히어로로 렌더하지 않으니 선별/메타 용도로 쓰고, true는 한 개만 유지한다.
 
 ## GitHub Pages 배포
 

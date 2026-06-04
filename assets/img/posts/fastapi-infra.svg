@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="FastAPI infra thumbnail">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#042f2e"/>
+      <stop offset=".55" stop-color="#059669"/>
+      <stop offset="1" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#g)"/>
+  <rect x="130" y="115" width="700" height="310" rx="22" fill="#020617" opacity=".78"/>
+  <rect x="185" y="165" width="180" height="90" rx="14" fill="#14b8a6"/>
+  <rect x="430" y="165" width="180" height="90" rx="14" fill="#38bdf8"/>
+  <rect x="675" y="165" width="180" height="90" rx="14" fill="#a78bfa"/>
+  <path d="M365 210h65M610 210h65M520 255v70" stroke="#f8fafc" stroke-width="8" stroke-linecap="round"/>
+  <rect x="370" y="325" width="260" height="58" rx="12" fill="#facc15"/>
+  <text x="130" y="80" fill="#ecfeff" font-family="Arial, sans-serif" font-size="34" font-weight="700">AI Serving Infrastructure</text>
+</svg>
