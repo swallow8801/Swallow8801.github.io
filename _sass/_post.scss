@@ -13,7 +13,12 @@
     grid-template-columns: 1fr;
     padding: 32px 32px;
   }
-  @media (max-width: $mobile) { padding: 24px 20px; }
+  @media (max-width: $mobile) {
+    padding: 22px 16px 28px;
+    gap: 24px;
+  }
+
+  article { min-width: 0; }
 }
 
 // 포스트 헤더
@@ -21,6 +26,11 @@
   margin-bottom: 36px;
   padding-bottom: 28px;
   border-bottom: 1px solid $border;
+
+  @media (max-width: $mobile) {
+    margin-bottom: 24px;
+    padding-bottom: 22px;
+  }
 }
 
 .post-header__cat {
@@ -35,6 +45,10 @@
   padding: 3px 10px;
   border-radius: 5px;
   margin-bottom: 16px;
+
+  @media (max-width: $mobile) {
+    margin-bottom: 12px;
+  }
 }
 
 .post-header__title {
@@ -45,7 +59,16 @@
   color: $t1;
   margin-bottom: 16px;
 
-  @media (max-width: $mobile) { font-size: 24px; }
+  @media (max-width: $tablet) {
+    font-size: 28px;
+  }
+
+  @media (max-width: $mobile) {
+    font-size: 24px;
+    line-height: 1.32;
+    letter-spacing: 0;
+    margin-bottom: 12px;
+  }
 }
 
 .post-header__meta {
@@ -54,6 +77,11 @@
   gap: 12px;
   flex-wrap: wrap;
   margin-bottom: 16px;
+
+  @media (max-width: $mobile) {
+    gap: 8px;
+    margin-bottom: 14px;
+  }
 }
 
 .post-header__date { font-size: 13px; color: $t3; }
@@ -71,6 +99,11 @@
   padding: 3px 9px;
   border-radius: 5px;
   font-weight: 500;
+
+  @media (max-width: $mobile) {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
 }
 
 .post-cover {
@@ -90,7 +123,8 @@
   }
 
   @media (max-width: $mobile) {
-    aspect-ratio: 16 / 8;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
     margin-bottom: 20px;
   }
 }
@@ -103,7 +137,14 @@
   padding: 40px 48px;
   box-shadow: 0 1px 4px rgba(0,0,0,.04);
 
-  @media (max-width: $mobile) { padding: 24px 20px; }
+  @media (max-width: $tablet) {
+    padding: 34px 36px;
+  }
+
+  @media (max-width: $mobile) {
+    padding: 22px 18px;
+    border-radius: 10px;
+  }
 
   // 타이포그래피
   h2 {
@@ -114,6 +155,13 @@
     padding-bottom: 8px;
     border-bottom: 2px solid $surface2;
     letter-spacing: -.3px;
+
+    @media (max-width: $mobile) {
+      font-size: 20px;
+      line-height: 1.35;
+      letter-spacing: 0;
+      margin: 32px 0 14px;
+    }
   }
 
   h3 {
@@ -121,6 +169,12 @@
     font-weight: 700;
     color: $t1;
     margin: 28px 0 12px;
+
+    @media (max-width: $mobile) {
+      font-size: 17px;
+      line-height: 1.4;
+      margin: 24px 0 10px;
+    }
   }
 
   h4 {
@@ -135,6 +189,14 @@
     color: $t2;
     line-height: 1.9;
     margin-bottom: 18px;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+
+    @media (max-width: $mobile) {
+      font-size: 14px;
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
   }
 
   ul, ol {
@@ -146,6 +208,13 @@
       color: $t2;
       line-height: 1.8;
       margin-bottom: 6px;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+
+      @media (max-width: $mobile) {
+        font-size: 14px;
+        line-height: 1.75;
+      }
     }
   }
 
@@ -155,6 +224,11 @@
     padding: 16px 20px;
     border-radius: 0 8px 8px 0;
     margin: 24px 0;
+
+    @media (max-width: $mobile) {
+      padding: 14px 16px;
+      margin: 20px 0;
+    }
 
     p {
       margin: 0;
@@ -181,6 +255,15 @@
     border-collapse: collapse;
     margin: 24px 0;
     font-size: 14px;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+
+    @media (max-width: $mobile) {
+      margin: 20px 0;
+      font-size: 13px;
+    }
 
     th {
       background: $surface2;
@@ -189,12 +272,14 @@
       padding: 10px 14px;
       border: 1px solid $border;
       text-align: left;
+      white-space: nowrap;
     }
 
     td {
       padding: 10px 14px;
       border: 1px solid $border;
       color: $t2;
+      white-space: nowrap;
     }
 
     tr:nth-child(even) td { background: $surface2; }
@@ -215,7 +300,11 @@
   gap: 16px;
   margin-top: 40px;
 
-  @media (max-width: $mobile) { grid-template-columns: 1fr; }
+  @media (max-width: $mobile) {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 28px;
+  }
 }
 
 .post-nav__item {
@@ -232,6 +321,12 @@
   }
 
   &--next { text-align: right; }
+
+  @media (max-width: $mobile) {
+    padding: 16px;
+
+    &--next { text-align: left; }
+  }
 }
 
 .post-nav__dir { font-size: 11px; color: $t3; font-weight: 600; margin-bottom: 4px; }
@@ -239,6 +334,10 @@
 
 // 관련 포스트
 .related-posts { margin-top: 40px; }
+
+@media (max-width: $mobile) {
+  .related-posts { margin-top: 28px; }
+}
 
 .related-posts__title {
   font-size: 15px;
@@ -252,6 +351,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
 
+  @media (max-width: $tablet) { grid-template-columns: repeat(2, 1fr); }
   @media (max-width: $mobile) { grid-template-columns: 1fr; }
 }
 

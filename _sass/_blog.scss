@@ -11,7 +11,9 @@
   padding: 10px $pad;
   display: flex; justify-content: space-between; align-items: center;
 
-  @media (max-width: $mobile) { padding: 10px 20px; }
+  @media (max-width: $mobile) {
+    padding: 10px 16px;
+  }
 }
 
 .blog-page-header__crumb {
@@ -29,6 +31,10 @@
   background: $surface2; font-size: 12px; color: $t3; cursor: text;
   transition: border-color .15s;
   &:hover { border-color: $blue-bd; }
+
+  @media (max-width: $mobile) {
+    display: none;
+  }
 }
 
 .blog-page-header__body {
@@ -37,7 +43,10 @@
   display: flex; justify-content: space-between; align-items: flex-end;
 
   @media (max-width: $tablet) { flex-direction: column; align-items: flex-start; gap: 16px; }
-  @media (max-width: $mobile) { padding: 24px 20px; }
+  @media (max-width: $mobile) {
+    padding: 22px 16px 20px;
+    gap: 12px;
+  }
 }
 
 .blog-page-header__info { flex: 1; }
@@ -45,6 +54,11 @@
 .blog-page-header__title {
   font-size: 26px; font-weight: 900; letter-spacing: -1px;
   color: $t1; margin-bottom: 6px;
+
+  @media (max-width: $mobile) {
+    font-size: 24px;
+    letter-spacing: 0;
+  }
 }
 
 .blog-page-header__desc {
@@ -57,6 +71,11 @@
 }
 .blog-page-header__count {
   font-size: 40px; font-weight: 900; color: $t1; letter-spacing: -2px; line-height: 1;
+
+  @media (max-width: $mobile) {
+    font-size: 32px;
+    letter-spacing: 0;
+  }
 }
 .blog-page-header__count-lbl {
   font-size: 13px; color: $t3; font-weight: 500;
@@ -73,6 +92,13 @@
   flex-wrap: wrap;
 
   &.visible { display: flex; }
+
+  @media (max-width: $mobile) {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 12px;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 .subcat-bar__label {
@@ -270,7 +296,9 @@
   display: grid; grid-template-columns: 1fr 272px; gap: 26px; align-items: start;
 
   @media (max-width: $tablet) { grid-template-columns: 1fr; padding: 24px 32px; }
-  @media (max-width: $mobile) { padding: 20px; }
+  @media (max-width: $mobile) {
+    padding: 18px 16px 24px;
+  }
 }
 
 // ─── 포스트 카드 — 1열 가로형 + 썸네일 ──────────
@@ -296,7 +324,13 @@
     .post-card__arrow { transform: translateX(3px); color: $blue; }
   }
 
-  @media (max-width: $mobile) { flex-direction: column; min-height: auto; }
+  @media (max-width: $mobile) {
+    flex-direction: column;
+    min-height: auto;
+    border-radius: 12px;
+
+    &:hover { transform: none; }
+  }
 }
 
 // 썸네일
@@ -322,7 +356,11 @@
     pointer-events: none;
   }
 
-  @media (max-width: $mobile) { width: 100%; min-height: 100px; }
+  @media (max-width: $mobile) {
+    width: 100%;
+    aspect-ratio: 16 / 7;
+    min-height: 118px;
+  }
 }
 
 // 카테고리별 썸네일 그라디언트 (--ai = Study/AI 포함)
@@ -359,20 +397,49 @@
 .post-card--prj .post-card__thumb-cat { color: rgba(253,211,77,.7);  background: rgba(245,158,11,.12); border: 1px solid rgba(245,158,11,.2); }
 
 // 카드 본문
-.post-card__content { flex: 1; padding: 20px 22px; display: flex; flex-direction: column; }
+.post-card__content {
+  flex: 1; padding: 20px 22px; display: flex; flex-direction: column;
+
+  @media (max-width: $mobile) {
+    padding: 16px;
+  }
+}
 .post-card__top {
   display: flex; justify-content: space-between; align-items: flex-start;
   margin-bottom: 9px;
+
+  @media (max-width: $mobile) {
+    flex-direction: column;
+    gap: 4px;
+  }
 }
 .post-card__series { font-size: 11px; font-weight: 600; color: $t3; }
 .post-card__date   { font-size: 11px; color: $t3; font-variant-numeric: tabular-nums; }
 .post-card__title  {
   font-size: 15px; font-weight: 700; line-height: 1.42;
   margin-bottom: 7px; color: $t1; transition: color .2s;
+
+  @media (max-width: $mobile) {
+    font-size: 15px;
+    line-height: 1.5;
+  }
 }
-.post-card__desc { font-size: 13px; color: $t2; line-height: 1.65; flex: 1; margin-bottom: 14px; }
+.post-card__desc {
+  font-size: 13px; color: $t2; line-height: 1.65; flex: 1; margin-bottom: 14px;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+
+  @media (max-width: $mobile) {
+    margin-bottom: 12px;
+  }
+}
 .post-card__foot {
   display: flex; align-items: center; justify-content: space-between; margin-top: auto;
+
+  @media (max-width: $mobile) {
+    align-items: flex-end;
+    gap: 10px;
+  }
 }
 .post-card__tags { display: flex; gap: 5px; flex-wrap: wrap; }
 .post-card__tag {
@@ -391,9 +458,20 @@
   position: sticky; top: calc(#{$nav-h} + 46px + 28px);
 
   @media (max-width: $tablet) { position: static; }
+
+  @media (max-width: $mobile) {
+    gap: 10px;
+  }
 }
 
-.widget { @include card; padding: 18px; }
+.widget {
+  @include card; padding: 18px;
+
+  @media (max-width: $mobile) {
+    padding: 16px;
+    border-radius: 10px;
+  }
+}
 .widget__title {
   font-size: 11px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 1.5px; color: $t3;
@@ -460,6 +538,11 @@
 .pagination {
   display: flex; justify-content: center; align-items: center;
   gap: 6px; padding: 28px 0;
+  flex-wrap: wrap;
+
+  @media (max-width: $mobile) {
+    padding: 22px 16px 28px;
+  }
 
   a, span {
     padding: 7px 14px; border-radius: 7px; font-size: 13px; font-weight: 600;
