@@ -41,7 +41,7 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
 
     <!-- 포스트 목록 -->
     <div class="posts-list" id="postsList">
-      {% for post in paginator.posts %}
+      {% for post in site.posts %}
 
         {% case post.category %}
           {% when "AI" %}       {% assign thumb_class = "ai"  %}
@@ -175,20 +175,6 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
 
   </aside>
 </div>
-
-<!-- 페이지네이션 -->
-{% if paginator.total_pages > 1 %}
-<div class="pagination">
-  {% if paginator.previous_page %}<a href="{{ paginator.previous_page_path | relative_url }}">← 이전</a>{% endif %}
-  {% for i in (1..paginator.total_pages) %}
-    {% if i == paginator.page %}<span class="current">{{ i }}</span>
-    {% elsif i == 1 %}<a href="{{ '/blog/' | relative_url }}">{{ i }}</a>
-    {% else %}<a href="{{ site.paginate_path | relative_url | replace: ':num', i }}">{{ i }}</a>
-    {% endif %}
-  {% endfor %}
-  {% if paginator.next_page %}<a href="{{ paginator.next_page_path | relative_url }}">다음 →</a>{% endif %}
-</div>
-{% endif %}
 
 <script>
 (function () {

@@ -62,7 +62,7 @@ _layouts/default.html   ← 모든 페이지의 공통 껍데기 (nav + head + f
 `_posts/` 파일들은 `layout: post`를 사용한다.
 
 ### JS 파일 역할
-- `filter.js` — 포트폴리오·블로그의 카테고리 필터. `data-category` 속성으로 카드 show/hide
+- `filter.js` — 포트폴리오의 카테고리 필터. 블로그 필터는 `blog/index.html` 내부 스크립트가 `data-category` 속성으로 카드 show/hide
 - `toc.js` — 포스트 내 h2·h3를 스캔해 오른쪽 sticky TOC 생성 + 스크롤 하이라이팅
 - `copy-code.js` — 코드 블록에 복사 버튼 동적 삽입
 
