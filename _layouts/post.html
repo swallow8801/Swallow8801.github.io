@@ -4,6 +4,26 @@ layout: default
 <div class="post-layout">
 
   <article>
+    {% if page.image %}
+    <header class="post-hero">
+      <img src="{{ page.image | relative_url }}" alt="" class="post-hero__image" aria-hidden="true">
+      <div class="post-hero__overlay"></div>
+      <div class="post-hero__body">
+        <span class="post-header__cat post-hero__cat">{{ page.category }}</span>
+        <h1 class="post-header__title post-hero__title">{{ page.title }}</h1>
+        <div class="post-header__meta post-hero__meta">
+          <span class="post-header__date post-hero__date">{{ page.date | date: "%Y-%m-%d" }}</span>
+        </div>
+        {% if page.tags %}
+        <div class="post-header__tags post-hero__tags">
+          {% for tag in page.tags %}
+          <span class="post-header__tag post-hero__tag">#{{ tag }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </header>
+    {% else %}
     <header class="post-header">
       <span class="post-header__cat">{{ page.category }}</span>
       <h1 class="post-header__title">{{ page.title }}</h1>
@@ -18,11 +38,6 @@ layout: default
       </div>
       {% endif %}
     </header>
-
-    {% if page.image %}
-    <figure class="post-cover">
-      <img src="{{ page.image | relative_url }}" alt="{{ page.title }}">
-    </figure>
     {% endif %}
 
     <div class="post-content">
