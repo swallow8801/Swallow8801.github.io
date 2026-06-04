@@ -2,20 +2,8 @@
 <html lang="ko">
 <head>
   {% include head.html %}
-  <style>
-    #pg-overlay {
-      position: fixed; inset: 0; z-index: 9999;
-      background: #050b18;
-      opacity: 1; pointer-events: all;
-      transition: opacity .7s cubic-bezier(.4,0,.2,1);
-    }
-    #pg-overlay.hidden { opacity: 0; pointer-events: none; }
-  </style>
 </head>
 <body>
-  <!-- 페이지 전환 오버레이 -->
-  <div id="pg-overlay"></div>
-
   {% include nav.html %}
 
   {{ content }}
@@ -23,26 +11,5 @@
   {% include footer.html %}
 
   <script src="{{ '/assets/js/filter.js' | relative_url }}"></script>
-
-  <script>
-  (function () {
-    var ov = document.getElementById('pg-overlay');
-    /* 진입: 페이드 아웃 */
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () { ov.classList.add('hidden'); });
-    });
-    /* 이탈: 링크 클릭 시 페이드 인 후 이동 */
-    document.addEventListener('click', function (e) {
-      var a = e.target.closest('a[href]');
-      if (!a || !a.href || a.target === '_blank') return;
-      var href = a.href;
-      if (href === window.location.href || href.indexOf('#') !== -1) return;
-      e.preventDefault();
-      ov.style.transition = 'opacity .5s cubic-bezier(.4,0,.2,1)';
-      ov.classList.remove('hidden');
-      setTimeout(function () { window.location.href = href; }, 540);
-    });
-  })();
-  </script>
 </body>
 </html>
