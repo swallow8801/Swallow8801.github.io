@@ -1,103 +1,53 @@
 ---
 layout: default
 title: "Blog"
-description: "AI, 풀스택 개발, 시스템 설계에 대해 깊게 파고든 글들을 씁니다."
+description: "개발 과정의 실험, 판단, 회고를 기록합니다."
 ---
 
-{% assign pinned     = site.posts | where: "pinned", true | first %}
-{% assign all_posts  = site.posts %}
+{% assign all_posts     = site.posts %}
+{% assign study_posts   = site.posts | where: "series", "Study" %}
+{% assign devnotes_posts= site.posts | where: "series", "DevNotes" %}
+{% assign project_posts = site.posts | where: "series", "Projects" %}
 
-<!-- ── Featured Hero ── -->
-{% if pinned %}
-<div class="blog-hero">
-  <div class="blog-hero__left">
-    <div class="blog-hero__badges">
-      <span class="blog-hero__badge">Pinned</span>
-      <span class="blog-hero__badge">{{ pinned.series }} · {{ pinned.category }}</span>
+<!-- ── 블로그 헤더 ── -->
+<div class="blog-page-header">
+  <div class="blog-page-header__top">
+    <div class="blog-page-header__crumb">
+      <a href="{{ '/' | relative_url }}">{{ site.author.name }}</a>
+      <span>/</span>
+      <span>Blog</span>
     </div>
-    <div class="blog-hero__preview">
-      <div class="blog-hero__preview-label">Featured Post</div>
-      <div class="blog-hero__preview-title">{{ pinned.title }}</div>
-      <div class="blog-hero__preview-stats">
-        <span class="blog-hero__preview-stat">읽기 시간 <em>{{ pinned.read_time }}분</em></span>
-        <span class="blog-hero__preview-stat">{{ pinned.date | date: "%Y-%m-%d" }}</span>
-      </div>
-    </div>
+    <div class="blog-page-header__search">검색...</div>
   </div>
-  <div class="blog-hero__right">
-    <div class="blog-hero__series-cat">{{ pinned.series }} · {{ pinned.category }}</div>
-    <h2 class="blog-hero__title">{{ pinned.title }}</h2>
-    <p class="blog-hero__desc">{{ pinned.description }}</p>
-    {% if pinned.tags %}
-    <div class="blog-hero__tags">
-      {% for tag in pinned.tags limit: 4 %}
-      <span class="blog-hero__tag">{{ tag }}</span>
-      {% endfor %}
+  <div class="blog-page-header__body">
+    <div class="blog-page-header__info">
+      <div class="blog-page-header__title">Engineering Log</div>
+      <div class="blog-page-header__desc">개발 과정의 실험, 판단, 회고를 기록합니다.</div>
     </div>
-    {% endif %}
-    <div class="blog-hero__meta">
-      <div class="blog-hero__av">SW</div>
-      <div class="blog-hero__meta-info">
-        <strong>{{ site.author.name }}</strong>
-        &nbsp;·&nbsp; {{ pinned.date | date: "%Y-%m-%d" }} · {{ pinned.read_time }}분
-      </div>
-      <a href="{{ pinned.url | relative_url }}" class="blog-hero__read-btn">읽기 →</a>
+    <div class="blog-page-header__meta">
+      <span class="blog-page-header__count">{{ all_posts | size }}</span>
+      <span class="blog-page-header__count-lbl">posts</span>
     </div>
   </div>
-</div>
-{% endif %}
-
-<!-- ── 카테고리 필터 바 (Study / DevNotes 2단 구조) ── -->
-<div class="blog-cat-bar">
-  <button class="blog-cat-bar__all blog-cat-bar__all--active" data-filter="all">
-    전체 <span class="blog-cat-bar__all-cnt">{{ all_posts | size }}</span>
-  </button>
-
-  <span class="blog-cat-bar__sep"></span>
-
-  <div class="blog-cat-bar__group">
-    <span class="blog-cat-bar__group-label blog-cat-bar__group-label--study">Study</span>
-    {% assign study_cats = "AI·LLM,Backend,Frontend,DevOps" | split: "," %}
-    {% for cat in study_cats %}
-      {% assign cnt = site.posts | where: "series", "Study" | where: "category", cat | size %}
-      <button class="blog-cat-bar__btn" data-series="Study" data-category="{{ cat }}">
-        {{ cat }} <span class="blog-cat-bar__btn-cnt">{{ cnt }}</span>
-      </button>
-    {% endfor %}
-  </div>
-
-  <span class="blog-cat-bar__sep"></span>
-
-  <div class="blog-cat-bar__group blog-cat-bar__group--devnotes">
-    <span class="blog-cat-bar__group-label blog-cat-bar__group-label--devnotes">DevNotes</span>
-    {% assign dn_cats = "TIL,Snippets" | split: "," %}
-    {% for cat in dn_cats %}
-      {% assign cnt = site.posts | where: "series", "DevNotes" | where: "category", cat | size %}
-      <button class="blog-cat-bar__btn" data-series="DevNotes" data-category="{{ cat }}">
-        {{ cat }} <span class="blog-cat-bar__btn-cnt">{{ cnt }}</span>
-      </button>
-    {% endfor %}
-  </div>
-
-  <span class="blog-cat-bar__tail">{{ all_posts | size }}개의 글</span>
 </div>
 
 <!-- ── Body ── -->
 <div class="blog-body">
 
-  <!-- 포스트 목록 — 1열 가로형 + 썸네일 -->
+  <!-- 포스트 목록 -->
   <div class="posts-list">
     {% for post in paginator.posts %}
 
-      <!-- 카테고리 → CSS 수식어 클래스 매핑 -->
       {% case post.category %}
-        {% when "AI·LLM" %}  {% assign thumb_class = "ai"  %}
-        {% when "Backend" %} {% assign thumb_class = "be"  %}
-        {% when "Frontend" %}{% assign thumb_class = "fe"  %}
-        {% when "DevOps" %}  {% assign thumb_class = "ops" %}
-        {% when "TIL" %}     {% assign thumb_class = "til" %}
-        {% when "Snippets" %}{% assign thumb_class = "sn"  %}
-        {% else %}           {% assign thumb_class = "ai"  %}
+        {% when "AI·LLM" %}   {% assign thumb_class = "ai"  %}
+        {% when "Backend" %}  {% assign thumb_class = "be"  %}
+        {% when "Frontend" %} {% assign thumb_class = "fe"  %}
+        {% when "DevOps" %}   {% assign thumb_class = "ops" %}
+        {% when "Database" %} {% assign thumb_class = "db"  %}
+        {% when "Snippets" %} {% assign thumb_class = "sn"  %}
+        {% when "Errors" %}   {% assign thumb_class = "err" %}
+        {% when "Projects" %} {% assign thumb_class = "prj" %}
+        {% else %}            {% assign thumb_class = "ai"  %}
       {% endcase %}
 
       <a href="{{ post.url | relative_url }}"
@@ -105,10 +55,9 @@ description: "AI, 풀스택 개발, 시스템 설계에 대해 깊게 파고든 
          data-series="{{ post.series }}"
          data-category="{{ post.category }}">
 
-        <!-- 썸네일 — image 있으면 실제 이미지, 없으면 그라디언트 -->
         <div class="post-card__thumb">
           {% if post.image %}
-            <img src="{{ post.image | relative_url }}" alt="{{ post.title }}">
+          <img src="{{ post.image | relative_url }}" alt="{{ post.title }}">
           {% endif %}
           <span class="post-card__thumb-cat">{{ post.category }}</span>
         </div>
@@ -158,34 +107,55 @@ description: "AI, 풀스택 개발, 시스템 설계에 대해 깊게 파고든 
       <div class="widget__title">카테고리</div>
       <div class="cat-tree">
 
+        <!-- Study -->
         <div class="cat-tree__group">
           <div class="cat-tree__label cat-tree__label--study">Study</div>
-          {% assign study_cats  = "AI·LLM,Backend,Frontend,DevOps" | split: "," %}
-          {% assign study_colors = "#2563eb,#059669,#0891b2,#d97706"   | split: "," %}
+          {% assign study_cats   = "AI·LLM,Backend,Frontend,DevOps,Database" | split: "," %}
+          {% assign study_colors = "#2563eb,#059669,#0891b2,#d97706,#7c3aed" | split: "," %}
           {% for cat in study_cats %}
-          <div class="cat-tree__item" data-series="Study" data-category="{{ cat }}">
-            <div class="cat-tree__item-left">
-              <span class="cat-tree__dot" style="background: {{ study_colors[forloop.index0] }}"></span>
-              <span class="cat-tree__name">{{ cat }}</span>
+            {% assign cnt = site.posts | where: "series","Study" | where: "category", cat | size %}
+            <div class="cat-tree__item" data-series="Study" data-category="{{ cat }}">
+              <div class="cat-tree__item-left">
+                <span class="cat-tree__dot" style="background: {{ study_colors[forloop.index0] }}"></span>
+                <span class="cat-tree__name">{{ cat }}</span>
+              </div>
+              <span class="cat-tree__cnt">{{ cnt }}</span>
             </div>
-            <span class="cat-tree__cnt">{{ site.posts | where: "series","Study" | where: "category", cat | size }}</span>
-          </div>
           {% endfor %}
         </div>
 
+        <!-- DevNotes -->
         <div class="cat-tree__group">
           <div class="cat-tree__label cat-tree__label--devnotes">DevNotes</div>
-          {% assign dn_cats   = "TIL,Snippets"   | split: "," %}
-          {% assign dn_colors = "#7c3aed,#475569" | split: "," %}
+          {% assign dn_cats   = "Snippets,Errors" | split: "," %}
+          {% assign dn_colors = "#475569,#dc2626" | split: "," %}
           {% for cat in dn_cats %}
-          <div class="cat-tree__item" data-series="DevNotes" data-category="{{ cat }}">
-            <div class="cat-tree__item-left">
-              <span class="cat-tree__dot" style="background: {{ dn_colors[forloop.index0] }}"></span>
-              <span class="cat-tree__name">{{ cat }}</span>
+            {% assign cnt = site.posts | where: "series","DevNotes" | where: "category", cat | size %}
+            <div class="cat-tree__item" data-series="DevNotes" data-category="{{ cat }}">
+              <div class="cat-tree__item-left">
+                <span class="cat-tree__dot" style="background: {{ dn_colors[forloop.index0] }}"></span>
+                <span class="cat-tree__name">{{ cat }}</span>
+              </div>
+              <span class="cat-tree__cnt">{{ cnt }}</span>
             </div>
-            <span class="cat-tree__cnt">{{ site.posts | where: "series","DevNotes" | where: "category", cat | size }}</span>
-          </div>
           {% endfor %}
+        </div>
+
+        <!-- Projects -->
+        <div class="cat-tree__group">
+          <div class="cat-tree__label cat-tree__label--projects">Projects</div>
+          {% assign proj_cnt = site.posts | where: "series","Projects" | size %}
+          {% if proj_cnt == 0 %}
+          <div class="cat-tree__empty">아직 글이 없습니다.</div>
+          {% else %}
+            <div class="cat-tree__item" data-series="Projects" data-category="Projects">
+              <div class="cat-tree__item-left">
+                <span class="cat-tree__dot" style="background:#f59e0b"></span>
+                <span class="cat-tree__name">개발일지</span>
+              </div>
+              <span class="cat-tree__cnt">{{ proj_cnt }}</span>
+            </div>
+          {% endif %}
         </div>
 
       </div>
@@ -211,12 +181,9 @@ description: "AI, 풀스택 개발, 시스템 설계에 대해 깊게 파고든 
   <a href="{{ paginator.previous_page_path | relative_url }}">← 이전</a>
   {% endif %}
   {% for i in (1..paginator.total_pages) %}
-    {% if i == paginator.page %}
-    <span class="current">{{ i }}</span>
-    {% elsif i == 1 %}
-    <a href="{{ '/blog/' | relative_url }}">{{ i }}</a>
-    {% else %}
-    <a href="{{ site.paginate_path | relative_url | replace: ':num', i }}">{{ i }}</a>
+    {% if i == paginator.page %}<span class="current">{{ i }}</span>
+    {% elsif i == 1 %}<a href="{{ '/blog/' | relative_url }}">{{ i }}</a>
+    {% else %}<a href="{{ site.paginate_path | relative_url | replace: ':num', i }}">{{ i }}</a>
     {% endif %}
   {% endfor %}
   {% if paginator.next_page %}
@@ -227,36 +194,35 @@ description: "AI, 풀스택 개발, 시스템 설계에 대해 깊게 파고든 
 
 <script>
 (function () {
-  var allBtn  = document.querySelector('.blog-cat-bar__all');
-  var catBtns = document.querySelectorAll('.blog-cat-bar__btn');
-  var cards   = document.querySelectorAll('.post-card');
+  var cards = document.querySelectorAll('.post-card');
 
-  function filter(series, category) {
-    allBtn.classList.toggle('blog-cat-bar__all--active', !series);
-    catBtns.forEach(function(b) { b.classList.remove('blog-cat-bar__btn--active'); });
-    if (series) {
-      catBtns.forEach(function(b) {
-        if (b.dataset.series === series && b.dataset.category === category)
-          b.classList.add('blog-cat-bar__btn--active');
+  /* 사이드바 카테고리 클릭 → 해당 시리즈+카테고리 포스트만 표시 */
+  document.querySelectorAll('.cat-tree__item[data-series]').forEach(function (item) {
+    item.addEventListener('click', function () {
+      var series   = item.dataset.series;
+      var category = item.dataset.category;
+
+      document.querySelectorAll('.cat-tree__item').forEach(function(i) {
+        i.classList.remove('cat-tree__item--active');
       });
-    }
-    cards.forEach(function(c) {
-      var show = !series ||
-        (c.dataset.series === series && c.dataset.category === category);
-      c.style.display = show ? '' : 'none';
-    });
-  }
+      item.classList.add('cat-tree__item--active');
 
-  if (allBtn) allBtn.addEventListener('click', function() { filter(null, null); });
-  catBtns.forEach(function(b) {
-    b.addEventListener('click', function() { filter(b.dataset.series, b.dataset.category); });
-  });
-
-  /* 사이드바 트리 클릭 연동 */
-  document.querySelectorAll('.cat-tree__item[data-series]').forEach(function(item) {
-    item.addEventListener('click', function() {
-      filter(item.dataset.series, item.dataset.category);
+      cards.forEach(function (c) {
+        var show = c.dataset.series === series &&
+          (category === 'all' || c.dataset.category === category);
+        c.style.display = show ? '' : 'none';
+      });
     });
   });
+
+  /* 'About' 위젯 링크 등 클릭 시 전체 복원 */
+  document.querySelector('.widget-about__av') &&
+    document.querySelector('.blog-page-header') &&
+    document.querySelector('.blog-page-header').addEventListener('click', function() {
+      cards.forEach(function(c) { c.style.display = ''; });
+      document.querySelectorAll('.cat-tree__item').forEach(function(i) {
+        i.classList.remove('cat-tree__item--active');
+      });
+    });
 })();
 </script>

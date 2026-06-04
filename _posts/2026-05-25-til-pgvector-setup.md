@@ -3,8 +3,8 @@ layout: post
 title: "pgvector 설치부터 HNSW 인덱스 생성까지 Quick Guide"
 date: 2026-05-25
 series: "DevNotes"
-category: "TIL"
-tags: [pgvector, postgresql, til, vector-search, hnsw]
+category: "Snippets"
+tags: [pgvector, postgresql, snippet, vector-search, hnsw]
 description: "PostgreSQL에 pgvector를 붙이고 HNSW 인덱스를 생성하는 핵심 명령어만 정리. 매번 찾아보는 게 귀찮아서 기록."
 pinned: false
 read_time: 3

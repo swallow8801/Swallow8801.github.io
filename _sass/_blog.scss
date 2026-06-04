@@ -1,6 +1,68 @@
 // ── 블로그 목록 페이지 ────────────────────────────
 
-// ─── Featured Hero ───────────────────────────────
+// ─── 블로그 헤더 (Featured Hero 대체) ────────────
+.blog-page-header {
+  background: $surface;
+  border-bottom: 1px solid $border;
+}
+
+.blog-page-header__top {
+  border-bottom: 1px solid $border;
+  padding: 10px $pad;
+  display: flex; justify-content: space-between; align-items: center;
+
+  @media (max-width: $mobile) { padding: 10px 20px; }
+}
+
+.blog-page-header__crumb {
+  font-size: 12px; color: $t3;
+  display: flex; align-items: center; gap: 6px;
+
+  a { color: $t3; transition: color .15s; &:hover { color: $blue; } }
+  span { color: $blue; font-weight: 600; }
+}
+
+.blog-page-header__search {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 14px;
+  border: 1.5px solid $border; border-radius: 7px;
+  background: $surface2; font-size: 12px; color: $t3; cursor: text;
+  transition: border-color .15s;
+  &:hover { border-color: $blue-bd; }
+}
+
+.blog-page-header__body {
+  max-width: 1200px + (2 * 60px); margin: 0 auto;
+  padding: 28px $pad 24px;
+  display: flex; justify-content: space-between; align-items: flex-end;
+
+  @media (max-width: $tablet) { flex-direction: column; align-items: flex-start; gap: 16px; }
+  @media (max-width: $mobile) { padding: 24px 20px; }
+}
+
+.blog-page-header__info {}
+
+.blog-page-header__title {
+  font-size: 26px; font-weight: 900; letter-spacing: -1px;
+  color: $t1; margin-bottom: 6px;
+}
+
+.blog-page-header__desc {
+  font-size: 14px; color: $t2; line-height: 1.6;
+}
+
+.blog-page-header__meta {
+  display: flex; align-items: baseline; gap: 4px;
+  flex-shrink: 0;
+}
+.blog-page-header__count {
+  font-size: 40px; font-weight: 900; color: $t1; letter-spacing: -2px; line-height: 1;
+}
+.blog-page-header__count-lbl {
+  font-size: 13px; color: $t3; font-weight: 500;
+}
+
+// ─── 기존 Featured Hero (하위 호환 유지) ─────────
 .blog-hero {
   display: grid;
   grid-template-columns: 5fr 7fr;
@@ -235,17 +297,21 @@
 }
 
 // 카테고리별 썸네일 그라디언트
-.post-card--ai   .post-card__thumb { background: linear-gradient(145deg, #050f26, #0a1e50); }
-.post-card--be   .post-card__thumb { background: linear-gradient(145deg, #04160b, #072618); }
-.post-card--fe   .post-card__thumb { background: linear-gradient(145deg, #04121f, #071b38); }
-.post-card--ops  .post-card__thumb { background: linear-gradient(145deg, #150d04, #261806); }
-.post-card--til  .post-card__thumb { background: linear-gradient(145deg, #100520, #1c0a36); }
-.post-card--sn   .post-card__thumb { background: linear-gradient(145deg, #080c18, #101828); }
+.post-card--ai  .post-card__thumb { background: linear-gradient(145deg, #050f26, #0a1e50); }
+.post-card--be  .post-card__thumb { background: linear-gradient(145deg, #04160b, #072618); }
+.post-card--fe  .post-card__thumb { background: linear-gradient(145deg, #04121f, #071b38); }
+.post-card--ops .post-card__thumb { background: linear-gradient(145deg, #150d04, #261806); }
+.post-card--db  .post-card__thumb { background: linear-gradient(145deg, #0f0520, #1e0a38); }
+.post-card--sn  .post-card__thumb { background: linear-gradient(145deg, #080c18, #101828); }
+.post-card--err .post-card__thumb { background: linear-gradient(145deg, #1a0505, #300a0a); }
+.post-card--prj .post-card__thumb { background: linear-gradient(145deg, #1a1005, #2e1f06); }
 
-// 썸네일 glow 색상 변형
+// 썸네일 glow 변형
 .post-card--be  .post-card__thumb::after { background: radial-gradient(circle, rgba(5,150,105,.18) 0%, transparent 65%); }
 .post-card--ops .post-card__thumb::after { background: radial-gradient(circle, rgba(217,119,6,.18) 0%, transparent 65%); }
-.post-card--til .post-card__thumb::after { background: radial-gradient(circle, rgba(124,58,237,.2) 0%, transparent 65%); }
+.post-card--db  .post-card__thumb::after { background: radial-gradient(circle, rgba(124,58,237,.2) 0%, transparent 65%); }
+.post-card--err .post-card__thumb::after { background: radial-gradient(circle, rgba(220,38,38,.2) 0%, transparent 65%); }
+.post-card--prj .post-card__thumb::after { background: radial-gradient(circle, rgba(245,158,11,.18) 0%, transparent 65%); }
 
 // 썸네일 카테고리 레이블
 .post-card__thumb-cat {
@@ -258,8 +324,10 @@
 .post-card--be  .post-card__thumb-cat { color: rgba(110,231,183,.7); background: rgba(5,150,105,.15);  border: 1px solid rgba(5,150,105,.2); }
 .post-card--fe  .post-card__thumb-cat { color: rgba(125,211,252,.7); background: rgba(14,165,233,.12); border: 1px solid rgba(14,165,233,.2); }
 .post-card--ops .post-card__thumb-cat { color: rgba(253,186,116,.7); background: rgba(217,119,6,.12);  border: 1px solid rgba(217,119,6,.2); }
-.post-card--til .post-card__thumb-cat { color: rgba(196,181,253,.7); background: rgba(124,58,237,.15); border: 1px solid rgba(124,58,237,.2); }
+.post-card--db  .post-card__thumb-cat { color: rgba(196,181,253,.7); background: rgba(124,58,237,.15); border: 1px solid rgba(124,58,237,.2); }
 .post-card--sn  .post-card__thumb-cat { color: rgba(148,163,184,.7); background: rgba(100,116,139,.12);border: 1px solid rgba(100,116,139,.18); }
+.post-card--err .post-card__thumb-cat { color: rgba(252,165,165,.7); background: rgba(220,38,38,.15);  border: 1px solid rgba(220,38,38,.2); }
+.post-card--prj .post-card__thumb-cat { color: rgba(253,211,77,.7);  background: rgba(245,158,11,.12); border: 1px solid rgba(245,158,11,.2); }
 
 // 카드 본문
 .post-card__content { flex: 1; padding: 20px 22px; display: flex; flex-direction: column; }
@@ -334,6 +402,15 @@
   letter-spacing: .5px; margin-bottom: 5px;
   &--study    { color: rgba(37,99,235,.6); }
   &--devnotes { color: rgba(124,58,237,.6); }
+  &--projects { color: rgba(245,158,11,.7); }
+}
+.cat-tree__empty {
+  font-size: 11px; color: $t3; padding: 5px 8px;
+  font-style: italic;
+}
+.cat-tree__item--active {
+  background: $blue-bg;
+  .cat-tree__name { color: $blue; font-weight: 600; }
 }
 .cat-tree__item {
   display: flex; justify-content: space-between; align-items: center;

@@ -237,6 +237,19 @@ a { text-decoration:none; color:inherit; }
 .cat-tree-cnt { font-size:10px; color:#8fa3bf; background:#f4f7fb; padding:1px 6px; border-radius:8px; }
 
 /* Tags */
+/* ── 블로그 헤더 ── */
+.bph { background:#fff; border-bottom:1px solid var(--border); }
+.bph-top { border-bottom:1px solid var(--border); padding:10px 60px; display:flex; justify-content:space-between; align-items:center; }
+.bph-crumb { font-size:12px; color:var(--t3); }
+.bph-search { display:flex; align-items:center; gap:6px; padding:6px 14px; border:1.5px solid var(--border); border-radius:7px; background:var(--surface2); font-size:12px; color:var(--t3); cursor:text; }
+.bph-body { max-width:1200px; margin:0 auto; padding:28px 60px 24px; display:flex; justify-content:space-between; align-items:flex-end; }
+.bph-title { font-size:26px; font-weight:900; letter-spacing:-1px; color:var(--t1); margin-bottom:6px; }
+.bph-desc { font-size:14px; color:var(--t2); line-height:1.6; }
+.bph-meta { display:flex; align-items:baseline; gap:4px; flex-shrink:0; }
+.bph-count { font-size:40px; font-weight:900; color:var(--t1); letter-spacing:-2px; line-height:1; }
+.bph-count-lbl { font-size:13px; color:var(--t3); font-weight:500; }
+.cat-tree-label.projects { color:rgba(245,158,11,.7); }
+.cat-tree-empty { font-size:11px; color:var(--t3); padding:5px 8px; font-style:italic; }
 .tag-cloud { display:flex; flex-wrap:wrap; gap:5px; }
 .tag-pill { padding:4px 9px; border-radius:5px; background:#f4f7fb; border:1px solid #d8e3f0; font-size:11px; color:#4a6080; cursor:pointer; font-weight:500; transition:all .15s; }
 .tag-pill:hover { background:#eff6ff; border-color:#bfdbfe; color:#2563eb; }
@@ -257,60 +270,19 @@ a { text-decoration:none; color:inherit; }
   </div>
 </nav>
 
-<!-- Featured Hero -->
-<div class="hero">
-  <div class="hero-left">
-    <div class="hero-badges">
-      <span class="hero-badge">Pinned</span>
-      <span class="hero-badge">Study · AI·LLM</span>
-    </div>
-    <div class="hero-preview">
-      <div class="hero-preview-label">Featured Post</div>
-      <div class="hero-preview-title">RAG 파이프라인 설계:<br>프로덕션에서 배운 것들</div>
-      <div class="hero-preview-stats">
-        <span class="hero-stat">읽기 시간 <em>18분</em></span>
-        <span class="hero-stat">2026-05-30</span>
-      </div>
-    </div>
+<!-- 블로그 헤더 -->
+<div class="bph">
+  <div class="bph-top">
+    <div class="bph-crumb">Swallow.dev / Blog</div>
+    <div class="bph-search">검색...</div>
   </div>
-  <div class="hero-right">
-    <div class="hero-cat">Study · AI·LLM</div>
-    <div class="hero-title">RAG 파이프라인 설계:<br>프로덕션에서 배운 것들</div>
-    <div class="hero-desc">청킹 전략·리랭킹·Hallucination 감지까지. 실제 서비스에서 맞닥뜨린 문제들과 해결 과정을 정리했습니다.</div>
-    <div class="hero-tags">
-      <span class="hero-tag">RAG</span>
-      <span class="hero-tag">LangChain</span>
-      <span class="hero-tag">pgvector</span>
+  <div class="bph-body">
+    <div>
+      <div class="bph-title">Engineering Log</div>
+      <div class="bph-desc">개발 과정의 실험, 판단, 회고를 기록합니다.</div>
     </div>
-    <div class="hero-meta">
-      <div class="hero-av">SW</div>
-      <div class="hero-meta-info">
-        <div class="hero-meta-name">Swallow8801</div>
-        <div>2026-05-30 · 18분 읽기</div>
-      </div>
-      <button class="hero-read-btn">읽기 →</button>
-    </div>
+    <div class="bph-meta"><span class="bph-count">11</span><span class="bph-count-lbl">posts</span></div>
   </div>
-</div>
-
-<!-- Category Bar -->
-<div class="cat-bar">
-  <div class="cat-all on" data-filter="all">전체 <span class="cat-cnt">11</span></div>
-  <span class="cat-sep"></span>
-  <div class="cat-group">
-    <span class="cat-group-label study">Study</span>
-    <button class="cat-btn" data-series="Study" data-category="AI·LLM">AI·LLM <span class="cat-cnt">5</span></button>
-    <button class="cat-btn" data-series="Study" data-category="Backend">Backend <span class="cat-cnt">2</span></button>
-    <button class="cat-btn" data-series="Study" data-category="Frontend">Frontend <span class="cat-cnt">1</span></button>
-    <button class="cat-btn" data-series="Study" data-category="DevOps">DevOps <span class="cat-cnt">1</span></button>
-  </div>
-  <span class="cat-sep"></span>
-  <div class="cat-group devnotes-group">
-    <span class="cat-group-label devnotes">DevNotes</span>
-    <button class="cat-btn" data-series="DevNotes" data-category="TIL">TIL <span class="cat-cnt">1</span></button>
-    <button class="cat-btn" data-series="DevNotes" data-category="Snippets">Snippets <span class="cat-cnt">1</span></button>
-  </div>
-  <span class="cat-bar-tail">11개의 글</span>
 </div>
 
 <!-- Body -->
@@ -438,11 +410,11 @@ a { text-decoration:none; color:inherit; }
     <a href="#" class="post-card" data-series="DevNotes" data-category="TIL">
       <div class="post-thumb"><span class="post-thumb-cat">TIL</span></div>
       <div class="post-content">
-        <div class="post-content-top"><span class="post-series-cat">DevNotes · TIL</span><span class="post-date">2026-05-25</span></div>
+        <div class="post-content-top"><span class="post-series-cat">DevNotes · Snippets</span><span class="post-date">2026-05-25</span></div>
         <div class="post-title">pgvector 설치부터 HNSW 인덱스 생성까지 Quick Guide</div>
         <div class="post-desc">PostgreSQL에 pgvector를 붙이고 HNSW 인덱스를 생성하는 핵심 명령어만 정리.</div>
         <div class="post-content-footer">
-          <div class="post-tags"><span class="post-tag">pgvector</span><span class="post-tag">til</span></div>
+          <div class="post-tags"><span class="post-tag">pgvector</span><span class="post-tag">snippet</span></div>
           <div class="post-meta"><span class="post-read-time">3분</span><span class="post-arrow">→</span></div>
         </div>
       </div>
@@ -486,11 +458,16 @@ a { text-decoration:none; color:inherit; }
           <div class="cat-tree-item"><div class="cat-tree-item-left"><span class="cat-dot" style="background:#059669"></span><span class="cat-tree-name">Backend</span></div><span class="cat-tree-cnt">2</span></div>
           <div class="cat-tree-item"><div class="cat-tree-item-left"><span class="cat-dot" style="background:#0891b2"></span><span class="cat-tree-name">Frontend</span></div><span class="cat-tree-cnt">1</span></div>
           <div class="cat-tree-item"><div class="cat-tree-item-left"><span class="cat-dot" style="background:#d97706"></span><span class="cat-tree-name">DevOps</span></div><span class="cat-tree-cnt">1</span></div>
+          <div class="cat-tree-item"><div class="cat-tree-item-left"><span class="cat-dot" style="background:#7c3aed"></span><span class="cat-tree-name">Database</span></div><span class="cat-tree-cnt">0</span></div>
         </div>
         <div class="cat-tree-group">
           <div class="cat-tree-label devnotes">DevNotes</div>
-          <div class="cat-tree-item"><div class="cat-tree-item-left"><span class="cat-dot" style="background:#7c3aed"></span><span class="cat-tree-name">TIL</span></div><span class="cat-tree-cnt">1</span></div>
-          <div class="cat-tree-item"><div class="cat-tree-item-left"><span class="cat-dot" style="background:#475569"></span><span class="cat-tree-name">Snippets</span></div><span class="cat-tree-cnt">1</span></div>
+          <div class="cat-tree-item"><div class="cat-tree-item-left"><span class="cat-dot" style="background:#475569"></span><span class="cat-tree-name">Snippets</span></div><span class="cat-tree-cnt">2</span></div>
+          <div class="cat-tree-item"><div class="cat-tree-item-left"><span class="cat-dot" style="background:#dc2626"></span><span class="cat-tree-name">Errors</span></div><span class="cat-tree-cnt">0</span></div>
+        </div>
+        <div class="cat-tree-group">
+          <div class="cat-tree-label projects">Projects</div>
+          <div class="cat-tree-empty">아직 글이 없습니다.</div>
         </div>
       </div>
     </div>
