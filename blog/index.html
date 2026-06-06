@@ -43,16 +43,7 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
     <div class="posts-list" id="postsList">
       {% for post in site.posts %}
 
-        {% case post.category %}
-          {% when "AI" %}       {% assign thumb_class = "ai"  %}
-          {% when "Backend" %}  {% assign thumb_class = "be"  %}
-          {% when "Frontend" %} {% assign thumb_class = "fe"  %}
-          {% when "DevOps" %}   {% assign thumb_class = "ops" %}
-          {% when "Database" %} {% assign thumb_class = "db"  %}
-          {% when "Snippets" %} {% assign thumb_class = "sn"  %}
-          {% when "Errors" %}   {% assign thumb_class = "err" %}
-          {% else %}            {% assign thumb_class = "ai"  %}
-        {% endcase %}
+        {% assign thumb_class = post.category | downcase %}
 
         <a href="{{ post.url | relative_url }}"
            class="post-card post-card--{{ thumb_class }}"
@@ -106,57 +97,28 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
       <div class="widget__title">카테고리</div>
       <div class="cat-tree">
 
-        <!-- Study -->
-        <div class="cat-tree__group">
-          <div class="cat-tree__label cat-tree__label--study">Study</div>
-          {% assign study_cats = "AI,Backend,Frontend,DevOps,Database" | split: "," %}
-          {% for cat in study_cats %}
-            {% assign cnt = site.posts | where: "series","Study" | where: "category", cat | size %}
-            <div class="cat-tree__item"
-                 data-series="Study"
-                 data-category="{{ cat }}"
-                 data-subcats="{{ site.posts | where:'series','Study' | where:'category',cat | map:'subcategory' | uniq | join:',' }}">
-              <div class="cat-tree__item-left">
-                <span class="cat-tree__dot cat-tree__dot--{{ cat | downcase }}"></span>
-                <span class="cat-tree__name">{{ cat }}</span>
+        {% assign all_series = site.posts | map: "series" | uniq | sort %}
+        {% for series in all_series %}
+          {% assign series_key = series | downcase %}
+          {% assign series_cats = site.posts | where: "series", series | map: "category" | uniq | sort %}
+          <div class="cat-tree__group">
+            <div class="cat-tree__label cat-tree__label--{{ series_key }}">{{ series }}</div>
+            {% for cat in series_cats %}
+              {% assign cnt = site.posts | where: "series", series | where: "category", cat | size %}
+              {% assign subcats_str = site.posts | where: "series", series | where: "category", cat | map: "subcategory" | uniq | join: "," %}
+              <div class="cat-tree__item"
+                   data-series="{{ series }}"
+                   data-category="{{ cat }}"
+                   data-subcats="{{ subcats_str }}">
+                <div class="cat-tree__item-left">
+                  <span class="cat-tree__dot cat-tree__dot--{{ cat | downcase }}"></span>
+                  <span class="cat-tree__name">{{ cat }}</span>
+                </div>
+                <span class="cat-tree__cnt">{{ cnt }}</span>
               </div>
-              <span class="cat-tree__cnt">{{ cnt }}</span>
-            </div>
-          {% endfor %}
-        </div>
-
-        <!-- DevNotes -->
-        <div class="cat-tree__group">
-          <div class="cat-tree__label cat-tree__label--devnotes">DevNotes</div>
-          {% assign dn_cats = "Snippets,Errors" | split: "," %}
-          {% for cat in dn_cats %}
-            {% assign cnt = site.posts | where: "series","DevNotes" | where: "category", cat | size %}
-            <div class="cat-tree__item" data-series="DevNotes" data-category="{{ cat }}">
-              <div class="cat-tree__item-left">
-                <span class="cat-tree__dot cat-tree__dot--{{ cat | downcase }}"></span>
-                <span class="cat-tree__name">{{ cat }}</span>
-              </div>
-              <span class="cat-tree__cnt">{{ cnt }}</span>
-            </div>
-          {% endfor %}
-        </div>
-
-        <!-- Projects -->
-        <div class="cat-tree__group">
-          <div class="cat-tree__label cat-tree__label--projects">Projects</div>
-          {% assign proj_cnt = site.posts | where: "series","Projects" | size %}
-          {% if proj_cnt == 0 %}
-          <div class="cat-tree__empty">아직 글이 없습니다.</div>
-          {% else %}
-          <div class="cat-tree__item" data-series="Projects" data-category="Projects">
-            <div class="cat-tree__item-left">
-              <span class="cat-tree__dot cat-tree__dot--projects"></span>
-              <span class="cat-tree__name">개발일지</span>
-            </div>
-            <span class="cat-tree__cnt">{{ proj_cnt }}</span>
+            {% endfor %}
           </div>
-          {% endif %}
-        </div>
+        {% endfor %}
 
       </div>
     </div>

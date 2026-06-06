@@ -261,22 +261,25 @@
   }
 }
 
-// 카테고리별 썸네일 그라디언트 (--ai = Study/AI 포함)
-.post-card--ai  .post-card__thumb { background: linear-gradient(145deg, #050f26, #0a1e50); }
-.post-card--be  .post-card__thumb { background: linear-gradient(145deg, #04160b, #072618); }
-.post-card--fe  .post-card__thumb { background: linear-gradient(145deg, #04121f, #071b38); }
-.post-card--ops .post-card__thumb { background: linear-gradient(145deg, #150d04, #261806); }
-.post-card--db  .post-card__thumb { background: linear-gradient(145deg, #0f0520, #1e0a38); }
-.post-card--sn  .post-card__thumb { background: linear-gradient(145deg, #080c18, #101828); }
-.post-card--err .post-card__thumb { background: linear-gradient(145deg, #1a0505, #300a0a); }
-.post-card--prj .post-card__thumb { background: linear-gradient(145deg, #1a1005, #2e1f06); }
+// 카테고리별 썸네일 그라디언트 — 클래스명은 category | downcase 그대로
+// 미지정 카테고리는 기본 다크 그라디언트 적용
+.post-card__thumb { background: linear-gradient(145deg, #080c18, #101828); } // fallback
+
+.post-card--ai        .post-card__thumb { background: linear-gradient(145deg, #050f26, #0a1e50); }
+.post-card--backend   .post-card__thumb { background: linear-gradient(145deg, #04160b, #072618); }
+.post-card--frontend  .post-card__thumb { background: linear-gradient(145deg, #04121f, #071b38); }
+.post-card--devops    .post-card__thumb { background: linear-gradient(145deg, #150d04, #261806); }
+.post-card--database  .post-card__thumb { background: linear-gradient(145deg, #0f0520, #1e0a38); }
+.post-card--snippets  .post-card__thumb { background: linear-gradient(145deg, #080c18, #101828); }
+.post-card--errors    .post-card__thumb { background: linear-gradient(145deg, #1a0505, #300a0a); }
+.post-card--projects  .post-card__thumb { background: linear-gradient(145deg, #1a1005, #2e1f06); }
 
 // 썸네일 glow 변형
-.post-card--be  .post-card__thumb::after { background: radial-gradient(circle, rgba(5,150,105,.18) 0%, transparent 65%); }
-.post-card--ops .post-card__thumb::after { background: radial-gradient(circle, rgba(217,119,6,.18) 0%, transparent 65%); }
-.post-card--db  .post-card__thumb::after { background: radial-gradient(circle, rgba($purple,.2) 0%, transparent 65%); }
-.post-card--err .post-card__thumb::after { background: radial-gradient(circle, rgba(220,38,38,.2) 0%, transparent 65%); }
-.post-card--prj .post-card__thumb::after { background: radial-gradient(circle, rgba(245,158,11,.18) 0%, transparent 65%); }
+.post-card--backend  .post-card__thumb::after { background: radial-gradient(circle, rgba(5,150,105,.18) 0%, transparent 65%); }
+.post-card--devops   .post-card__thumb::after { background: radial-gradient(circle, rgba(217,119,6,.18) 0%, transparent 65%); }
+.post-card--database .post-card__thumb::after { background: radial-gradient(circle, rgba($purple,.2) 0%, transparent 65%); }
+.post-card--errors   .post-card__thumb::after { background: radial-gradient(circle, rgba(220,38,38,.2) 0%, transparent 65%); }
+.post-card--projects .post-card__thumb::after { background: radial-gradient(circle, rgba(245,158,11,.18) 0%, transparent 65%); }
 
 // 썸네일 카테고리 레이블
 .post-card__thumb-cat {
@@ -284,15 +287,16 @@
   font-size: 10px; font-weight: 700;
   text-transform: uppercase; letter-spacing: 1.5px;
   padding: 3px 8px; border-radius: 4px;
+  color: rgba(148,163,184,.7); background: rgba(100,116,139,.12); border: 1px solid rgba(100,116,139,.18); // fallback
 }
-.post-card--ai  .post-card__thumb-cat { color: rgba(147,197,253,.7); background: rgba(59,130,246,.15); border: 1px solid rgba(59,130,246,.2); }
-.post-card--be  .post-card__thumb-cat { color: rgba(110,231,183,.7); background: rgba(5,150,105,.15);  border: 1px solid rgba(5,150,105,.2); }
-.post-card--fe  .post-card__thumb-cat { color: rgba(125,211,252,.7); background: rgba(14,165,233,.12); border: 1px solid rgba(14,165,233,.2); }
-.post-card--ops .post-card__thumb-cat { color: rgba(253,186,116,.7); background: rgba(217,119,6,.12);  border: 1px solid rgba(217,119,6,.2); }
-.post-card--db  .post-card__thumb-cat { color: rgba(196,181,253,.7); background: rgba($purple,.15); border: 1px solid rgba($purple,.2); }
-.post-card--sn  .post-card__thumb-cat { color: rgba(148,163,184,.7); background: rgba(100,116,139,.12);border: 1px solid rgba(100,116,139,.18); }
-.post-card--err .post-card__thumb-cat { color: rgba(252,165,165,.7); background: rgba(220,38,38,.15);  border: 1px solid rgba(220,38,38,.2); }
-.post-card--prj .post-card__thumb-cat { color: rgba(253,211,77,.7);  background: rgba(245,158,11,.12); border: 1px solid rgba(245,158,11,.2); }
+.post-card--ai        .post-card__thumb-cat { color: rgba(147,197,253,.7); background: rgba(59,130,246,.15);  border: 1px solid rgba(59,130,246,.2); }
+.post-card--backend   .post-card__thumb-cat { color: rgba(110,231,183,.7); background: rgba(5,150,105,.15);   border: 1px solid rgba(5,150,105,.2); }
+.post-card--frontend  .post-card__thumb-cat { color: rgba(125,211,252,.7); background: rgba(14,165,233,.12);  border: 1px solid rgba(14,165,233,.2); }
+.post-card--devops    .post-card__thumb-cat { color: rgba(253,186,116,.7); background: rgba(217,119,6,.12);   border: 1px solid rgba(217,119,6,.2); }
+.post-card--database  .post-card__thumb-cat { color: rgba(196,181,253,.7); background: rgba($purple,.15);     border: 1px solid rgba($purple,.2); }
+.post-card--snippets  .post-card__thumb-cat { color: rgba(148,163,184,.7); background: rgba(100,116,139,.12); border: 1px solid rgba(100,116,139,.18); }
+.post-card--errors    .post-card__thumb-cat { color: rgba(252,165,165,.7); background: rgba(220,38,38,.15);   border: 1px solid rgba(220,38,38,.2); }
+.post-card--projects  .post-card__thumb-cat { color: rgba(253,211,77,.7);  background: rgba(245,158,11,.12);  border: 1px solid rgba(245,158,11,.2); }
 
 // 카드 본문
 .post-card__content {
@@ -399,6 +403,7 @@
 .cat-tree__label {
   font-size: 10px; font-weight: 700; text-transform: uppercase;
   letter-spacing: .5px; margin-bottom: 5px;
+  color: $t3; // 미지정 시리즈 폴백
   &--study    { color: rgba($blue,.6); }
   &--devnotes { color: rgba($purple,.6); }
   &--projects { color: rgba(245,158,11,.7); }
@@ -419,6 +424,7 @@
 .cat-tree__item-left { display: flex; align-items: center; gap: 7px; }
 .cat-tree__dot {
   width: 6px; height: 6px; border-radius: 50%;
+  background: $t3; // 미지정 카테고리 폴백
   &--ai       { background: $blue; }
   &--backend  { background: #059669; }
   &--frontend { background: #0891b2; }
