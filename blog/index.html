@@ -109,8 +109,7 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
         <!-- Study -->
         <div class="cat-tree__group">
           <div class="cat-tree__label cat-tree__label--study">Study</div>
-          {% assign study_cats   = "AI,Backend,Frontend,DevOps,Database" | split: "," %}
-          {% assign study_colors = "#2563eb,#059669,#0891b2,#d97706,#7c3aed" | split: "," %}
+          {% assign study_cats = "AI,Backend,Frontend,DevOps,Database" | split: "," %}
           {% for cat in study_cats %}
             {% assign cnt = site.posts | where: "series","Study" | where: "category", cat | size %}
             <div class="cat-tree__item"
@@ -118,7 +117,7 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
                  data-category="{{ cat }}"
                  data-subcats="{{ site.posts | where:'series','Study' | where:'category',cat | map:'subcategory' | uniq | join:',' }}">
               <div class="cat-tree__item-left">
-                <span class="cat-tree__dot" style="background: {{ study_colors[forloop.index0] }}"></span>
+                <span class="cat-tree__dot cat-tree__dot--{{ cat | downcase }}"></span>
                 <span class="cat-tree__name">{{ cat }}</span>
               </div>
               <span class="cat-tree__cnt">{{ cnt }}</span>
@@ -129,13 +128,12 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
         <!-- DevNotes -->
         <div class="cat-tree__group">
           <div class="cat-tree__label cat-tree__label--devnotes">DevNotes</div>
-          {% assign dn_cats   = "Snippets,Errors" | split: "," %}
-          {% assign dn_colors = "#475569,#dc2626"  | split: "," %}
+          {% assign dn_cats = "Snippets,Errors" | split: "," %}
           {% for cat in dn_cats %}
             {% assign cnt = site.posts | where: "series","DevNotes" | where: "category", cat | size %}
             <div class="cat-tree__item" data-series="DevNotes" data-category="{{ cat }}">
               <div class="cat-tree__item-left">
-                <span class="cat-tree__dot" style="background: {{ dn_colors[forloop.index0] }}"></span>
+                <span class="cat-tree__dot cat-tree__dot--{{ cat | downcase }}"></span>
                 <span class="cat-tree__name">{{ cat }}</span>
               </div>
               <span class="cat-tree__cnt">{{ cnt }}</span>
@@ -152,7 +150,7 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
           {% else %}
           <div class="cat-tree__item" data-series="Projects" data-category="Projects">
             <div class="cat-tree__item-left">
-              <span class="cat-tree__dot" style="background:#f59e0b"></span>
+              <span class="cat-tree__dot cat-tree__dot--projects"></span>
               <span class="cat-tree__name">개발일지</span>
             </div>
             <span class="cat-tree__cnt">{{ proj_cnt }}</span>
