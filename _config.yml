@@ -31,7 +31,6 @@ feed:
 # Exclude from build
 exclude:
   - landing.html
-  - portfolio.html
   - blog.html
   - Gemfile
   - Gemfile.lock
@@ -39,3 +38,6 @@ exclude:
   - "*.sh"
   - node_modules
   - vendor
+  - post_candidate       # 후보 초안(layout:post) — 제외 안 하면 /post_candidate/* 로 발행됨
+  - post-ideas.md        # 내부 글감 목록
+  - CLAUDE_CODE_GUIDE.md # 내부 운영 가이드

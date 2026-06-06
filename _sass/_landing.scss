@@ -1,11 +1,15 @@
 // ── 랜딩 페이지 ──────────────────────────────────
+// macOS 트래픽 라이트 색상
+$dot-r: #f87171;
+$dot-y: #fbbf24;
+$dot-g: #34d399;
 
 .landing-hero {
   display: flex;
   align-items: center;
   gap: 80px;
   padding: 72px $pad;
-  max-width: 1200px;
+  max-width: $max-w;
   margin: 0 auto;
 
   @media (max-width: $tablet) {
@@ -125,21 +129,21 @@
 
 .code-card__dot {
   width: 10px; height: 10px; border-radius: 50%;
-  &--r { background: #f87171; }
-  &--y { background: #fbbf24; }
-  &--g { background: #34d399; }
+  &--r { background: $dot-r; }
+  &--y { background: $dot-y; }
+  &--g { background: $dot-g; }
 }
 
 .code-card__title {
   font-size: 11px;
-  color: #8b949e;
+  color: $t3;
   margin-left: 8px;
-  font-family: 'SF Mono', 'Consolas', monospace;
+  font-family: $mono;
 }
 
 .code-card__body {
   padding: 24px;
-  font-family: 'SF Mono', 'Consolas', monospace;
+  font-family: $mono;
   font-size: 13px;
   line-height: 2;
   color: $t2;

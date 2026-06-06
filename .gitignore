@@ -6,3 +6,10 @@ Gemfile.lock
 vendor/
 .bundle/
 node_modules/
+
+# Claude Code 운영 파일 (공개 제외)
+.claude/
+CLAUDE.md
+CLAUDE_CODE_GUIDE.md
+post_candidate/
+post-ideas.md

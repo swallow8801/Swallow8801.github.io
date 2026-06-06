@@ -14,7 +14,7 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
       <span>/</span>
       <span>Blog</span>
     </div>
-    <div class="blog-page-header__search">검색...</div>
+    <div class="blog-page-header__search" aria-hidden="true">검색...</div>
   </div>
   <div class="blog-page-header__body">
     <div class="blog-page-header__info">
@@ -97,7 +97,7 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
       <div class="widget-about__role">AI Full Stack Developer</div>
       <p class="widget-about__bio">LLM, RAG, 벡터 검색부터 풀스택 웹까지. 프로덕션에서 직접 겪은 것들만 씁니다.</p>
       <div class="widget-about__links">
-        <a href="https://github.com/{{ site.author.github }}" class="widget-about__link" target="_blank">GitHub</a>
+        <a href="https://github.com/{{ site.author.github }}" class="widget-about__link" target="_blank" rel="noopener noreferrer">GitHub</a>
         <a href="{{ '/portfolio' | relative_url }}" class="widget-about__link">Portfolio</a>
       </div>
     </div>
