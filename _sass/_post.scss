@@ -35,7 +35,7 @@
 
 .post-header__cat {
   display: inline-block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -52,7 +52,7 @@
 }
 
 .post-header__title {
-  font-size: 32px;
+  font-size: 38px;
   font-weight: 900;
   line-height: 1.25;
   letter-spacing: -.8px;
@@ -60,11 +60,11 @@
   margin-bottom: 16px;
 
   @media (max-width: $tablet) {
-    font-size: 28px;
+    font-size: 34px;
   }
 
   @media (max-width: $mobile) {
-    font-size: 24px;
+    font-size: 28px;
     line-height: 1.32;
     letter-spacing: 0;
     margin-bottom: 12px;
@@ -84,7 +84,7 @@
   }
 }
 
-.post-header__date { font-size: 13px; color: $t3; }
+.post-header__date { font-size: 14px; color: $t3; }
 
 .post-header__tags {
   display: flex;
@@ -93,7 +93,7 @@
 }
 
 .post-header__tag {
-  font-size: 12px;
+  font-size: 13px;
   color: $t3;
   background: $surface2;
   padding: 3px 9px;
@@ -101,7 +101,7 @@
   font-weight: 500;
 
   @media (max-width: $mobile) {
-    font-size: 11px;
+    font-size: 12px;
     padding: 3px 8px;
   }
 }
@@ -154,6 +154,7 @@
 
 .post-hero__title {
     color: #fff;
+    font-size: 38px;
     text-shadow: 0 2px 20px rgba(0,0,0,.3);
     margin-bottom: 12px;
   }
@@ -184,6 +185,10 @@
       min-height: 330px;
       padding: 36px;
     }
+
+.post-hero__title {
+      font-size: 34px;
+    }
   }
 
   @media (max-width: $mobile) {
@@ -203,7 +208,7 @@
     }
 
 .post-hero__title {
-      font-size: 25px;
+      font-size: 28px;
       line-height: 1.32;
       margin-bottom: 10px;
     }
@@ -233,7 +238,7 @@
 
   // 타이포그래피
   h2 {
-    font-size: 22px;
+    font-size: 28px;
     font-weight: 800;
     color: $t1;
     margin: 40px 0 16px;
@@ -242,7 +247,7 @@
     letter-spacing: -.3px;
 
     @media (max-width: $mobile) {
-      font-size: 20px;
+      font-size: 24px;
       line-height: 1.35;
       letter-spacing: 0;
       margin: 32px 0 14px;
@@ -250,27 +255,34 @@
   }
 
   h3 {
-    font-size: 18px;
+    font-size: 24px;
     font-weight: 700;
     color: $t1;
     margin: 28px 0 12px;
 
     @media (max-width: $mobile) {
-      font-size: 17px;
+      font-size: 21px;
       line-height: 1.4;
       margin: 24px 0 10px;
     }
   }
 
   h4 {
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 700;
     color: $t1;
     margin: 20px 0 8px;
   }
 
+  h5 {
+    font-size: 17px;
+    font-weight: 700;
+    color: $t1;
+    margin: 16px 0 8px;
+  }
+
   p {
-    font-size: 15px;
+    font-size: 16px;
     color: $t2;
     line-height: 1.9;
     margin-bottom: 18px;
@@ -278,7 +290,7 @@
     overflow-wrap: anywhere;
 
     @media (max-width: $mobile) {
-      font-size: 14px;
+      font-size: 15px;
       line-height: 1.85;
       margin-bottom: 16px;
     }
@@ -289,7 +301,7 @@
     margin-bottom: 18px;
 
     li {
-      font-size: 15px;
+      font-size: 16px;
       color: $t2;
       line-height: 1.8;
       margin-bottom: 6px;
@@ -297,7 +309,7 @@
       overflow-wrap: anywhere;
 
       @media (max-width: $mobile) {
-        font-size: 14px;
+        font-size: 15px;
         line-height: 1.75;
       }
     }
@@ -339,7 +351,7 @@
     width: 100%;
     border-collapse: collapse;
     margin: 24px 0;
-    font-size: 14px;
+    font-size: 15px;
     display: block;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -347,7 +359,7 @@
 
     @media (max-width: $mobile) {
       margin: 20px 0;
-      font-size: 13px;
+      font-size: 14px;
     }
 
     th {
@@ -414,8 +426,8 @@
   }
 }
 
-.post-nav__dir { font-size: 11px; color: $t3; font-weight: 600; margin-bottom: 4px; }
-.post-nav__title { font-size: 14px; font-weight: 700; color: $t1; line-height: 1.4; }
+.post-nav__dir { font-size: 12px; color: $t3; font-weight: 600; margin-bottom: 4px; }
+.post-nav__title { font-size: 15px; font-weight: 700; color: $t1; line-height: 1.4; }
 
 // 관련 포스트
 .related-posts { margin-top: 40px; }
@@ -452,9 +464,9 @@
   &:hover .related-post-card__title { color: $blue; }
 }
 
-.related-post-card__cat { font-size: 10px; font-weight: 700; color: $blue; text-transform: uppercase; margin-bottom: 5px; }
-.related-post-card__title { font-size: 13px; font-weight: 600; color: $t1; line-height: 1.4; transition: color .15s; }
-.related-post-card__date { font-size: 11px; color: $t3; margin-top: 6px; }
+.related-post-card__cat { font-size: 11px; font-weight: 700; color: $blue; text-transform: uppercase; margin-bottom: 5px; }
+.related-post-card__title { font-size: 14px; font-weight: 600; color: $t1; line-height: 1.4; transition: color .15s; }
+.related-post-card__date { font-size: 12px; color: $t3; margin-top: 6px; }
 
 // TOC 사이드바
 .post-toc {
@@ -489,7 +501,7 @@
   a {
     display: block;
     padding: 5px 8px;
-    font-size: 12px;
+    font-size: 13px;
     color: $t2;
     border-radius: 5px;
     line-height: 1.4;
@@ -506,5 +518,5 @@
     font-weight: 600;
   }
 
-  &--h3 a { padding-left: 20px; font-size: 11px; }
+  &--h3 a { padding-left: 20px; font-size: 12px; }
 }

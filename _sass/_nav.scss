@@ -16,7 +16,7 @@
 }
 
 .site-nav__logo {
-  font-size: 17px;
+  font-size: 19px;
   font-weight: 800;
   color: $t1;
   letter-spacing: -.5px;
@@ -33,7 +33,7 @@
   height: $nav-h;
   display: flex;
   align-items: center;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: $t3;
   cursor: pointer;
@@ -48,7 +48,7 @@
     border-bottom-color: $blue;
   }
 
-  @media (max-width: $mobile) { padding: 0 12px; font-size: 13px; }
+  @media (max-width: $mobile) { padding: 0 12px; font-size: 14px; }
 }
 
 .site-nav__right {
@@ -60,7 +60,7 @@
 }
 
 .site-nav__link {
-  font-size: 14px;
+  font-size: 15px;
   color: $t2;
   font-weight: 500;
   cursor: pointer;
@@ -78,7 +78,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 13px;
+  font-size: 14px;
   color: $t3;
 
   @media (max-width: $mobile) {
@@ -101,7 +101,7 @@
 
   a {
     color: $t3;
-    font-size: 13px;
+    font-size: 14px;
     &:hover { color: $blue; }
   }
 }

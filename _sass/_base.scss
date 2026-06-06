@@ -3,7 +3,7 @@
   margin: 0; padding: 0; box-sizing: border-box;
 }
 
-html { scroll-behavior: smooth; }
+html { font-size: 16px; scroll-behavior: smooth; }
 
 body {
   font-family: $font;
@@ -22,9 +22,9 @@ button { font-family: $font; }
 // 태그 뱃지
 .tag-badge {
   display: inline-block;
-  padding: 3px 9px;
+  padding: 4px 10px;
   border-radius: 5px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   background: $blue-bg;
   color: $blue;
@@ -56,9 +56,9 @@ button { font-family: $font; }
 .page-wrap {
   max-width: $max-w;
   margin: 0 auto;
-  padding: 44px $pad;
+  padding: 52px $pad;
 
-  @media (max-width: $tablet) { padding: 32px 32px; }
+  @media (max-width: $tablet) { padding: 40px 32px; }
   @media (max-width: $mobile) { padding: 24px 20px; }
 }
 
@@ -101,8 +101,8 @@ button { font-family: $font; }
   pre {
     padding: 40px 16px 16px;
     overflow-x: auto;
-    font-size: 13px;
-    line-height: 1.7;
+    font-size: 14px;
+    line-height: 1.75;
     color: #e2e8f0;
     font-family: $mono;
   }
@@ -114,7 +114,7 @@ code:not(.highlight code) {
   border: 1px solid $border;
   border-radius: 4px;
   padding: 1px 6px;
-  font-size: .88em;
+  font-size: .9em;
   color: $blue;
   font-family: $mono;
 }

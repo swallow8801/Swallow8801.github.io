@@ -33,21 +33,21 @@
 .port-profile__info { flex: 1; }
 
 .port-profile__name {
-  font-size: 20px;
+  font-size: 28px;
   font-weight: 800;
   color: #fff;
   margin-bottom: 4px;
 }
 
 .port-profile__role {
-  font-size: 13px;
+  font-size: 22px;
   color: rgba(255,255,255,.75);
   font-weight: 500;
   margin-bottom: 6px;
 }
 
 .port-profile__bio {
-  font-size: 13px;
+  font-size: 14px;
   color: rgba(255,255,255,.6);
   line-height: 1.6;
 }
@@ -66,7 +66,7 @@
 }
 
 .port-profile__stat-lbl {
-  font-size: 11px;
+  font-size: 14px;
   color: rgba(255,255,255,.5);
   margin-top: 2px;
   font-weight: 500;
@@ -82,7 +82,7 @@
   border-radius: 7px;
   border: 1.5px solid rgba(255,255,255,.25);
   background: rgba(255,255,255,.1);
-  font-size: 13px;
+  font-size: 14px;
   color: rgba(255,255,255,.85);
   cursor: pointer;
   font-family: $font;
@@ -103,7 +103,7 @@
 .port-filter__btn {
   padding: 7px 16px;
   border-radius: 20px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   border: 1.5px solid $border;
   background: $surface;
@@ -152,7 +152,7 @@
 }
 
 .proj-featured__label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   color: rgba(255,255,255,.5);
   text-transform: uppercase;
@@ -161,7 +161,7 @@
 }
 
 .proj-featured__name {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 800;
   color: #fff;
   margin-bottom: 8px;
@@ -169,14 +169,14 @@
 }
 
 .proj-featured__sub {
-  font-size: 13px;
+  font-size: 14px;
   color: rgba(255,255,255,.65);
 }
 
 .proj-featured__body { padding: 22px 28px; }
 
 .proj-featured__desc {
-  font-size: 14px;
+  font-size: 15px;
   color: $t2;
   line-height: 1.75;
   margin-bottom: 18px;
@@ -219,7 +219,7 @@
 }
 
 .proj-card__type {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .5px;
@@ -229,10 +229,10 @@
   border-radius: 4px;
 }
 
-.proj-card__stars { font-size: 12px; color: $t3; }
+.proj-card__stars { font-size: 13px; color: $t3; }
 
 .proj-card__name {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 700;
   color: $t1;
   margin-bottom: 8px;
@@ -240,7 +240,7 @@
 }
 
 .proj-card__desc {
-  font-size: 13px;
+  font-size: 14px;
   color: $t2;
   line-height: 1.65;
   margin-bottom: 14px;
@@ -272,7 +272,7 @@
 }
 
 .skills-wrap__title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 800;
   color: $t1;
   margin-bottom: 24px;
@@ -289,7 +289,7 @@
 }
 
 .skill-group__label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -308,14 +308,14 @@
 }
 
 .skill-row__name {
-  font-size: 12px;
+  font-size: 14px;
   color: $t2;
   font-weight: 500;
   min-width: 100px;
 }
 
 .skill-row__pct {
-  font-size: 11px;
+  font-size: 13px;
   color: $t3;
   min-width: 26px;
   text-align: right;

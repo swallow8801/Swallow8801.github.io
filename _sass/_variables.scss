@@ -26,7 +26,7 @@ $font: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 $mono: 'SF Mono', 'Consolas', 'Courier New', monospace;  // 코드 폰트 스택
 
 // ── 레이아웃 ──────────────────────────────────────
-$nav-h:  58px;
+$nav-h:  64px;
 $max-w:  1160px;
 $pad:    60px;         // 좌우 기본 패딩
 
@@ -49,11 +49,11 @@ $mobile:  600px;
 }
 
 @mixin btn-primary {
-  padding: 11px 22px;
+  padding: 13px 26px;
   border-radius: 8px;
   background: $blue;
   color: #fff;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   border: none;
   cursor: pointer;
@@ -63,11 +63,11 @@ $mobile:  600px;
 }
 
 @mixin btn-secondary {
-  padding: 11px 22px;
+  padding: 13px 26px;
   border-radius: 8px;
   background: transparent;
   color: $t1;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   border: 1.5px solid $border;
   cursor: pointer;
