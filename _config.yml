@@ -13,6 +13,7 @@ author:
 markdown: kramdown
 highlighter: rouge
 permalink: /blog/:slug/
+future: true   # 한국시간 기준 "오늘" 작성한 글이 UTC 빌드 서버에서 미래 날짜로 제외되는 것 방지
 
 kramdown:
   input: GFM
