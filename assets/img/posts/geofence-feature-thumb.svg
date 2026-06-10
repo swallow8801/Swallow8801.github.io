@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Geofence feature thumbnail">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#7c4a06"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/>
+
+  <!-- camera frame -->
+  <rect x="70" y="80" width="820" height="400" rx="20" fill="#111827" stroke="#475569" stroke-width="4"/>
+
+  <!-- background grid (yard layout) -->
+  <g stroke="#1e293b" stroke-width="2">
+    <line x1="70" y1="180" x2="890" y2="180"/>
+    <line x1="70" y1="280" x2="890" y2="280"/>
+    <line x1="70" y1="380" x2="890" y2="380"/>
+    <line x1="290" y1="80" x2="290" y2="480"/>
+    <line x1="510" y1="80" x2="510" y2="480"/>
+    <line x1="730" y1="80" x2="730" y2="480"/>
+  </g>
+
+  <!-- geofence polygon zone -->
+  <polygon points="320,160 620,140 660,340 380,400 290,300" fill="#f59e0b" fill-opacity="0.18" stroke="#f59e0b" stroke-width="5" stroke-dasharray="14 10"/>
+  <g fill="#f59e0b">
+    <circle cx="320" cy="160" r="9"/>
+    <circle cx="620" cy="140" r="9"/>
+    <circle cx="660" cy="340" r="9"/>
+    <circle cx="380" cy="400" r="9"/>
+    <circle cx="290" cy="300" r="9"/>
+  </g>
+
+  <!-- person markers inside zone (highlighted = red) -->
+  <g fill="#ef4444">
+    <circle cx="430" cy="230" r="12"/>
+    <circle cx="520" cy="280" r="12"/>
+    <circle cx="470" cy="335" r="12"/>
+  </g>
+
+  <!-- person markers outside zone (normal = green) -->
+  <g fill="#22c55e">
+    <circle cx="180" cy="430" r="10"/>
+    <circle cx="800" cy="160" r="10"/>
+  </g>
+
+  <!-- count badge -->
+  <rect x="690" y="370" width="180" height="78" rx="12" fill="#0f172a" stroke="#f59e0b" stroke-width="3"/>
+  <text x="780" y="402" fill="#f59e0b" font-family="Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle">ZONE A</text>
+  <text x="780" y="434" fill="#ffffff" font-family="Arial, sans-serif" font-size="28" font-weight="700" text-anchor="middle">3 / 5</text>
+
+  <text x="70" y="56" fill="#f8fafc" font-family="Arial, sans-serif" font-size="36" font-weight="700">Geofence Zone Monitoring</text>
+</svg>

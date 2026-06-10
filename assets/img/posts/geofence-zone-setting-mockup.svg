@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" role="img" aria-label="Geofence 구역 설정 화면 목업">
+  <rect width="1200" height="750" fill="#eef2f7"/>
+
+  <!-- top bar -->
+  <rect x="0" y="0" width="1200" height="56" fill="#ffffff"/>
+  <line x1="0" y1="56" x2="1200" y2="56" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="24" y="34" fill="#0f1f3d" font-family="Arial, sans-serif" font-size="20" font-weight="700">설정 › Geofence 구역 설정</text>
+  <rect x="978" y="12" width="206" height="32" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="1081" y="33" text-anchor="middle" fill="#334155" font-family="Arial, sans-serif" font-size="13">CAM-03 · 본관 동측 게이트 ▾</text>
+
+  <!-- left: camera live view -->
+  <rect x="0" y="56" width="820" height="694" fill="#1e293b"/>
+
+  <!-- yard shapes for context -->
+  <rect x="60" y="420" width="220" height="170" rx="4" fill="#334155"/>
+  <rect x="310" y="470" width="170" height="120" rx="4" fill="#334155"/>
+  <rect x="540" y="140" width="36" height="360" rx="4" fill="#3f4f66"/>
+  <rect x="420" y="140" width="260" height="22" rx="4" fill="#3f4f66"/>
+
+  <!-- geofence polygon being drawn -->
+  <polygon points="210,190 540,160 640,400 400,580 190,440" fill="#f59e0b" fill-opacity="0.22" stroke="#f59e0b" stroke-width="4" stroke-dasharray="12 8"/>
+  <g fill="#ffffff" stroke="#f59e0b" stroke-width="3">
+    <circle cx="210" cy="190" r="10"/>
+    <circle cx="540" cy="160" r="10"/>
+    <circle cx="400" cy="580" r="10"/>
+    <circle cx="190" cy="440" r="10"/>
+  </g>
+  <circle cx="640" cy="400" r="14" fill="#ffffff" stroke="#f59e0b" stroke-width="4"/>
+
+  <!-- callout for drag handle -->
+  <line x1="652" y1="410" x2="690" y2="450" stroke="#f59e0b" stroke-width="2"/>
+  <rect x="660" y="448" width="190" height="58" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="755" y="471" text-anchor="middle" fill="#0f1f3d" font-family="Arial, sans-serif" font-size="14" font-weight="600">드래그하여</text>
+  <text x="755" y="492" text-anchor="middle" fill="#0f1f3d" font-family="Arial, sans-serif" font-size="14" font-weight="600">위치 조정</text>
+
+  <!-- toolbar -->
+  <rect x="40" y="640" width="740" height="70" rx="10" fill="#f8fafc" fill-opacity="0.95" stroke="#cbd5e1" stroke-width="1.5"/>
+  <rect x="60" y="657" width="130" height="38" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="125" y="681" text-anchor="middle" fill="#334155" font-family="Arial, sans-serif" font-size="14">점 추가</text>
+  <rect x="210" y="657" width="160" height="38" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="290" y="681" text-anchor="middle" fill="#334155" font-family="Arial, sans-serif" font-size="14">마지막 점 삭제</text>
+  <rect x="390" y="657" width="140" height="38" rx="8" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="460" y="681" text-anchor="middle" fill="#334155" font-family="Arial, sans-serif" font-size="14">전체 초기화</text>
+  <text x="760" y="681" text-anchor="end" fill="#475569" font-family="Arial, sans-serif" font-size="13">A구역 · 점 5개 · 정규화 좌표 저장</text>
+
+  <!-- right: form panel -->
+  <rect x="820" y="56" width="380" height="694" fill="#ffffff"/>
+  <line x1="820" y1="56" x2="820" y2="750" stroke="#e2e8f0" stroke-width="2"/>
+
+  <text x="852" y="96" fill="#0f1f3d" font-family="Arial, sans-serif" font-size="18" font-weight="700">구역 정보</text>
+  <line x1="852" y1="108" x2="1168" y2="108" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <text x="852" y="140" fill="#64748b" font-family="Arial, sans-serif" font-size="13">구역 이름</text>
+  <rect x="852" y="150" width="316" height="42" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="866" y="177" fill="#0f1f3d" font-family="Arial, sans-serif" font-size="15">A구역 - 자재 적치장</text>
+
+  <text x="852" y="222" fill="#64748b" font-family="Arial, sans-serif" font-size="13">색상</text>
+  <circle cx="868" cy="246" r="19" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+  <circle cx="868" cy="246" r="14" fill="#f59e0b"/>
+  <circle cx="908" cy="246" r="14" fill="#2563eb"/>
+  <circle cx="948" cy="246" r="14" fill="#dc2626"/>
+  <circle cx="988" cy="246" r="14" fill="#16a34a"/>
+
+  <text x="852" y="300" fill="#64748b" font-family="Arial, sans-serif" font-size="13">최대 허용 인원</text>
+  <rect x="852" y="310" width="150" height="42" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <line x1="894" y1="310" x2="894" y2="352" stroke="#e2e8f0" stroke-width="1.5"/>
+  <line x1="960" y1="310" x2="960" y2="352" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="873" y="338" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="18">−</text>
+  <text x="927" y="338" text-anchor="middle" fill="#0f1f3d" font-family="Arial, sans-serif" font-size="16" font-weight="700">5</text>
+  <text x="981" y="338" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="18">+</text>
+  <text x="1018" y="338" fill="#94a3b8" font-family="Arial, sans-serif" font-size="13">명</text>
+
+  <text x="852" y="392" fill="#64748b" font-family="Arial, sans-serif" font-size="13">활성화</text>
+  <rect x="940" y="378" width="56" height="28" rx="14" fill="#2563eb"/>
+  <circle cx="982" cy="392" r="11" fill="#ffffff"/>
+  <text x="1006" y="396" fill="#16a34a" font-family="Arial, sans-serif" font-size="13">사용 중</text>
+
+  <rect x="852" y="440" width="150" height="46" rx="8" fill="#2563eb"/>
+  <text x="927" y="469" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="15" font-weight="700">저장</text>
+  <rect x="1018" y="440" width="150" height="46" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="1093" y="469" text-anchor="middle" fill="#475569" font-family="Arial, sans-serif" font-size="15">취소</text>
+
+  <line x1="852" y1="520" x2="1168" y2="520" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="852" y="552" fill="#0f1f3d" font-family="Arial, sans-serif" font-size="16" font-weight="700">등록된 구역</text>
+
+  <!-- zone list rows -->
+  <g font-family="Arial, sans-serif">
+    <circle cx="862" cy="592" r="7" fill="#f59e0b"/>
+    <text x="882" y="597" fill="#0f1f3d" font-size="14">A구역 - 자재 적치장</text>
+    <text x="1110" y="597" text-anchor="end" fill="#475569" font-size="14">0 / 5</text>
+    <rect x="1126" y="584" width="16" height="16" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="1158" y="598" fill="#94a3b8" font-size="16" font-weight="700">×</text>
+    <line x1="852" y1="622" x2="1168" y2="622" stroke="#f1f5f9" stroke-width="1.5"/>
+
+    <circle cx="862" cy="652" r="7" fill="#2563eb"/>
+    <text x="882" y="657" fill="#0f1f3d" font-size="14">B구역 - 크레인 작업반경</text>
+    <text x="1110" y="657" text-anchor="end" fill="#475569" font-size="14">2 / 3</text>
+    <rect x="1126" y="644" width="16" height="16" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="1158" y="658" fill="#94a3b8" font-size="16" font-weight="700">×</text>
+    <line x1="852" y1="682" x2="1168" y2="682" stroke="#f1f5f9" stroke-width="1.5"/>
+
+    <circle cx="862" cy="712" r="7" fill="#dc2626"/>
+    <text x="882" y="717" fill="#0f1f3d" font-size="14">C구역 - 출입 통제구역</text>
+    <text x="1110" y="717" text-anchor="end" fill="#475569" font-size="14">0 / 1</text>
+    <rect x="1126" y="704" width="16" height="16" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="1158" y="718" fill="#94a3b8" font-size="16" font-weight="700">×</text>
+  </g>
+</svg>

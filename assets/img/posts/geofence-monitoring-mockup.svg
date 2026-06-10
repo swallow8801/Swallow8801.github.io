@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" role="img" aria-label="Geofence 실시간 모니터링 화면 목업">
+  <rect width="1200" height="750" fill="#eef2f7"/>
+
+  <!-- top bar -->
+  <rect x="0" y="0" width="1200" height="56" fill="#ffffff"/>
+  <line x1="0" y1="56" x2="1200" y2="56" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="24" y="34" fill="#0f1f3d" font-family="Arial, sans-serif" font-size="20" font-weight="700">실시간 관제 › CAM-03 본관 동측 게이트</text>
+  <circle cx="1100" cy="28" r="6" fill="#dc2626"/>
+  <text x="1116" y="33" fill="#dc2626" font-family="Arial, sans-serif" font-size="14" font-weight="700">LIVE</text>
+
+  <!-- left: camera view -->
+  <rect x="0" y="56" width="860" height="694" fill="#1e293b"/>
+
+  <!-- yard context shapes -->
+  <rect x="60" y="430" width="220" height="160" rx="4" fill="#334155"/>
+  <rect x="330" y="500" width="170" height="110" rx="4" fill="#334155"/>
+  <rect x="600" y="140" width="36" height="380" rx="4" fill="#3f4f66"/>
+  <rect x="440" y="140" width="300" height="22" rx="4" fill="#3f4f66"/>
+
+  <!-- alarm banner -->
+  <rect x="20" y="72" width="430" height="36" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="40" y="96" fill="#dc2626" font-family="Arial, sans-serif" font-size="14" font-weight="700">B구역 인원 초과 — 크레인 작업반경</text>
+
+  <!-- Zone A polygon (amber, normal) -->
+  <polygon points="190,200 480,170 580,400 360,580 170,440" fill="#f59e0b" fill-opacity="0.20" stroke="#f59e0b" stroke-width="3"/>
+  <!-- Zone B polygon (red, over capacity) -->
+  <polygon points="600,190 730,180 745,290 615,300" fill="#dc2626" fill-opacity="0.20" stroke="#dc2626" stroke-width="4"/>
+
+  <!-- Zone A badge -->
+  <rect x="170" y="140" width="170" height="46" rx="8" fill="#0f172a" fill-opacity="0.88" stroke="#f59e0b" stroke-width="2"/>
+  <text x="255" y="170" text-anchor="middle" fill="#f8fafc" font-family="Arial, sans-serif" font-size="18" font-weight="700">A구역  2 / 5</text>
+
+  <!-- Zone B badge -->
+  <rect x="600" y="150" width="180" height="46" rx="8" fill="#0f172a" fill-opacity="0.92" stroke="#dc2626" stroke-width="3"/>
+  <text x="690" y="180" text-anchor="middle" fill="#fecaca" font-family="Arial, sans-serif" font-size="18" font-weight="700">B구역  2 / 1 ⚠</text>
+
+  <!-- person boxes inside Zone A (red = counted) -->
+  <rect x="330" y="330" width="48" height="94" fill="none" stroke="#dc2626" stroke-width="3"/>
+  <rect x="312" y="308" width="84" height="20" rx="4" fill="#dc2626"/>
+  <text x="354" y="323" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="11" font-weight="700">person 0.93</text>
+
+  <rect x="420" y="430" width="48" height="94" fill="none" stroke="#dc2626" stroke-width="3"/>
+  <rect x="402" y="528" width="84" height="20" rx="4" fill="#dc2626"/>
+  <text x="444" y="543" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="11" font-weight="700">person 0.89</text>
+
+  <!-- person boxes inside Zone B (red = counted, over capacity) -->
+  <rect x="612" y="205" width="42" height="80" fill="none" stroke="#dc2626" stroke-width="3"/>
+  <rect x="596" y="183" width="84" height="20" rx="4" fill="#dc2626"/>
+  <text x="638" y="198" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="11" font-weight="700">person 0.91</text>
+
+  <rect x="670" y="225" width="42" height="80" fill="none" stroke="#dc2626" stroke-width="3"/>
+  <rect x="654" y="308" width="84" height="20" rx="4" fill="#dc2626"/>
+  <text x="696" y="323" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="11" font-weight="700">person 0.86</text>
+
+  <!-- person boxes outside any zone (green = not counted) -->
+  <rect x="120" y="540" width="48" height="94" fill="none" stroke="#16a34a" stroke-width="3"/>
+  <rect x="102" y="640" width="84" height="20" rx="4" fill="#16a34a"/>
+  <text x="144" y="655" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="11" font-weight="700">person 0.95</text>
+
+  <rect x="760" y="520" width="48" height="94" fill="none" stroke="#16a34a" stroke-width="3"/>
+  <rect x="742" y="498" width="84" height="20" rx="4" fill="#16a34a"/>
+  <text x="784" y="513" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="11" font-weight="700">person 0.88</text>
+
+  <!-- right: status panel -->
+  <rect x="860" y="56" width="340" height="694" fill="#ffffff"/>
+  <line x1="860" y1="56" x2="860" y2="750" stroke="#e2e8f0" stroke-width="2"/>
+
+  <text x="892" y="96" fill="#0f1f3d" font-family="Arial, sans-serif" font-size="18" font-weight="700">구역 현황</text>
+  <line x1="892" y1="108" x2="1168" y2="108" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <!-- Zone A row -->
+  <circle cx="900" cy="143" r="7" fill="#f59e0b"/>
+  <text x="918" y="148" fill="#0f1f3d" font-family="Arial, sans-serif" font-size="14" font-weight="700">A구역 - 자재 적치장</text>
+  <text x="1168" y="148" text-anchor="end" fill="#475569" font-family="Arial, sans-serif" font-size="14">2 / 5</text>
+  <rect x="892" y="160" width="276" height="14" rx="7" fill="#f1f5f9"/>
+  <rect x="892" y="160" width="110" height="14" rx="7" fill="#f59e0b"/>
+
+  <!-- Zone B row (over capacity) -->
+  <circle cx="900" cy="223" r="7" fill="#dc2626"/>
+  <text x="918" y="228" fill="#0f1f3d" font-family="Arial, sans-serif" font-size="14" font-weight="700">B구역 - 크레인 작업반경</text>
+  <rect x="1100" y="212" width="68" height="24" rx="12" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="1134" y="229" text-anchor="middle" fill="#dc2626" font-family="Arial, sans-serif" font-size="13" font-weight="700">초과</text>
+  <rect x="892" y="244" width="276" height="14" rx="7" fill="#fef2f2"/>
+  <rect x="892" y="244" width="276" height="14" rx="7" fill="#dc2626"/>
+  <text x="892" y="280" fill="#dc2626" font-family="Arial, sans-serif" font-size="13" font-weight="700">2 / 1 (최대 인원 초과)</text>
+
+  <!-- Zone C row -->
+  <circle cx="900" cy="323" r="7" fill="#94a3b8"/>
+  <text x="918" y="328" fill="#0f1f3d" font-family="Arial, sans-serif" font-size="14" font-weight="700">C구역 - 출입 통제구역</text>
+  <text x="1168" y="328" text-anchor="end" fill="#475569" font-family="Arial, sans-serif" font-size="14">0 / 1</text>
+  <rect x="892" y="340" width="276" height="14" rx="7" fill="#f1f5f9"/>
+
+  <line x1="892" y1="386" x2="1168" y2="386" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="892" y="418" fill="#0f1f3d" font-family="Arial, sans-serif" font-size="16" font-weight="700">최근 이벤트</text>
+
+  <g font-family="Arial, sans-serif" font-size="13">
+    <text x="892" y="450" fill="#94a3b8">14:32:10</text>
+    <text x="970" y="450" fill="#dc2626" font-weight="700">B구역 인원 초과 알람 발생</text>
+
+    <text x="892" y="482" fill="#94a3b8">14:32:08</text>
+    <text x="970" y="482" fill="#0f1f3d">B구역 진입 (#214)</text>
+
+    <text x="892" y="514" fill="#94a3b8">14:31:42</text>
+    <text x="970" y="514" fill="#0f1f3d">A구역 진입 (#198)</text>
+
+    <text x="892" y="546" fill="#94a3b8">14:30:55</text>
+    <text x="970" y="546" fill="#0f1f3d">A구역 진입 (#197)</text>
+
+    <text x="892" y="578" fill="#94a3b8">14:29:30</text>
+    <text x="970" y="578" fill="#64748b">A구역 퇴장 (#192)</text>
+  </g>
+</svg>
