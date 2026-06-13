@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Rect+Circle thumbnail">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="0.6" stop-color="#059669"/>
+      <stop offset="1" stop-color="#0b1220"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#g)"/>
+  <rect x="90" y="120" width="780" height="300" rx="20" fill="#0b1220" opacity=".74"/>
+  <circle cx="170" cy="270" r="34" fill="none" stroke="#059669" stroke-width="10"/>
+  <path d="M150 350h560" stroke="#334155" stroke-width="8"/>
+  <text x="90" y="80" fill="#e0f2fe" font-family="Arial, sans-serif" font-size="30" font-weight="700">Rect+Circle</text>
+</svg>
