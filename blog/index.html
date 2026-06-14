@@ -60,12 +60,20 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
 
           <div class="post-card__thumb">
             {% if post.image %}<img src="{{ post.image | relative_url }}" alt="{{ post.title }}">{% endif %}
+            {% if post.series == "Projects" %}
+            <span class="post-card__thumb-cat">{{ post.series }}{% if post.subcategory %} · {{ post.subcategory }}{% endif %}</span>
+            {% else %}
             <span class="post-card__thumb-cat">{{ post.category }}{% if post.subcategory %} · {{ post.subcategory }}{% endif %}</span>
+            {% endif %}
           </div>
 
           <div class="post-card__content">
             <div class="post-card__top">
+              {% if post.series == "Projects" %}
+              <span class="post-card__series">{{ post.series }}{% if post.subcategory %} / {{ post.subcategory }}{% endif %}</span>
+              {% else %}
               <span class="post-card__series">{{ post.series }} · {{ post.category }}{% if post.subcategory %} / {{ post.subcategory }}{% endif %}</span>
+              {% endif %}
               <span class="post-card__date">{{ post.date | date: "%Y-%m-%d" }}</span>
             </div>
             <div class="post-card__title">{{ post.title }}</div>
@@ -109,23 +117,40 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
         {% assign all_series = site.posts | map: "series" | uniq | sort %}
         {% for series in all_series %}
           {% assign series_key = series | downcase %}
-          {% assign series_cats = site.posts | where: "series", series | map: "category" | uniq | sort %}
           <div class="cat-tree__group">
             <div class="cat-tree__label cat-tree__label--{{ series_key }}">{{ series }}</div>
-            {% for cat in series_cats %}
-              {% assign cnt = site.posts | where: "series", series | where: "category", cat | size %}
-              {% assign subcats_str = site.posts | where: "series", series | where: "category", cat | map: "subcategory" | uniq | join: "," %}
-              <div class="cat-tree__item"
-                   data-series="{{ series }}"
-                   data-category="{{ cat }}"
-                   data-subcats="{{ subcats_str }}">
-                <div class="cat-tree__item-left">
-                  <span class="cat-tree__dot cat-tree__dot--{{ cat | downcase }}"></span>
-                  <span class="cat-tree__name">{{ cat }}</span>
+            {% if series == "Projects" %}
+              {% assign series_subcats = site.posts | where: "series", series | map: "subcategory" | uniq | sort %}
+              {% for sub in series_subcats %}
+                {% assign cnt = site.posts | where: "series", series | where: "subcategory", sub | size %}
+                <div class="cat-tree__item"
+                     data-series="{{ series }}"
+                     data-category="Projects"
+                     data-subcategory="{{ sub }}">
+                  <div class="cat-tree__item-left">
+                    <span class="cat-tree__dot cat-tree__dot--projects"></span>
+                    <span class="cat-tree__name">{{ sub }}</span>
+                  </div>
+                  <span class="cat-tree__cnt">{{ cnt }}</span>
                 </div>
-                <span class="cat-tree__cnt">{{ cnt }}</span>
-              </div>
-            {% endfor %}
+              {% endfor %}
+            {% else %}
+              {% assign series_cats = site.posts | where: "series", series | map: "category" | uniq | sort %}
+              {% for cat in series_cats %}
+                {% assign cnt = site.posts | where: "series", series | where: "category", cat | size %}
+                {% assign subcats_str = site.posts | where: "series", series | where: "category", cat | map: "subcategory" | uniq | join: "," %}
+                <div class="cat-tree__item"
+                     data-series="{{ series }}"
+                     data-category="{{ cat }}"
+                     data-subcats="{{ subcats_str }}">
+                  <div class="cat-tree__item-left">
+                    <span class="cat-tree__dot cat-tree__dot--{{ cat | downcase }}"></span>
+                    <span class="cat-tree__name">{{ cat }}</span>
+                  </div>
+                  <span class="cat-tree__cnt">{{ cnt }}</span>
+                </div>
+              {% endfor %}
+            {% endif %}
           </div>
         {% endfor %}
 
@@ -229,25 +254,38 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
       var series   = item.dataset.series;
       var category = item.dataset.category;
 
-      /* 카드 필터 */
-      cards.forEach(function(c){
-        c.style.display = (c.dataset.series === series && c.dataset.category === category) ? '' : 'none';
-      });
+      if (series === 'Projects') {
+        var subcategory = item.dataset.subcategory;
 
-      /* 소분류 수집 (data-subcats 또는 카드에서) */
-      var subcats = [];
-      cards.forEach(function(c){
-        if (c.dataset.series === series && c.dataset.category === category) {
-          var sub = c.dataset.subcategory;
-          if (sub && subcats.indexOf(sub) === -1) subcats.push(sub);
+        /* 카드 필터 (series + subcategory 기준) */
+        cards.forEach(function(c){
+          c.style.display = (c.dataset.series === series && c.dataset.subcategory === subcategory) ? '' : 'none';
+        });
+
+        /* 소분류 바 미사용 */
+        subcatBar.classList.remove('visible');
+        subcatBar.innerHTML = '';
+      } else {
+        /* 카드 필터 */
+        cards.forEach(function(c){
+          c.style.display = (c.dataset.series === series && c.dataset.category === category) ? '' : 'none';
+        });
+
+        /* 소분류 수집 (data-subcats 또는 카드에서) */
+        var subcats = [];
+        cards.forEach(function(c){
+          if (c.dataset.series === series && c.dataset.category === category) {
+            var sub = c.dataset.subcategory;
+            if (sub && subcats.indexOf(sub) === -1) subcats.push(sub);
+          }
+        });
+
+        showSubcatBar(series, category, subcats);
+
+        /* 소분류 바로 스크롤 */
+        if (subcatBar.classList.contains('visible')) {
+          subcatBar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
-      });
-
-      showSubcatBar(series, category, subcats);
-
-      /* 소분류 바로 스크롤 */
-      if (subcatBar.classList.contains('visible')) {
-        subcatBar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
     });
   });
