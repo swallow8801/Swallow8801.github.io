@@ -37,6 +37,11 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
   <!-- 포스트 영역 (소분류 바 + 리스트) -->
   <div class="posts-area">
 
+    <!-- 카테고리 배너 (카테고리 선택 시 JS로 표시) -->
+    <div class="cat-banner" id="catBanner" role="status" hidden>
+      <!-- JS가 동적으로 채움 -->
+    </div>
+
     <!-- 소분류 필터 바 (카테고리 선택 시 JS로 표시) -->
     <div class="subcat-bar" id="subcatBar">
       <!-- JS가 동적으로 채움 -->
@@ -177,6 +182,16 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
   var activeItem  = null;
   var searchInput = document.getElementById('blogSearchInput');
   var postsEmpty  = document.getElementById('postsEmpty');
+  var catBanner   = document.getElementById('catBanner');
+
+  /* 카테고리별 아이콘·설명 (Liquid에서 주입) */
+  var categoryMeta = {
+{% assign cat_keys = "ai,backend,frontend,devops,database,snippets,errors" | split: "," %}
+{% for key in cat_keys %}
+{% capture icon_svg %}{% include category-icon.html category=key %}{% endcapture %}
+    {{ key | jsonify }}: { desc: {{ site.data.category_meta[key] | jsonify }}, icon: {{ icon_svg | strip | jsonify }} }{% unless forloop.last %},{% endunless %}
+{% endfor %}
+  };
 
   /* 소분류 바 생성 + 표시 */
   function showSubcatBar(series, category, allSubcats) {
@@ -224,6 +239,32 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
     subcatBar.classList.add('visible');
   }
 
+  /* 카테고리 배너 표시 */
+  function showCatBanner(category) {
+    var key = category.toLowerCase();
+    var meta = categoryMeta[key];
+    if (!meta) { hideCatBanner(); return; }
+
+    catBanner.dataset.cat = key;
+    catBanner.innerHTML = meta.icon +
+      '<div class="cat-banner__text">' +
+        '<strong class="cat-banner__name">' + category + '</strong>' +
+        '<span class="cat-banner__desc">' + meta.desc + '</span>' +
+      '</div>';
+    catBanner.hidden = false;
+    catBanner.classList.remove('visible');
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ catBanner.classList.add('visible'); });
+    });
+  }
+
+  /* 카테고리 배너 숨김 */
+  function hideCatBanner() {
+    catBanner.hidden = true;
+    catBanner.classList.remove('visible');
+    catBanner.innerHTML = '';
+  }
+
   /* 카테고리 아이템 클릭 */
   document.querySelectorAll('.cat-tree__item[data-series]').forEach(function(item){
     item.addEventListener('click', function(){
@@ -237,6 +278,7 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
         subcatBar.innerHTML = '';
         searchInput.value = '';
         postsEmpty.hidden = true;
+        hideCatBanner();
         return;
       }
 
@@ -265,11 +307,14 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
         /* 소분류 바 미사용 */
         subcatBar.classList.remove('visible');
         subcatBar.innerHTML = '';
+        hideCatBanner();
       } else {
         /* 카드 필터 */
         cards.forEach(function(c){
           c.style.display = (c.dataset.series === series && c.dataset.category === category) ? '' : 'none';
         });
+
+        showCatBanner(category);
 
         /* 소분류 수집 (data-subcats 또는 카드에서) */
         var subcats = [];
@@ -301,6 +346,7 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
         activeItem = null;
         subcatBar.classList.remove('visible');
         subcatBar.innerHTML = '';
+        hideCatBanner();
       }
 
       var visibleCount = 0;

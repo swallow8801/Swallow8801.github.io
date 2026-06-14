@@ -101,6 +101,71 @@
   font-size: 14px; color: $t3; font-weight: 500;
 }
 
+// ─── 카테고리 배너 (카테고리 선택 시 posts-area 상단에 표시) ──
+.cat-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  background: $surface2;
+  border: 1px solid $border;
+  border-left: 3px solid $t3;
+
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity .25s ease, transform .25s cubic-bezier(.22,.68,0,1.05);
+
+  &[hidden] { display: none; }
+  &.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: $mobile) {
+    flex-wrap: wrap;
+  }
+}
+
+.cat-banner__icon {
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: $surface;
+  color: $t2;
+
+  svg { width: 20px; height: 20px; }
+}
+
+.cat-banner__text {
+  display: flex; flex-direction: column; gap: 2px; min-width: 0;
+}
+
+.cat-banner__name {
+  font-size: var(--fs-4);
+  font-weight: 700;
+  color: $t1;
+}
+
+.cat-banner__desc {
+  font-size: var(--fs-2);
+  color: $t2;
+  word-break: keep-all;
+}
+
+@each $cat, $color in $category-accent {
+  .cat-banner[data-cat="#{$cat}"] {
+    border-left-color: $color;
+    .cat-banner__icon { color: $color; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cat-banner {
+    transition: none;
+    &.visible { opacity: 1; transform: none; }
+  }
+}
+
 // ─── 소분류 필터 바 (카테고리 선택 시 표시) ──────
 .subcat-bar {
   display: none;
