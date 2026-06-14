@@ -101,17 +101,19 @@
   font-size: 14px; color: $t3; font-weight: 500;
 }
 
-// ─── 카테고리 배너 (카테고리 선택 시 posts-area 상단에 표시) ──
-.cat-banner {
+// ─── 카테고리/프로젝트 커버 (선택 시 posts-area 상단에 표시) ──
+.category-cover {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 18px;
+  min-height: 280px;
+  padding: 48px 56px;
   margin-bottom: 16px;
-  border-radius: 12px;
-  background: $surface2;
-  border: 1px solid $border;
-  border-left: 3px solid $t3;
+  border-radius: 20px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
   opacity: 0;
   transform: translateY(-6px);
@@ -120,47 +122,129 @@
   &[hidden] { display: none; }
   &.visible { opacity: 1; transform: translateY(0); }
 
-  @media (max-width: $mobile) {
-    flex-wrap: wrap;
+  &::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(90deg, rgba(2,6,23,.78) 0%, rgba(2,6,23,.52) 45%, rgba(2,6,23,.18) 100%);
+  }
+
+  @media (max-width: $tablet) {
+    min-height: 220px;
+    padding: 32px 28px;
+    border-radius: 16px;
+    background-position: center right;
+
+    &::before {
+      background: linear-gradient(90deg, rgba(2,6,23,.88) 0%, rgba(2,6,23,.7) 58%, rgba(2,6,23,.34) 100%);
+    }
   }
 }
 
-.cat-banner__icon {
-  flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  width: 36px; height: 36px;
-  border-radius: 10px;
-  background: $surface;
-  color: $t2;
-
-  svg { width: 20px; height: 20px; }
+.category-cover__content {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
 }
 
-.cat-banner__text {
-  display: flex; flex-direction: column; gap: 2px; min-width: 0;
+.category-cover__badge {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.28);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  margin-bottom: 14px;
 }
 
-.cat-banner__name {
-  font-size: var(--fs-4);
-  font-weight: 700;
-  color: $t1;
+.category-cover__title {
+  margin: 0 0 12px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -.03em;
+
+  @media (max-width: $tablet) { font-size: 28px; }
 }
 
-.cat-banner__desc {
+.category-cover__desc {
+  margin: 0;
+  color: rgba(255,255,255,.82);
   font-size: var(--fs-2);
-  color: $t2;
-  word-break: keep-all;
+  line-height: 1.7;
+
+  @media (max-width: $tablet) { font-size: 14px; }
 }
 
-@each $cat, $color in $category-accent {
-  .cat-banner[data-cat="#{$cat}"] {
-    border-left-color: $color;
-    .cat-banner__icon { color: $color; }
+.category-cover__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin-top: 18px;
+}
+
+.category-cover__count {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,.7);
+  white-space: nowrap;
+}
+
+.category-cover__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+// 어두운 커버 배경 위에서는 .tag-badge--neutral 톤을 화이트 계열로 보정
+.category-cover .tag-badge--neutral {
+  background: rgba(255,255,255,.14);
+  border-color: rgba(255,255,255,.28);
+  color: #fff;
+}
+
+// 카테고리별 커버 배경 이미지
+.category-cover--ai       { background-image: url("/assets/img/category/header/ai-header.png"); }
+.category-cover--backend  { background-image: url("/assets/img/category/header/backend-header.png"); }
+.category-cover--frontend { background-image: url("/assets/img/category/header/frontend-header.png"); }
+.category-cover--devops   { background-image: url("/assets/img/category/header/devops-header.png"); }
+.category-cover--database { background-image: url("/assets/img/category/header/database-header.png"); }
+.category-cover--snippets { background-image: url("/assets/img/category/header/snippets-header.png"); }
+.category-cover--errors   { background-image: url("/assets/img/category/header/errors-header.png"); }
+
+// ─── 프로젝트(SHIMonitoring) 커버 — 카테고리군과 다른 무드 ──
+.category-cover--shimonitoring {
+  background-image: url("/assets/img/category/header/shi-header.png");
+  align-items: flex-end;
+  min-height: 320px;
+
+  &::before {
+    background: linear-gradient(180deg, rgba(7,12,20,.15) 0%, rgba(7,12,20,.55) 55%, rgba(7,12,20,.92) 100%);
   }
+
+  .category-cover__badge {
+    border-radius: 999px;
+  }
+
+  .category-cover__title {
+    font-size: 44px;
+    @media (max-width: $tablet) { font-size: 30px; }
+  }
+
+  @media (max-width: $tablet) { min-height: 240px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cat-banner {
+  .category-cover {
     transition: none;
     &.visible { opacity: 1; transform: none; }
   }

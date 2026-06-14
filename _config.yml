@@ -43,3 +43,4 @@ exclude:
   - post-ideas.md        # 내부 글감 목록
   - CLAUDE_CODE_GUIDE.md # 내부 운영 가이드
   - UI_UX_PROMPTS.md     # 내부 프롬프트 모음
+  - CATEGORY_LOGO_PROMPTS.md # 내부 헤더 이미지 프롬프트
