@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-label="Hull surface water-blasting vision system thumbnail">
+  <rect width="960" height="540" fill="#0f172a"/>
+  <text x="70" y="62" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="34" font-weight="700">Hull Surface Vision &#183; Water-Blasting Control</text>
+  <!-- hull plate -->
+  <rect x="70" y="110" width="560" height="360" rx="18" fill="#111827" stroke="#334155" stroke-width="4"/>
+  <!-- segmentation regions -->
+  <path d="M110 160 q120 -30 220 20 q120 60 60 150 q-90 70 -210 30 q-110 -40 -70 -150 z" fill="#1d4ed8" opacity="0.55"/>
+  <path d="M360 320 q90 -10 150 50 q40 60 -30 90 q-110 30 -160 -40 q-30 -60 40 -100 z" fill="#dc2626" opacity="0.55"/>
+  <path d="M420 150 q90 10 110 70 q10 50 -60 60 q-80 0 -90 -70 q0 -50 40 -60 z" fill="#f59e0b" opacity="0.55"/>
+  <!-- legend -->
+  <g font-family="Arial, sans-serif" font-size="20" fill="#e2e8f0">
+    <rect x="660" y="150" width="26" height="26" rx="5" fill="#1d4ed8" opacity="0.8"/><text x="696" y="170">coating (keep)</text>
+    <rect x="660" y="200" width="26" height="26" rx="5" fill="#dc2626" opacity="0.8"/><text x="696" y="220">corrosion (blast)</text>
+    <rect x="660" y="250" width="26" height="26" rx="5" fill="#f59e0b" opacity="0.8"/><text x="696" y="270">marine fouling</text>
+  </g>
+  <!-- nozzle path -->
+  <circle cx="430" cy="370" r="14" fill="#22d3ee"/>
+  <path d="M430 370 l60 -40 l-30 60 l70 -20" fill="none" stroke="#22d3ee" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 14"/>
+  <text x="660" y="320" font-family="Arial, sans-serif" font-size="20" fill="#22d3ee">nozzle pressure map &#8594;</text>
+  <rect x="660" y="340" width="220" height="18" rx="9" fill="url(#g)"/>
+  <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#0ea5e9"/><stop offset="1" stop-color="#ef4444"/></linearGradient></defs>
+</svg>
