@@ -4,7 +4,7 @@ title: "Geofence 기능구현 (4): 개발 로드맵, 검증 전략, Side Effect 
 date: 2026-06-11
 series: "Projects"
 category: "Projects"
-subcategory: "SHIMonitoring"
+subcategory: "삼성중공업"
 tags: [geofence, project-planning, testing, branch-strategy, side-effects, roadmap]
 description: "Geofence 기능을 실제로 어떤 순서로 만들고 검증할지, 그리고 기존 백엔드에 끼워 넣을 때 발생할 수 있는 Side Effect를 구현 전에 점검하는 개발 계획서입니다."
 image: /assets/img/posts/geofence-feature-thumb.svg

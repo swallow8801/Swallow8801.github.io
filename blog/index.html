@@ -193,9 +193,9 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
 {% assign key = cat | downcase %}
     {{ key | jsonify }}: { name: {{ cat | jsonify }}, desc: {{ site.data.category_meta[key] | jsonify }}, count: {{ cat_posts | size }}, tags: {{ cat_tags | jsonify }} }{% unless forloop.last %},{% endunless %}
 {% endfor %},
-{% assign shi_posts = site.posts | where: "series", "Projects" | where: "subcategory", "SHIMonitoring" %}
+{% assign shi_posts = site.posts | where: "series", "Projects" | where: "subcategory", "삼성중공업" %}
 {% assign shi_tags = shi_posts | map: "tags" | join: "," | split: "," | uniq | slice: 0, 4 %}
-    "shimonitoring": { name: "SHI Monitoring", desc: {{ site.data.category_meta.shimonitoring | jsonify }}, count: {{ shi_posts | size }}, tags: {{ shi_tags | jsonify }} }
+    "shimonitoring": { name: "삼성중공업", desc: {{ site.data.category_meta.shimonitoring | jsonify }}, count: {{ shi_posts | size }}, tags: {{ shi_tags | jsonify }} }
   };
 
   /* 소분류 바 생성 + 표시 */

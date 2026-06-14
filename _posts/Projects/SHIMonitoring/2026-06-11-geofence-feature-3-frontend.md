@@ -4,7 +4,7 @@ title: "Geofence 기능구현 (3): Zone 설정 UI와 실시간 시각화 프론�
 date: 2026-06-11
 series: "Projects"
 category: "Projects"
-subcategory: "SHIMonitoring"
+subcategory: "삼성중공업"
 tags: [geofence, react, leaflet, ui-ux, socketio, frontend]
 description: "카메라 화면 위에 구역을 그리는 설정 UI부터 실시간 인원 오버레이·초과 알람까지, Geofence 프론트엔드 구현과 화면 설계를 정리합니다."
 image: /assets/img/posts/geofence-feature-thumb.svg

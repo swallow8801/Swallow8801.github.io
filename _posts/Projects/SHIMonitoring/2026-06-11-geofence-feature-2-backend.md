@@ -4,7 +4,7 @@ title: "Geofence 기능구현 (2): Zone CRUD API와 실시간 인원 판정 백�
 date: 2026-06-11
 series: "Projects"
 category: "Projects"
-subcategory: "SHIMonitoring"
+subcategory: "삼성중공업"
 tags: [geofence, nodejs, express, turf, socketio, mssql]
 description: "Geofence 구역 CRUD API부터 AI 탐지 파이프라인에 끼워 넣는 인원 판정 로직, Socket.IO 실시간 브로드캐스트까지 백엔드 구현을 정리합니다."
 image: /assets/img/posts/geofence-feature-thumb.svg

@@ -4,7 +4,7 @@ title: "Geofence 기능구현 (1): 좌표계 문제와 아키텍처 설계"
 date: 2026-06-11
 series: "Projects"
 category: "Projects"
-subcategory: "SHIMonitoring"
+subcategory: "삼성중공업"
 tags: [geofence, architecture, turf, gis, cctv, system-design]
 description: "사람 탐지는 이미 있는데 구역 기반 알림이 없다 — Geofence 기능을 설계하며 마주친 픽셀 좌표와 GPS 좌표의 단절 문제와 해결 방향을 정리합니다."
 image: /assets/img/posts/geofence-feature-thumb.svg
