@@ -457,7 +457,7 @@
 
   &:hover {
     border-color: $blue-bd;
-    box-shadow: 0 4px 16px rgba(var(--blue-rgb),.08);
+    box-shadow: 0 4px 16px rgba(#{var(--blue-rgb)},.08);
     transform: translateY(-2px);
   }
 
@@ -508,7 +508,7 @@
 
   &:hover {
     border-color: $blue-bd;
-    box-shadow: 0 4px 16px rgba(var(--blue-rgb),.08);
+    box-shadow: 0 4px 16px rgba(#{var(--blue-rgb)},.08);
     transform: translateY(-2px);
   }
   &:hover .related-post-card__title { color: $blue; }

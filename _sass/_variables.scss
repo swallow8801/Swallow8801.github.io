@@ -112,7 +112,7 @@ $mobile:  600px;
 }
 
 @mixin card-hover {
-  box-shadow: 0 6px 24px rgba(var(--blue-rgb),.1);
+  box-shadow: 0 6px 24px rgba(#{var(--blue-rgb)},.1);
   transform: translateY(-2px);
   border-color: $blue-bd;
 }
