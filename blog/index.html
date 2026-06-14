@@ -14,7 +14,10 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
       <span>/</span>
       <span>Blog</span>
     </div>
-    <div class="blog-page-header__search" aria-hidden="true">검색...</div>
+    <div class="blog-page-header__search">
+      <input type="search" id="blogSearchInput" class="blog-page-header__search-input"
+             placeholder="검색..." aria-label="제목 또는 태그로 포스트 검색" autocomplete="off">
+    </div>
   </div>
   <div class="blog-page-header__body">
     <div class="blog-page-header__info">
@@ -45,11 +48,15 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
 
         {% assign thumb_class = post.category | downcase %}
 
+        {% assign search_terms = post.title %}
+        {% if post.tags %}{% assign search_terms = search_terms | append: " " | append: post.tags | join: " " %}{% endif %}
+
         <a href="{{ post.url | relative_url }}"
-           class="post-card post-card--{{ thumb_class }}"
+           class="post-card post-card--{{ thumb_class }} reveal"
            data-series="{{ post.series }}"
            data-category="{{ post.category }}"
-           data-subcategory="{{ post.subcategory }}">
+           data-subcategory="{{ post.subcategory }}"
+           data-search="{{ search_terms | downcase | strip_html | escape }}">
 
           <div class="post-card__thumb">
             {% if post.image %}<img src="{{ post.image | relative_url }}" alt="{{ post.title }}">{% endif %}
@@ -76,12 +83,14 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
         </a>
       {% endfor %}
     </div>
+
+    <p class="posts-empty" id="postsEmpty" hidden>검색 결과가 없습니다.</p>
   </div>
 
   <!-- 사이드바 -->
   <aside class="blog-sidebar">
 
-    <div class="widget">
+    <div class="widget reveal">
       <div class="widget__title">About</div>
       <div class="widget-about__av">SW</div>
       <div class="widget-about__name">{{ site.author.name }}</div>
@@ -93,7 +102,7 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
       </div>
     </div>
 
-    <div class="widget">
+    <div class="widget reveal">
       <div class="widget__title">카테고리</div>
       <div class="cat-tree">
 
@@ -123,7 +132,7 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
       </div>
     </div>
 
-    <div class="widget">
+    <div class="widget reveal">
       <div class="widget__title">태그</div>
       <div class="widget-tags">
         {% assign all_tags = site.posts | map: "tags" | join: "," | split: "," | uniq | sort %}
@@ -138,9 +147,11 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
 
 <script>
 (function () {
-  var cards      = document.querySelectorAll('.post-card');
-  var subcatBar  = document.getElementById('subcatBar');
-  var activeItem = null;
+  var cards       = document.querySelectorAll('.post-card');
+  var subcatBar   = document.getElementById('subcatBar');
+  var activeItem  = null;
+  var searchInput = document.getElementById('blogSearchInput');
+  var postsEmpty  = document.getElementById('postsEmpty');
 
   /* 소분류 바 생성 + 표시 */
   function showSubcatBar(series, category, allSubcats) {
@@ -199,8 +210,14 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
         cards.forEach(function(c){ c.style.display = ''; });
         subcatBar.classList.remove('visible');
         subcatBar.innerHTML = '';
+        searchInput.value = '';
+        postsEmpty.hidden = true;
         return;
       }
+
+      /* 검색 상태 초기화 (카테고리 필터와 상호 배타) */
+      searchInput.value = '';
+      postsEmpty.hidden = true;
 
       /* 활성 항목 전환 */
       document.querySelectorAll('.cat-tree__item').forEach(function(i){
@@ -233,6 +250,32 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
         subcatBar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
     });
+  });
+
+  /* 검색 (제목 + 태그 기준) */
+  searchInput.addEventListener('input', function(){
+    var query = searchInput.value.trim().toLowerCase();
+
+    if (query !== '') {
+      /* 활성 카테고리 필터 해제 */
+      if (activeItem) {
+        activeItem.classList.remove('cat-tree__item--active');
+        activeItem = null;
+        subcatBar.classList.remove('visible');
+        subcatBar.innerHTML = '';
+      }
+
+      var visibleCount = 0;
+      cards.forEach(function(c){
+        var match = c.dataset.search.indexOf(query) !== -1;
+        c.style.display = match ? '' : 'none';
+        if (match) visibleCount++;
+      });
+      postsEmpty.hidden = visibleCount !== 0;
+    } else {
+      cards.forEach(function(c){ c.style.display = ''; });
+      postsEmpty.hidden = true;
+    }
   });
 
 })();

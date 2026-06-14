@@ -6,6 +6,11 @@ description: "LLM, RAG, Vision AI, Backend, Frontend를 연결해 실제 동작�
 
 <style>
 /* ── Dark theme override for landing ── */
+:root {
+  --accent: #3b82f6;
+  --accent-2: #818cf8;
+}
+
 body {
   background: #050b18;
   color: #e2e8f5;
@@ -81,24 +86,34 @@ body {
 .a1{opacity:0;animation:fadeUp .8s cubic-bezier(.22,.68,0,1.1) .22s forwards}
 .a2{opacity:0;animation:fadeUp .8s cubic-bezier(.22,.68,0,1.1) .35s forwards}
 .a3{opacity:0;animation:fadeUp .8s cubic-bezier(.22,.68,0,1.1) .48s forwards}
+.a4{opacity:0;animation:fadeUp .8s cubic-bezier(.22,.68,0,1.1) .60s forwards}
+.a5{opacity:0;animation:fadeUp .8s cubic-bezier(.22,.68,0,1.1) .72s forwards}
+.a6{opacity:0;animation:fadeUp .8s cubic-bezier(.22,.68,0,1.1) .84s forwards}
 
 /* ── Hero ── */
 .lw { position:relative;z-index:10; min-height:calc(100vh - 58px); max-width:1240px; margin:0 auto; padding:80px 64px 0; display:flex; align-items:center; gap:72px; }
 .lw-left { flex:1; }
-.lw-eyebrow { display:inline-flex;align-items:center;gap:10px; font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#3b82f6;margin-bottom:28px; }
+.lw-eyebrow { display:inline-flex;align-items:center;gap:10px; font-size:var(--fs-1);font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#3b82f6;margin-bottom:28px; }
 .lw-eyebrow::before{content:'';width:24px;height:2px;background:#3b82f6;border-radius:2px;}
-.lw-name{font-size:clamp(58px,6.5vw,90px);font-weight:900;line-height:.92;letter-spacing:-3.5px;margin-bottom:30px;}
+.lw-name{font-size:var(--fs-display);font-weight:900;line-height:.92;letter-spacing:-3.5px;margin-bottom:30px;}
 .lw-name-1{display:block;color:#e2e8f5;}
 .lw-name-2{display:block;color:transparent;background:linear-gradient(135deg,#3b82f6 20%,#818cf8 80%);-webkit-background-clip:text;background-clip:text;}
-.lw-desc{font-size:16px;color:#6b82a8;line-height:1.85;max-width:400px;margin-bottom:36px;}
+.lw-desc{font-size:var(--fs-4);color:#6b82a8;line-height:var(--lh-body);max-width:400px;margin-bottom:36px;}
+.lw-desc--detail{font-size:var(--fs-2);color:#4a6488;max-width:420px;margin-top:24px;margin-bottom:0;}
 .lw-badges{display:flex;flex-wrap:wrap;gap:8px;}
-.lw-badge{font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);color:#93c5fd;backdrop-filter:blur(8px);transition:all .22s;opacity:0;}
+.lw-badge{font-size:var(--fs-1);font-weight:600;padding:6px 14px;border-radius:20px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);color:#93c5fd;backdrop-filter:blur(8px);transition:all .22s;opacity:0;}
 .lw-badge:hover{background:rgba(59,130,246,.16);border-color:rgba(59,130,246,.4);color:#bfdbfe;transform:translateY(-2px);box-shadow:0 4px 16px rgba(59,130,246,.15);}
 .lw-badge:nth-child(1){animation:badgeIn .55s ease .65s forwards}
 .lw-badge:nth-child(2){animation:badgeIn .55s ease .75s forwards}
 .lw-badge:nth-child(3){animation:badgeIn .55s ease .85s forwards}
 .lw-badge:nth-child(4){animation:badgeIn .55s ease .95s forwards}
 .lw-badge:nth-child(5){animation:badgeIn .55s ease 1.05s forwards}
+
+/* ── Scroll indicator ── */
+.lw-scroll{display:inline-flex;flex-direction:column;align-items:center;gap:8px;margin-top:48px;color:#5a78a8;text-decoration:none;font-size:var(--fs-1);font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:color .25s;}
+.lw-scroll:hover{color:var(--accent);}
+.lw-scroll-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:scrollFlow 1.8s ease-in-out infinite;}
+@keyframes scrollFlow{0%{transform:translateY(0);opacity:0}30%{opacity:1}100%{transform:translateY(16px);opacity:0}}
 
 /* ── Right: Gateway cards ── */
 .lw-right{flex-shrink:0;width:408px;display:flex;flex-direction:column;gap:16px;opacity:0;animation:cardIn .85s cubic-bezier(.22,.68,0,1.1) .32s forwards;}
@@ -109,11 +124,11 @@ body {
 .gate-portfolio::after{content:'';position:absolute;top:0;left:-200%;width:80%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.03),transparent);animation:sweep 10s ease-in-out 1s infinite;}
 @keyframes sweep{0%{left:-200%}50%{left:200%}100%{left:200%}}
 .gate-glow{position:absolute;top:-100px;right:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.25) 0%,transparent 65%);pointer-events:none;transition:opacity .35s,transform .5s;}
-.gate-portfolio:hover .gate-glow{opacity:1.8;transform:scale(1.15);}
-.gate-portfolio:hover{transform:translateY(-10px);border-color:rgba(59,130,246,.45);box-shadow:0 4px 16px rgba(4,13,34,.6),0 24px 64px rgba(4,13,34,.6),0 0 60px rgba(59,130,246,.2),inset 0 1px 0 rgba(255,255,255,.08);}
+.gate-portfolio:hover .gate-glow,.gate-portfolio:focus-visible .gate-glow{opacity:1.8;transform:scale(1.15);}
+.gate-portfolio:hover,.gate-portfolio:focus-visible{transform:translateY(-10px);border-color:rgba(59,130,246,.45);box-shadow:0 4px 16px rgba(4,13,34,.6),0 24px 64px rgba(4,13,34,.6),0 0 60px rgba(59,130,246,.2),inset 0 1px 0 rgba(255,255,255,.08);}
 
 .gate-blog{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);box-shadow:0 4px 16px rgba(4,13,34,.4),0 12px 36px rgba(4,13,34,.3),inset 0 1px 0 rgba(255,255,255,.05);backdrop-filter:blur(16px);min-height:200px;}
-.gate-blog:hover{transform:translateY(-10px);background:rgba(255,255,255,.07);border-color:rgba(59,130,246,.28);box-shadow:0 4px 16px rgba(4,13,34,.4),0 20px 56px rgba(4,13,34,.4),0 0 48px rgba(59,130,246,.1),inset 0 1px 0 rgba(255,255,255,.08);}
+.gate-blog:hover,.gate-blog:focus-visible{transform:translateY(-10px);background:rgba(255,255,255,.07);border-color:rgba(59,130,246,.28);box-shadow:0 4px 16px rgba(4,13,34,.4),0 20px 56px rgba(4,13,34,.4),0 0 48px rgba(59,130,246,.1),inset 0 1px 0 rgba(255,255,255,.08);}
 
 .gate-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;position:relative;z-index:1;}
 .icon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;width:34px;}
@@ -125,12 +140,12 @@ body {
 .icon-line{height:2.5px;border-radius:2px;background:#3b82f6;transition:opacity .25s;}
 .icon-line-1{width:100%;opacity:.35;} .icon-line-2{width:68%;opacity:.22;} .icon-line-3{width:50%;opacity:.15;}
 .gate-blog:hover .icon-line-1{opacity:.75;} .gate-blog:hover .icon-line-2{opacity:.55;} .gate-blog:hover .icon-line-3{opacity:.38;}
-.gate-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;}
+.gate-label{font-size:var(--fs-1);font-weight:700;text-transform:uppercase;letter-spacing:2px;}
 .gate-portfolio .gate-label{color:rgba(147,197,253,.35);}
 .gate-blog .gate-label{color:rgba(255,255,255,.25);}
 .gate-body{flex:1;position:relative;z-index:1;}
-.gate-title{font-size:26px;font-weight:900;letter-spacing:-1.2px;line-height:1.05;margin-bottom:10px;color:#e2e8f5;}
-.gate-desc{font-size:13px;line-height:1.65;margin-bottom:20px;}
+.gate-title{font-size:var(--fs-5);font-weight:900;letter-spacing:-1.2px;line-height:var(--lh-tight);margin-bottom:10px;color:#e2e8f5;}
+.gate-desc{font-size:var(--fs-2);line-height:1.65;margin-bottom:20px;}
 .gate-portfolio .gate-desc{color:rgba(147,197,253,.4);}
 .gate-blog .gate-desc{color:rgba(255,255,255,.35);}
 .gate-footer{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;}
@@ -149,8 +164,115 @@ body {
 /* ── Strip ── */
 .lw-strip{position:relative;z-index:10;max-width:1240px;margin:0 auto;padding:20px 64px 30px;display:flex;align-items:center;opacity:0;animation:fadeIn .7s ease 1.2s forwards;}
 .lw-strip-line{flex:1;height:1px;background:rgba(59,130,246,.1);}
-.lw-strip-text{font-size:11px;color:#3a4f6b;padding:0 24px;white-space:nowrap;}
+.lw-strip-text{font-size:var(--fs-1);color:#3a4f6b;padding:0 24px;white-space:nowrap;}
 .lw-strip-text em{font-style:normal;color:#3b82f6;font-weight:600;}
+
+/* ── Section shared ── */
+.lsec{position:relative;z-index:10;max-width:1240px;margin:0 auto;padding:80px 64px;}
+.lsec-head{margin-bottom:48px;}
+.lsec-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:var(--fs-1);font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent-2);margin-bottom:14px;}
+.lsec-eyebrow::before{content:'';width:24px;height:2px;background:var(--accent-2);border-radius:2px;}
+.lsec-title{font-size:var(--fs-6);font-weight:900;letter-spacing:-1px;color:#e2e8f5;}
+
+/* ── Skills section ── */
+.skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+.skill-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:28px 28px 22px;backdrop-filter:none;}
+.skill-card__title{font-size:var(--fs-5);font-weight:800;color:#e2e8f5;letter-spacing:-.5px;margin-bottom:20px;}
+.skill-row{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
+.skill-row:last-child{margin-bottom:0;}
+.skill-row__top{display:flex;justify-content:space-between;align-items:baseline;font-size:var(--fs-2);}
+.skill-row__name{color:#aebfdc;font-weight:600;}
+.skill-row__level{color:#5a78a8;font-size:var(--fs-1);font-weight:700;}
+.skill-row .skill-bar{background:rgba(255,255,255,.07);}
+.skill-row .skill-bar__fill{width:0;transition:width .8s ease;background:linear-gradient(90deg,var(--accent),var(--accent-2));}
+.skill-card.is-visible .skill-bar__fill{width:var(--level);}
+
+/* ── About section ── */
+.about-grid{display:flex;align-items:center;gap:64px;}
+.about-text{flex:1;}
+.about-copy{font-size:var(--fs-4);color:#9fb3d4;line-height:var(--lh-body);max-width:480px;}
+.about-copy .glow-word{color:#e2e8f5;font-weight:700;text-shadow:0 0 18px rgba(59,130,246,.45);animation:glowPulse 3.2s ease-in-out infinite;}
+@keyframes glowPulse{0%,100%{text-shadow:0 0 12px rgba(59,130,246,.35)}50%{text-shadow:0 0 22px rgba(129,140,248,.6)}}
+.about-net{flex-shrink:0;width:320px;height:260px;}
+.about-net svg{width:100%;height:100%;}
+
+/* ── Recent posts section ── */
+.recent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.recent-card{position:relative;display:flex;flex-direction:column;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px 24px 22px;overflow:hidden;text-decoration:none;transition:transform .32s cubic-bezier(.22,.68,0,1.1),border-color .3s ease,box-shadow .3s ease;}
+.recent-card::after{content:'';position:absolute;top:0;left:-150%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);transition:left .65s ease;pointer-events:none;}
+.recent-card:hover{transform:translateY(-6px);border-color:rgba(59,130,246,.3);box-shadow:0 16px 40px rgba(4,13,34,.5),0 0 32px rgba(59,130,246,.08);}
+.recent-card:hover::after{left:150%;}
+.recent-card__meta{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.recent-card__dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+.recent-card__dot--devnotes{background:#a78bfa;}
+.recent-card__dot--projects{background:#f59e0b;}
+.recent-card__date{font-size:var(--fs-1);color:#5a78a8;font-weight:600;letter-spacing:.5px;}
+.recent-card__title{font-size:var(--fs-5);font-weight:800;color:#e2e8f5;letter-spacing:-.5px;line-height:var(--lh-tight);margin-bottom:8px;}
+.recent-card__desc{font-size:var(--fs-2);color:#7488ac;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+
+/* ── Final CTA strip ── */
+.lw-strip--cta{flex-direction:column;gap:20px;padding:32px 64px 96px;}
+.lw-strip--cta .lw-strip-line{width:100%;}
+.lw-strip-links{display:flex;gap:28px;flex-wrap:wrap;justify-content:center;}
+.lw-strip-link{font-size:var(--fs-3);font-weight:700;color:#9fb3d4;display:inline-flex;align-items:center;gap:6px;transition:color .25s;}
+.lw-strip-link:hover{color:var(--accent-2);}
+.lw-strip-link .cta-arrow{transition:transform .2s;}
+.lw-strip-link:hover .cta-arrow{transform:translateX(3px);}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .lw{flex-direction:column;align-items:stretch;gap:48px;padding:64px 32px 0;min-height:auto;}
+  .lw-right{width:100%;}
+  .lsec{padding:56px 32px;}
+  .skills-grid{grid-template-columns:1fr;}
+  .about-grid{flex-direction:column;gap:36px;}
+  .about-net{width:100%;max-width:320px;height:220px;}
+  .recent-grid{grid-template-columns:1fr;}
+  .lw-strip--cta{padding:28px 32px 64px;}
+}
+@media (max-width: 600px) {
+  .lw{padding:48px 20px 0;}
+  .lw-desc, .lw-desc--detail{max-width:100%;}
+  .lsec{padding:40px 20px;}
+  .lsec-title{font-size:var(--fs-6);}
+  .skill-card{padding:22px 20px 18px;}
+  .recent-card{padding:20px;}
+  .lw-strip{padding:16px 20px 24px;}
+  .lw-strip--cta{padding:24px 20px 48px;}
+  .lw-strip-links{flex-direction:column;align-items:center;gap:14px;}
+}
+
+/* ── Reduced motion: 모든 무한/진입 애니메이션 정지, 최종 표시 상태로 고정 ── */
+@media (prefers-reduced-motion: reduce) {
+  .lbg-mesh, .lbg-orb-1, .lbg-orb-2, .lbg-orb-3, .lbg-bloom, .np, .np2 {
+    animation: none;
+  }
+  .a0, .a1, .a2, .a3, .a4, .a5, .a6, .lw-badge, .lw-right, .lw-strip {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none;
+  }
+  .gate-portfolio::after {
+    animation: none;
+    display: none;
+  }
+  .lw-scroll-dot {
+    animation: none;
+    opacity: 1;
+  }
+  .about-copy .glow-word {
+    animation: none;
+    text-shadow: none;
+  }
+  .skill-row .skill-bar__fill {
+    transition: none;
+    width: var(--level);
+  }
+  .recent-card::after {
+    transition: none;
+    display: none;
+  }
+}
 </style>
 
 <!-- Background layers -->
@@ -215,6 +337,13 @@ body {
       <span class="lw-badge">Backend</span>
       <span class="lw-badge">Frontend</span>
     </div>
+    <p class="lw-desc lw-desc--detail a4">
+      모델 선택부터 인프라 구성, 화면까지 — 하나의 흐름으로 이어지는 시스템을 만듭니다.
+    </p>
+    <a href="#skills-section" class="lw-scroll a5">
+      <span>Scroll</span>
+      <span class="lw-scroll-dot"></span>
+    </a>
   </div>
 
   <div class="lw-right">
@@ -270,4 +399,105 @@ body {
   <div class="lw-strip-line"></div>
   <span class="lw-strip-text"><em>LLM · RAG · Backend · Frontend</em> — 포트폴리오와 블로그로 구성된 개인 개발자 사이트</span>
   <div class="lw-strip-line"></div>
+</div>
+
+<!-- ── Skills section ── -->
+<section id="skills-section" class="lsec">
+  <div class="lsec-head reveal">
+    <div class="lsec-eyebrow">Tech Stack</div>
+    <h2 class="lsec-title">Skills &amp; Proficiency</h2>
+  </div>
+  <div class="skills-grid">
+    {% for group in site.data.skills %}
+    <div class="skill-card reveal">
+      <div class="skill-card__title">{{ group.group }}</div>
+      {% for item in group.items %}
+      <div class="skill-row">
+        <div class="skill-row__top">
+          <span class="skill-row__name">{{ item.name }}</span>
+          <span class="skill-row__level">{{ item.level }}%</span>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-bar__fill" style="--level: {{ item.level }}%;"></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ── About section ── -->
+<section id="about" class="lsec">
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <div class="lsec-eyebrow">About</div>
+      <h2 class="lsec-title" style="margin-bottom:20px;">AI Full Stack Developer</h2>
+      <p class="about-copy">
+        <span class="glow-word">LLM</span>과 <span class="glow-word">RAG</span>로 동작하는 AI 기능을
+        설계하고, 이를 떠받치는 <span class="glow-word">백엔드</span>와 사용자에게 닿는
+        <span class="glow-word">프런트엔드</span>까지 한 흐름으로 연결합니다.
+        모델 선정부터 데이터 파이프라인, 배포·모니터링까지 직접 구축하며 동작하는
+        시스템을 만드는 과정을 즐깁니다.
+      </p>
+    </div>
+    <div class="about-net reveal" aria-hidden="true">
+      <svg viewBox="0 0 320 260" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40"  cy="40"  r="3.5" fill="var(--accent)" opacity=".7"/>
+        <circle cx="150" cy="24"  r="2.5" fill="var(--accent-2)" opacity=".55"/>
+        <circle cx="270" cy="50"  r="3"   fill="var(--accent)" opacity=".6"/>
+        <circle cx="90"  cy="120" r="3"   fill="var(--accent-2)" opacity=".5"/>
+        <circle cx="220" cy="140" r="3.5" fill="var(--accent)" opacity=".7"/>
+        <circle cx="50"  cy="210" r="2.5" fill="var(--accent-2)" opacity=".5"/>
+        <circle cx="180" cy="230" r="3"   fill="var(--accent)" opacity=".6"/>
+        <circle cx="280" cy="200" r="2.5" fill="var(--accent-2)" opacity=".5"/>
+        <line x1="40"  y1="40"  x2="150" y2="24"  stroke="rgba(59,130,246,.18)" stroke-width="1"/>
+        <line x1="150" y1="24"  x2="270" y2="50"  stroke="rgba(129,140,248,.14)" stroke-width="1" stroke-dasharray="4 8"/>
+        <line x1="40"  y1="40"  x2="90"  y2="120" stroke="rgba(59,130,246,.14)" stroke-width="1" stroke-dasharray="4 8"/>
+        <line x1="90"  y1="120" x2="220" y2="140" stroke="rgba(59,130,246,.18)" stroke-width="1"/>
+        <line x1="220" y1="140" x2="270" y2="50"  stroke="rgba(129,140,248,.14)" stroke-width="1" stroke-dasharray="4 8"/>
+        <line x1="90"  y1="120" x2="50"  y2="210" stroke="rgba(59,130,246,.18)" stroke-width="1"/>
+        <line x1="50"  y1="210" x2="180" y2="230" stroke="rgba(129,140,248,.14)" stroke-width="1" stroke-dasharray="4 8"/>
+        <line x1="180" y1="230" x2="280" y2="200" stroke="rgba(59,130,246,.18)" stroke-width="1"/>
+        <line x1="220" y1="140" x2="280" y2="200" stroke="rgba(129,140,248,.14)" stroke-width="1" stroke-dasharray="4 8"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ── Recent posts section ── -->
+<section class="lsec">
+  <div class="lsec-head reveal">
+    <div class="lsec-eyebrow">Engineering Log</div>
+    <h2 class="lsec-title">Recent Posts</h2>
+  </div>
+  <div class="recent-grid">
+    {% for post in site.posts limit: 3 %}
+    <a href="{{ post.url | relative_url }}" class="recent-card reveal">
+      <div class="recent-card__meta">
+        {% case post.series %}
+          {% when "DevNotes" %}
+            <span class="recent-card__dot recent-card__dot--devnotes"></span>
+          {% when "Projects" %}
+            <span class="recent-card__dot recent-card__dot--projects"></span>
+          {% else %}
+            <span class="recent-card__dot"></span>
+        {% endcase %}
+        <span class="recent-card__date">{{ post.date | date: "%Y.%m.%d" }} · {{ post.category }}</span>
+      </div>
+      <div class="recent-card__title">{{ post.title }}</div>
+      {% if post.description %}<p class="recent-card__desc">{{ post.description }}</p>{% endif %}
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ── Final CTA strip ── -->
+<div class="lw-strip lw-strip--cta">
+  <div class="lw-strip-line"></div>
+  <span class="lw-strip-text"><em>LLM · RAG · Backend · Frontend</em> — 더 많은 작업과 기록은 아래에서 확인할 수 있습니다</span>
+  <div class="lw-strip-links">
+    <a href="{{ '/portfolio' | relative_url }}" class="lw-strip-link">포트폴리오 전체 보기 <span class="cta-arrow">→</span></a>
+    <a href="{{ '/blog' | relative_url }}" class="lw-strip-link">블로그 더 보기 <span class="cta-arrow">→</span></a>
+  </div>
 </div>

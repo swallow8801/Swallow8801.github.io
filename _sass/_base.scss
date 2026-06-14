@@ -11,6 +11,13 @@ body {
   color: $t1;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  transition: background-color .2s ease, color .2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
 }
 
 a { text-decoration: none; color: inherit; }
@@ -77,7 +84,6 @@ button { font-family: $font; }
     font-size: 11px;
     color: #64748b;
     font-family: monospace;
-    text-transform: uppercase;
     letter-spacing: .5px;
   }
 
@@ -85,6 +91,9 @@ button { font-family: $font; }
     position: absolute;
     top: 8px;
     right: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
     padding: 4px 10px;
     border-radius: 4px;
     background: rgba(255,255,255,.08);
@@ -94,8 +103,16 @@ button { font-family: $font; }
     font-weight: 600;
     cursor: pointer;
     transition: all .15s;
+
+    svg {
+      width: 12px;
+      height: 12px;
+      flex-shrink: 0;
+    }
+
     &:hover { background: rgba(255,255,255,.15); color: #e2e8f0; }
     &.copied { color: #4ade80; border-color: rgba(74,222,128,.3); }
+    &.copy-btn--error { color: #f87171; border-color: rgba(248,113,113,.3); }
   }
 
   pre {
@@ -126,4 +143,25 @@ code:not(.highlight code) {
 :focus-visible {
   outline: 2px solid $blue;
   outline-offset: 2px;
+}
+
+// ── 스크롤 진입 reveal 유틸 ───────────────────────
+// assets/js/reveal.js가 IntersectionObserver로 .is-visible을 부여.
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .6s ease, transform .6s cubic-bezier(.22,.68,0,1.05);
+
+  &.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

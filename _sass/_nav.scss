@@ -70,6 +70,44 @@
   @media (max-width: $mobile) { display: none; }
 }
 
+// 다크/라이트 테마 토글
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  color: $t2;
+  cursor: pointer;
+  transition: color .15s, background .15s;
+
+  &:hover {
+    color: $blue;
+    background: $surface2;
+  }
+
+  @media (max-width: $mobile) {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.theme-toggle__icon {
+  width: 19px;
+  height: 19px;
+
+  &--sun { display: none; }
+  &--moon { display: block; }
+}
+
+[data-theme="dark"] .theme-toggle__icon {
+  &--sun { display: block; }
+  &--moon { display: none; }
+}
+
 // ── 푸터 ─────────────────────────────────────────
 .site-footer {
   background: $surface;

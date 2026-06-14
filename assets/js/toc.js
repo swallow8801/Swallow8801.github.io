@@ -37,6 +37,21 @@
   const navH     = document.querySelector('.site-nav');
   const offset   = (navH ? navH.offsetHeight : 58) + 24;
 
+  // 활성 항목을 따라 부드럽게 이동하는 인디케이터 바
+  const indicator = document.createElement('div');
+  indicator.className = 'toc-indicator';
+  tocList.appendChild(indicator);
+
+  function moveIndicator(item) {
+    if (!item) {
+      indicator.style.opacity = '0';
+      return;
+    }
+    indicator.style.opacity = '1';
+    indicator.style.transform = 'translateY(' + item.offsetTop + 'px)';
+    indicator.style.height = item.offsetHeight + 'px';
+  }
+
   function highlight() {
     let current = 0;
     headings.forEach(function (h, i) {
@@ -46,7 +61,10 @@
     });
 
     tocItems.forEach(function (item) { item.classList.remove('toc-item--active'); });
-    if (tocItems[current]) tocItems[current].classList.add('toc-item--active');
+    if (tocItems[current]) {
+      tocItems[current].classList.add('toc-item--active');
+      moveIndicator(tocItems[current]);
+    }
   }
 
   window.addEventListener('scroll', highlight, { passive: true });

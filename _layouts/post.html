@@ -1,6 +1,11 @@
 ---
 layout: default
 ---
+<div class="reading-progress" aria-hidden="true">
+  <div class="reading-progress__bar"></div>
+</div>
+<button type="button" class="back-to-top" aria-label="맨 위로 이동">↑</button>
+
 <div class="post-layout">
 
   <article>
@@ -47,7 +52,7 @@ layout: default
     <!-- 이전/다음 포스트 -->
     <nav class="post-nav">
       {% if page.previous.url %}
-      <a href="{{ page.previous.url | relative_url }}" class="post-nav__item post-nav__item--prev">
+      <a href="{{ page.previous.url | relative_url }}" class="post-nav__item post-nav__item--prev reveal">
         <div class="post-nav__dir">← 이전 글</div>
         <div class="post-nav__title">{{ page.previous.title }}</div>
       </a>
@@ -56,7 +61,7 @@ layout: default
       {% endif %}
 
       {% if page.next.url %}
-      <a href="{{ page.next.url | relative_url }}" class="post-nav__item post-nav__item--next">
+      <a href="{{ page.next.url | relative_url }}" class="post-nav__item post-nav__item--next reveal">
         <div class="post-nav__dir">다음 글 →</div>
         <div class="post-nav__title">{{ page.next.title }}</div>
       </a>
@@ -64,13 +69,57 @@ layout: default
     </nav>
 
     <!-- 관련 포스트 -->
-    {% assign related = site.posts | where: "category", page.category | where_exp: "p", "p.url != page.url" | limit: 3 %}
+    {% assign empty_array = "" | split: "," %}
+    {% assign current_tags = page.tags | default: empty_array %}
+    {% assign related = empty_array %}
+    {% assign used_urls = empty_array %}
+    {% assign used_urls = used_urls | push: page.url %}
+
+    <!-- 버킷 1: 같은 category + 태그 1개 이상 겹침 -->
+    {% for post in site.posts %}
+      {% if related.size >= 3 %}{% break %}{% endif %}
+      {% if used_urls contains post.url %}{% continue %}{% endif %}
+      {% if post.category != page.category %}{% continue %}{% endif %}
+      {% assign shared = false %}
+      {% for tag in post.tags %}
+        {% if current_tags contains tag %}{% assign shared = true %}{% endif %}
+      {% endfor %}
+      {% if shared %}
+        {% assign related = related | push: post %}
+        {% assign used_urls = used_urls | push: post.url %}
+      {% endif %}
+    {% endfor %}
+
+    <!-- 버킷 2: category는 다르지만 태그 1개 이상 겹침 -->
+    {% for post in site.posts %}
+      {% if related.size >= 3 %}{% break %}{% endif %}
+      {% if used_urls contains post.url %}{% continue %}{% endif %}
+      {% if post.category == page.category %}{% continue %}{% endif %}
+      {% assign shared = false %}
+      {% for tag in post.tags %}
+        {% if current_tags contains tag %}{% assign shared = true %}{% endif %}
+      {% endfor %}
+      {% if shared %}
+        {% assign related = related | push: post %}
+        {% assign used_urls = used_urls | push: post.url %}
+      {% endif %}
+    {% endfor %}
+
+    <!-- 버킷 3: 같은 category (태그 겹침 여부 무관, 기존 동작 폴백) -->
+    {% for post in site.posts %}
+      {% if related.size >= 3 %}{% break %}{% endif %}
+      {% if used_urls contains post.url %}{% continue %}{% endif %}
+      {% if post.category != page.category %}{% continue %}{% endif %}
+      {% assign related = related | push: post %}
+      {% assign used_urls = used_urls | push: post.url %}
+    {% endfor %}
+
     {% if related.size > 0 %}
     <div class="related-posts">
-      <div class="related-posts__title">같은 카테고리 글</div>
+      <div class="related-posts__title">관련 글</div>
       <div class="related-posts__grid">
         {% for post in related %}
-        <a href="{{ post.url | relative_url }}" class="related-post-card">
+        <a href="{{ post.url | relative_url }}" class="related-post-card reveal">
           <div class="related-post-card__cat">{{ post.category }}</div>
           <div class="related-post-card__title">{{ post.title }}</div>
           <div class="related-post-card__date">{{ post.date | date: "%Y-%m-%d" }}</div>
@@ -89,5 +138,28 @@ layout: default
 
 </div>
 
+<script src="{{ '/assets/js/reading-progress.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/toc.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/copy-code.js' | relative_url }}"></script>
+<script>
+// '이미지 출처' 섹션을 작은 캡션/각주 스타일로 표시 (클래스만 부여, 태그/속성 변경 없음)
+(function () {
+  var content = document.querySelector('.post-content');
+  if (!content) return;
+
+  var headings = content.querySelectorAll('h2');
+  var creditsHeading = null;
+  headings.forEach(function (h) {
+    if (h.textContent.trim() === '이미지 출처') creditsHeading = h;
+  });
+  if (!creditsHeading) return;
+
+  creditsHeading.classList.add('post-credits');
+
+  var sibling = creditsHeading.nextElementSibling;
+  while (sibling && sibling.tagName !== 'H2' && sibling.tagName !== 'H3') {
+    sibling.classList.add('post-credits__body');
+    sibling = sibling.nextElementSibling;
+  }
+})();
+</script>
