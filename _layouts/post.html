@@ -69,15 +69,14 @@ layout: default
     </nav>
 
     <!-- 관련 포스트 -->
-    {% assign empty_array = "" | split: "," %}
-    {% assign current_tags = page.tags | default: empty_array %}
-    {% assign related = empty_array %}
-    {% assign used_urls = empty_array %}
-    {% assign used_urls = used_urls | push: page.url %}
+    {% assign current_tags = page.tags | default: "" %}
+    {% assign related_count = 0 %}
+    {% capture related_html %}{% endcapture %}
+    {% assign used_urls = page.url %}
 
     <!-- 버킷 1: 같은 category + 태그 1개 이상 겹침 -->
     {% for post in site.posts %}
-      {% if related.size >= 3 %}{% break %}{% endif %}
+      {% if related_count >= 3 %}{% break %}{% endif %}
       {% if used_urls contains post.url %}{% continue %}{% endif %}
       {% if post.category != page.category %}{% continue %}{% endif %}
       {% assign shared = false %}
@@ -85,14 +84,22 @@ layout: default
         {% if current_tags contains tag %}{% assign shared = true %}{% endif %}
       {% endfor %}
       {% if shared %}
-        {% assign related = related | push: post %}
-        {% assign used_urls = used_urls | push: post.url %}
+        {% capture card %}
+        <a href="{{ post.url | relative_url }}" class="related-post-card reveal">
+          <div class="related-post-card__cat">{{ post.category }}</div>
+          <div class="related-post-card__title">{{ post.title }}</div>
+          <div class="related-post-card__date">{{ post.date | date: "%Y-%m-%d" }}</div>
+        </a>
+        {% endcapture %}
+        {% assign related_html = related_html | append: card %}
+        {% assign used_urls = used_urls | append: "|" | append: post.url %}
+        {% assign related_count = related_count | plus: 1 %}
       {% endif %}
     {% endfor %}
 
     <!-- 버킷 2: category는 다르지만 태그 1개 이상 겹침 -->
     {% for post in site.posts %}
-      {% if related.size >= 3 %}{% break %}{% endif %}
+      {% if related_count >= 3 %}{% break %}{% endif %}
       {% if used_urls contains post.url %}{% continue %}{% endif %}
       {% if post.category == page.category %}{% continue %}{% endif %}
       {% assign shared = false %}
@@ -100,31 +107,41 @@ layout: default
         {% if current_tags contains tag %}{% assign shared = true %}{% endif %}
       {% endfor %}
       {% if shared %}
-        {% assign related = related | push: post %}
-        {% assign used_urls = used_urls | push: post.url %}
-      {% endif %}
-    {% endfor %}
-
-    <!-- 버킷 3: 같은 category (태그 겹침 여부 무관, 기존 동작 폴백) -->
-    {% for post in site.posts %}
-      {% if related.size >= 3 %}{% break %}{% endif %}
-      {% if used_urls contains post.url %}{% continue %}{% endif %}
-      {% if post.category != page.category %}{% continue %}{% endif %}
-      {% assign related = related | push: post %}
-      {% assign used_urls = used_urls | push: post.url %}
-    {% endfor %}
-
-    {% if related.size > 0 %}
-    <div class="related-posts">
-      <div class="related-posts__title">관련 글</div>
-      <div class="related-posts__grid">
-        {% for post in related %}
+        {% capture card %}
         <a href="{{ post.url | relative_url }}" class="related-post-card reveal">
           <div class="related-post-card__cat">{{ post.category }}</div>
           <div class="related-post-card__title">{{ post.title }}</div>
           <div class="related-post-card__date">{{ post.date | date: "%Y-%m-%d" }}</div>
         </a>
-        {% endfor %}
+        {% endcapture %}
+        {% assign related_html = related_html | append: card %}
+        {% assign used_urls = used_urls | append: "|" | append: post.url %}
+        {% assign related_count = related_count | plus: 1 %}
+      {% endif %}
+    {% endfor %}
+
+    <!-- 버킷 3: 같은 category (태그 겹침 여부 무관, 기존 동작 폴백) -->
+    {% for post in site.posts %}
+      {% if related_count >= 3 %}{% break %}{% endif %}
+      {% if used_urls contains post.url %}{% continue %}{% endif %}
+      {% if post.category != page.category %}{% continue %}{% endif %}
+      {% capture card %}
+      <a href="{{ post.url | relative_url }}" class="related-post-card reveal">
+        <div class="related-post-card__cat">{{ post.category }}</div>
+        <div class="related-post-card__title">{{ post.title }}</div>
+        <div class="related-post-card__date">{{ post.date | date: "%Y-%m-%d" }}</div>
+      </a>
+      {% endcapture %}
+      {% assign related_html = related_html | append: card %}
+      {% assign used_urls = used_urls | append: "|" | append: post.url %}
+      {% assign related_count = related_count | plus: 1 %}
+    {% endfor %}
+
+    {% if related_count > 0 %}
+    <div class="related-posts">
+      <div class="related-posts__title">관련 글</div>
+      <div class="related-posts__grid">
+        {{ related_html }}
       </div>
     </div>
     {% endif %}
