@@ -52,7 +52,7 @@
 }
 
 .post-header__title {
-  font-size: clamp(1.875rem, 1.6rem + 1.7vw, 2.375rem); // ~30 → 38px
+  font-size: clamp(1.875rem, calc(1.6rem + 1.7vw), 2.375rem); // ~30 → 38px
   font-weight: 900;
   line-height: var(--lh-tight);
   letter-spacing: -.8px;
@@ -147,7 +147,7 @@
 
 .post-hero__title {
     color: #fff;
-    font-size: clamp(1.875rem, 1.6rem + 1.7vw, 2.375rem); // ~30 → 38px
+    font-size: clamp(1.875rem, calc(1.6rem + 1.7vw), 2.375rem); // ~30 → 38px
     line-height: var(--lh-tight);
     text-shadow: 0 2px 20px rgba(0,0,0,.3);
     margin-bottom: 12px;
@@ -457,7 +457,7 @@
 
   &:hover {
     border-color: $blue-bd;
-    box-shadow: 0 4px 16px rgba(#{var(--blue-rgb)},.08);
+    box-shadow: 0 4px 16px #{"rgba(var(--blue-rgb),.08)"};
     transform: translateY(-2px);
   }
 
@@ -508,7 +508,7 @@
 
   &:hover {
     border-color: $blue-bd;
-    box-shadow: 0 4px 16px rgba(#{var(--blue-rgb)},.08);
+    box-shadow: 0 4px 16px #{"rgba(var(--blue-rgb),.08)"};
     transform: translateY(-2px);
   }
   &:hover .related-post-card__title { color: $blue; }
