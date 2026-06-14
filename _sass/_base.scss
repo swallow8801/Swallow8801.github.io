@@ -69,36 +69,66 @@ button { font-family: $font; }
   @media (max-width: $mobile) { padding: 24px 20px; }
 }
 
-// 코드 블록 (Rouge)
+// 코드 블록 (Rouge) — VS Code 에디터 창 스타일
 .highlight {
   position: relative;
-  background: #1e293b;
+  background: #1e1e1e;
+  border: 1px solid #3c3c3c;
   border-radius: 8px;
   margin: 24px 0;
   overflow: hidden;
+  padding-top: 36px; // 타이틀 바 높이 확보
+
+  // 타이틀 바
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 36px;
+    background: #2d2d2d;
+    border-bottom: 1px solid #3c3c3c;
+  }
+
+  // 신호등 점 (빨강·노랑·초록)
+  &::after {
+    content: '';
+    position: absolute;
+    top: 13px;
+    left: 16px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #ff5f56;
+    box-shadow: 18px 0 0 #ffbd2e, 36px 0 0 #27c93f;
+  }
 
   .code-lang {
     position: absolute;
-    top: 10px;
-    left: 16px;
+    top: 11px;
+    right: 102px;
     font-size: 11px;
-    color: #64748b;
-    font-family: monospace;
+    color: #9d9d9d;
+    font-family: $mono;
     letter-spacing: .5px;
+
+    @media (max-width: $mobile) { display: none; }
   }
 
   .copy-btn {
     position: absolute;
-    top: 8px;
+    top: 6px;
     right: 12px;
+    z-index: 1;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 4px;
+    min-width: 80px;
     padding: 4px 10px;
     border-radius: 4px;
-    background: rgba(255,255,255,.08);
+    background: rgba(255,255,255,.06);
     border: 1px solid rgba(255,255,255,.12);
-    color: #94a3b8;
+    color: #b0b0b0;
     font-size: 11px;
     font-weight: 600;
     cursor: pointer;
@@ -110,19 +140,47 @@ button { font-family: $font; }
       flex-shrink: 0;
     }
 
-    &:hover { background: rgba(255,255,255,.15); color: #e2e8f0; }
+    &:hover { background: rgba(255,255,255,.12); color: #e2e8f0; }
     &.copied { color: #4ade80; border-color: rgba(74,222,128,.3); }
     &.copy-btn--error { color: #f87171; border-color: rgba(248,113,113,.3); }
   }
 
   pre {
-    padding: 40px 16px 16px;
+    position: static;
+    margin: 0;
+    padding: 12px 16px 16px;
+    border: none;
+    border-radius: 0;
     overflow-x: auto;
+    background: transparent;
     font-size: 14px;
     line-height: 1.75;
-    color: #e2e8f0;
+    color: #d4d4d4;
     font-family: $mono;
+
+    &::before, &::after { content: none; }
   }
+
+  // ── Rouge 토큰 색상 (VS Code Dark+ 톤) ────────────
+  .c, .c1, .cm, .cp, .cs { color: #6a9955; font-style: italic; }
+  .err                   { color: #f44747; }
+  .k, .kd, .kn, .kp, .kr, .kv, .ow, .nb, .bp { color: #569cd6; }
+  .kt, .nc, .ne, .nn      { color: #4ec9b0; }
+  .s, .s1, .s2, .sb, .sc, .sd, .se, .sh, .si, .sx, .sr, .ss, .dl { color: #ce9178; }
+  .m, .mf, .mh, .mi, .il, .mo, .mb, .mx { color: #b5cea8; }
+  .n, .nx, .na, .nv, .vc, .vg, .vi { color: #9cdcfe; }
+  .nd, .nf                { color: #dcdcaa; }
+  .nl                      { color: #c8c8c8; }
+  .no                      { color: #4fc1ff; }
+  .nt                      { color: #569cd6; }
+  .o, .p                   { color: #d4d4d4; }
+  .gd                      { color: #f44747; }
+  .gi, .gp                 { color: #6a9955; }
+  .gh, .gu                 { color: #569cd6; font-weight: 700; }
+  .go                      { color: #808080; }
+  .gs                      { font-weight: 700; }
+  .gt                      { color: #f44747; }
+  .w                       { color: transparent; }
 }
 
 // 인라인 코드

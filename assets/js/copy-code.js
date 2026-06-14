@@ -86,11 +86,12 @@
       : Promise.reject(new Error('copy failed'));
   }
 
-  document.querySelectorAll('.post-content .highlight').forEach(function (block) {
-    // 언어 레이블 추출 (Rouge가 class="language-xxx"로 생성)
-    const code = block.querySelector('code');
-    if (code) {
-      const langClass = Array.from(code.classList).find(function (c) {
+  document.querySelectorAll('.post-content div.highlight').forEach(function (block) {
+    // 언어 레이블 추출 (kramdown+Rouge가 class="language-xxx"를
+    // <code>가 아닌 바깥쪽 <div class="language-xxx highlighter-rouge">에 부여)
+    const wrapper = block.closest('[class*="language-"]');
+    if (wrapper) {
+      const langClass = Array.from(wrapper.classList).find(function (c) {
         return c.startsWith('language-');
       });
       if (langClass) {

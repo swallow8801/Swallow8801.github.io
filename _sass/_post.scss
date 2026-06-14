@@ -384,8 +384,9 @@
 
   // 코드 블록 — 본문 75ch 제한과 무관하게 풀와이드 유지,
   // 다른 본문 요소(이미지·표)와 톤이 맞도록 radius/margin만 보정.
+  // div.highlight(래퍼)만 선택 — 내부 pre.highlight은 _base.scss에서 별도 처리.
   // (.highlight/.copy-btn 자체 정의는 _base.scss 유지, 여기서는 override만)
-  .highlight {
+  div.highlight {
     max-width: none;
     border-radius: 12px;
     margin: 24px 0;
