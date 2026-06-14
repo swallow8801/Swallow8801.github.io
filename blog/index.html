@@ -246,7 +246,7 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
     if (!meta) { hideCatBanner(); return; }
 
     catBanner.dataset.cat = key;
-    catBanner.innerHTML = meta.icon +
+    catBanner.innerHTML = '<div class="cat-banner__icon">' + meta.icon + '</div>' +
       '<div class="cat-banner__text">' +
         '<strong class="cat-banner__name">' + category + '</strong>' +
         '<span class="cat-banner__desc">' + meta.desc + '</span>' +
