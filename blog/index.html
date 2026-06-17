@@ -15,17 +15,30 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
       <span>Blog</span>
     </div>
     <div class="blog-page-header__search">
+      <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="flex-shrink:0;opacity:.5"><circle cx="9" cy="9" r="6"/><path d="M15 15l4 4"/></svg>
       <input type="search" id="blogSearchInput" class="blog-page-header__search-input"
              placeholder="검색..." aria-label="제목 또는 태그로 포스트 검색" autocomplete="off">
     </div>
   </div>
   <div class="blog-page-header__body">
     <div class="blog-page-header__info">
-      <div class="blog-page-header__title">Engineering Log</div>
+      <div class="blog-page-header__title">
+        <span class="blog-logo-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+            <rect x="4" y="3" width="16" height="20" rx="3" stroke="currentColor" stroke-width="1.8"/>
+            <line x1="8" y1="8" x2="16" y2="8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <line x1="8" y1="16" x2="13" y2="16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="21" cy="21" r="5" fill="currentColor" opacity="0.12"/>
+            <path d="M19.5 21.5L21 20l1.5 1.5-1.5 1.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Engineering Log
+      </div>
       <div class="blog-page-header__desc">개발 과정의 실험, 판단, 회고를 기록합니다.</div>
     </div>
     <div class="blog-page-header__meta">
-      <span class="blog-page-header__count">{{ all_posts | size }}</span>
+      <span class="blog-page-header__count blog-count-anim">{{ all_posts | size }}</span>
       <span class="blog-page-header__count-lbl">posts</span>
     </div>
   </div>
@@ -119,8 +132,9 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
       <div class="widget__title">카테고리</div>
       <div class="cat-tree">
 
-        {% assign all_series = site.posts | map: "series" | uniq | sort %}
-        {% for series in all_series %}
+        {% assign series_order = "Study,Projects,DevNotes" | split: "," %}
+        {% assign existing_series = site.posts | map: "series" | uniq %}
+        {% for series in series_order %}{% if existing_series contains series %}
           {% assign series_key = series | downcase %}
           <div class="cat-tree__group">
             <div class="cat-tree__label cat-tree__label--{{ series_key }}">{{ series }}</div>
@@ -157,7 +171,7 @@ description: "개발 과정의 실험, 판단, 회고를 기록합니다."
               {% endfor %}
             {% endif %}
           </div>
-        {% endfor %}
+        {% endif %}{% endfor %}
 
       </div>
     </div>

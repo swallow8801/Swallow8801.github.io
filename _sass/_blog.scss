@@ -1,15 +1,48 @@
 // ── 블로그 목록 페이지 ────────────────────────────
 
+// ─── 애니메이션 keyframes ─────────────────────────
+@keyframes blogTitleIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes countPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .7; }
+}
+
 // ─── 블로그 헤더 (Featured Hero 대체) ────────────
 .blog-page-header {
-  background: $surface;
-  border-bottom: 1px solid $border;
+  background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 55%, #e0eeff 100%);
+  border-bottom: 1px solid rgba(37, 99, 235, .12);
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(37,99,235,.06) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+[data-theme="dark"] .blog-page-header {
+  background: linear-gradient(135deg, #0f1a2e 0%, #131b2e 55%, #111827 100%);
+
+  &::after {
+    background-image: radial-gradient(circle, rgba(59,130,246,.04) 1px, transparent 1px);
+  }
 }
 
 .blog-page-header__top {
-  border-bottom: 1px solid $border;
-  padding: 10px $pad;
+  border-bottom: 1px solid rgba(37,99,235,.1);
+  padding: 10px 40px;
   display: flex; justify-content: space-between; align-items: center;
+  position: relative;
+  z-index: 1;
 
   @media (max-width: $mobile) {
     padding: 10px 16px;
@@ -58,9 +91,11 @@
 }
 
 .blog-page-header__body {
-  max-width: $max-w + (2 * $pad); margin: 0 auto;
-  padding: 28px $pad 24px;
+  max-width: 1480px; margin: 0 auto;
+  padding: 28px 40px 24px;
   display: flex; justify-content: space-between; align-items: flex-end;
+  position: relative;
+  z-index: 1;
 
   @media (max-width: $tablet) { flex-direction: column; align-items: flex-start; gap: 16px; }
   @media (max-width: $mobile) {
@@ -72,25 +107,46 @@
 .blog-page-header__info { flex: 1; }
 
 .blog-page-header__title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   font-size: var(--fs-6); font-weight: 900; letter-spacing: -1px;
   line-height: var(--lh-tight);
   color: $t1; margin-bottom: 6px;
+  animation: blogTitleIn .6s cubic-bezier(.22,.68,0,1.05) .1s both;
 
   @media (max-width: $mobile) {
     letter-spacing: 0;
   }
 }
 
+.blog-logo-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(37,99,235,.3);
+
+  svg { width: 20px; height: 20px; }
+}
+
 .blog-page-header__desc {
   font-size: var(--fs-2); color: $t2; line-height: 1.6;
+  animation: blogTitleIn .6s cubic-bezier(.22,.68,0,1.05) .2s both;
 }
 
 .blog-page-header__meta {
   display: flex; align-items: baseline; gap: 4px;
   flex-shrink: 0;
+  animation: blogTitleIn .6s cubic-bezier(.22,.68,0,1.05) .3s both;
 }
 .blog-page-header__count {
-  font-size: 48px; font-weight: 900; color: $t1; letter-spacing: -2px; line-height: 1;
+  font-size: 48px; font-weight: 900; color: $blue; letter-spacing: -2px; line-height: 1;
 
   @media (max-width: $mobile) {
     font-size: 38px;
@@ -99,6 +155,20 @@
 }
 .blog-page-header__count-lbl {
   font-size: 14px; color: $t3; font-weight: 500;
+}
+
+.blog-count-anim {
+  animation: blogTitleIn .6s cubic-bezier(.22,.68,0,1.05) .3s both,
+             countPulse 2.5s ease-in-out 1s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-page-header__title,
+  .blog-page-header__desc,
+  .blog-page-header__meta,
+  .blog-count-anim {
+    animation: none;
+  }
 }
 
 // ─── 카테고리/프로젝트 커버 (선택 시 posts-area 상단에 표시) ──
@@ -278,12 +348,17 @@
 .subcat-btn {
   padding: 5px 12px; border-radius: 20px;
   font-size: 13px; font-weight: 600;
-  border: 1.5px solid $border; background: $surface;
+  border: 1.5px solid $border; background: rgba(255,255,255,.8);
   color: $t2; cursor: pointer; font-family: $font;
-  transition: all .15s; white-space: nowrap;
+  transition: all .18s cubic-bezier(.22,.68,0,1.2); white-space: nowrap;
 
   &:hover { border-color: $blue-bd; color: $blue; }
-  &.on    { background: $blue; border-color: $blue; color: #fff; }
+  &.on    {
+    background: $blue; border-color: $blue; color: #fff;
+    box-shadow: 0 2px 8px rgba(37,99,235,.25);
+  }
+
+  [data-theme="dark"] & { background: rgba(255,255,255,.06); }
 }
 
 // ─── 카테고리 필터 바 (Study / DevNotes 2단 구조) ─
@@ -358,13 +433,13 @@
 
 // ─── Body 레이아웃 ────────────────────────────────
 .blog-body {
-  max-width: $max-w; margin: 0 auto;
-  padding: 28px $pad;
+  max-width: 1400px; margin: 0 auto;
+  padding: 28px 40px;
   display: grid; grid-template-columns: 1fr 272px; gap: 26px; align-items: start;
 
-  @media (max-width: $tablet) { grid-template-columns: 1fr; padding: 24px 32px; }
+  @media (max-width: $tablet) { grid-template-columns: 1fr; padding: 24px 28px; }
   @media (max-width: $mobile) {
-    padding: 18px 16px 24px;
+    padding: 16px 16px 24px;
   }
 }
 
@@ -386,20 +461,35 @@
 
 .post-card {
   display: flex; border-radius: 14px; overflow: hidden;
-  background: $surface; border: 1px solid $border;
+  background: #f8faff; border: 1px solid $border;
   cursor: pointer; text-decoration: none; color: inherit;
   box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  position: relative;
   transition:
     transform .28s cubic-bezier(.22,.68,0,1.2),
     box-shadow .28s ease,
-    border-color .2s;
+    border-color .2s,
+    background .2s;
   min-height: 138px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 12px; bottom: 12px;
+    width: 3px;
+    border-radius: 2px;
+    background: transparent;
+    transition: background .25s ease;
+    z-index: 1;
+  }
 
   &:hover {
     transform: translateY(-4px);
     border-color: $blue-bd;
     box-shadow: 0 8px 24px #{"rgba(var(--blue-rgb),.12)"};
+    background: #f3f7ff;
 
+    &::before { background: $blue; }
     .post-card__title { color: $blue; }
     .post-card__arrow { transform: translateX(3px); color: $blue; }
   }
@@ -411,6 +501,11 @@
 
     &:hover { transform: none; }
   }
+}
+
+[data-theme="dark"] .post-card {
+  background: var(--color-surface);
+  &:hover { background: var(--color-surface2); }
 }
 
 // 썸네일
@@ -555,7 +650,10 @@
 }
 
 .widget {
-  @include card; padding: 18px;
+  @include card;
+  background: #f5f8ff;
+  border-color: rgba(37,99,235,.1);
+  padding: 18px;
 
   @media (max-width: $mobile) {
     padding: 16px;
@@ -565,7 +663,15 @@
 .widget__title {
   font-size: 12px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 1.5px; color: $t3;
-  margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1.5px solid $surface2;
+  margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1.5px solid rgba(37,99,235,.1);
+}
+
+[data-theme="dark"] .widget {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+}
+[data-theme="dark"] .widget__title {
+  border-bottom-color: var(--color-border);
 }
 
 // About
@@ -601,7 +707,10 @@
   font-style: italic;
 }
 .cat-tree__item--active {
-  background: $blue-bg;
+  background: rgba(37,99,235,.08);
+  border-left: 3px solid $blue;
+  padding-left: 5px;
+
   .cat-tree__name { color: $blue; font-weight: 600; }
 }
 .cat-tree__item {
