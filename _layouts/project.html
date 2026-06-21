@@ -56,22 +56,31 @@ front matter에서 project_id 로 _data/projects.yml 항목을 찾아 히어로�
   {{ content }}
 
   {%- comment -%} 이전/다음 프로젝트 (상세 페이지가 있는 프로젝트끼리) {%- endcomment -%}
-  {% assign detailed = site.data.projects | where_exp: "dp", "dp.detail != '#'" %}
-  {% assign dcount = detailed | size %}
-  {% assign cur = 0 %}
-  {% for dp in detailed %}{% if dp.id == page.project_id %}{% assign cur = forloop.index0 %}{% endif %}{% endfor %}
+  {% assign dcount = 0 %}
+  {% assign current_seen = false %}
+  {% assign prev_p = nil %}
+  {% assign next_p = nil %}
+  {% for dp in site.data.projects %}
+    {% unless dp.detail == '#' %}
+      {% assign dcount = dcount | plus: 1 %}
+      {% if dp.id == page.project_id %}
+        {% assign current_seen = true %}
+      {% elsif current_seen %}
+        {% unless next_p %}{% assign next_p = dp %}{% endunless %}
+      {% else %}
+        {% assign prev_p = dp %}
+      {% endif %}
+    {% endunless %}
+  {% endfor %}
   {% if dcount > 1 %}
   <nav class="proj-pager reveal">
-    {% if cur > 0 %}
-      {% assign prev_i = cur | minus: 1 %}{% assign prev_p = detailed[prev_i] %}
+    {% if prev_p %}
       <a class="proj-pager__item proj-pager__item--prev" href="{{ prev_p.detail | relative_url }}">
         <span class="proj-pager__dir">← 이전 프로젝트</span>
         <span class="proj-pager__name">{{ prev_p.name }}</span>
       </a>
     {% else %}<span></span>{% endif %}
-    {% assign last_i = dcount | minus: 1 %}
-    {% if cur < last_i %}
-      {% assign next_i = cur | plus: 1 %}{% assign next_p = detailed[next_i] %}
+    {% if next_p %}
       <a class="proj-pager__item proj-pager__item--next" href="{{ next_p.detail | relative_url }}">
         <span class="proj-pager__dir">다음 프로젝트 →</span>
         <span class="proj-pager__name">{{ next_p.name }}</span>
