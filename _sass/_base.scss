@@ -22,7 +22,7 @@ body {
 
 a { text-decoration: none; color: inherit; }
 img { max-width: 100%; display: block; }
-button { font-family: $font; }
+button, input, textarea, select { font-family: $font; }
 
 // ── 공통 컴포넌트 ─────────────────────────────────
 

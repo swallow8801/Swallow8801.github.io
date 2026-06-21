@@ -245,18 +245,16 @@ a.proj-featured__name:hover { color: $accent; }
   min-height: 280px;
   border-left: 1px solid $border;
   background:
-    #{"linear-gradient(140deg, rgba(var(--accent-rgb),.18), rgba(var(--accent-rgb),.02))"},
+    #{"radial-gradient(circle at 72% 18%, rgba(var(--accent-rgb),.24), transparent 42%)"},
+    #{"linear-gradient(145deg, rgba(var(--accent-rgb),.12), rgba(var(--accent-rgb),.025))"},
     $surface2;
 
   &::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image:
-      linear-gradient(var(--grid-line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-    background-size: 30px 30px;
-    opacity: .7;
+    background: linear-gradient(120deg, transparent 28%, rgba(255,255,255,.12) 50%, transparent 72%);
+    opacity: .8;
   }
 
   @media (max-width: $tablet) { border-left: none; border-top: 1px solid $border; min-height: 200px; }
@@ -268,6 +266,7 @@ a.proj-featured__name:hover { color: $accent; }
   border-radius: 28px;
   background: $surface;
   box-shadow: var(--shadow-md);
+  border: 1px solid $border;
   display: grid;
   place-items: center;
   padding: 22px;
@@ -303,15 +302,15 @@ a.proj-featured__name:hover { color: $accent; }
   place-items: center;
   overflow: hidden;
   background:
-    #{"linear-gradient(140deg, rgba(var(--accent-rgb),.2), rgba(var(--accent-rgb),.02))"},
+    #{"radial-gradient(circle at 72% 18%, rgba(var(--accent-rgb),.22), transparent 38%)"},
+    #{"linear-gradient(145deg, rgba(var(--accent-rgb),.11), rgba(var(--accent-rgb),.02))"},
     $surface2;
 
   &::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(var(--grid-line) 1.2px, transparent 1.2px);
-    background-size: 18px 18px;
+    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.1) 50%, transparent 70%);
   }
 }
 

@@ -49,23 +49,13 @@ permalink: /portfolio/
     <p class="port-head__sub">직접 설계하고 구축한 프로젝트입니다. 카드를 눌러 상세 과정을 확인해 보세요.</p>
   </div>
 
-  <!-- 필터 (filter.js가 .port-filter__btn / data-filter / [data-category] 사용) -->
-  <div class="port-filter reveal">
-    <button class="port-filter__btn port-filter__btn--active" data-filter="all">전체</button>
-    <button class="port-filter__btn" data-filter="ai">AI / LLM</button>
-    <button class="port-filter__btn" data-filter="web">Web App</button>
-    <button class="port-filter__btn" data-filter="tool">Tool / Infra</button>
-  </div>
-
   <!-- 프로젝트 그리드 -->
   <div class="proj-grid">
-    {% for project in site.data.projects %}
-    {% assign accent_style = "" %}
-    {% if project.accent %}{% capture accent_style %}--accent: {{ project.accent }}; --accent-rgb: {{ project.accent_rgb | default: '37, 99, 235' }};{% endcapture %}{% endif %}
+    {% for project in real_projects %}
 
       {% if project.featured %}
       <!-- Featured 풀폭 히어로 카드 -->
-      <article class="proj-featured reveal" data-category="{{ project.type }}" style="{{ accent_style }}">
+      <article class="proj-featured reveal" data-category="{{ project.type }}" style="--accent: {{ project.accent | default: '#2563eb' }}; --accent-rgb: {{ project.accent_rgb | default: '37, 99, 235' }};">
         <span class="proj-featured__bar" aria-hidden="true"></span>
         <div class="proj-featured__text">
           <div class="kicker">// FEATURED · {{ project.type | upcase }}</div>
@@ -104,7 +94,7 @@ permalink: /portfolio/
 
       {% else %}
       <!-- 일반 쇼케이스 카드 -->
-      <article class="proj-card {% if project.preview %}proj-card--preview{% endif %} reveal" data-category="{{ project.type }}" style="{{ accent_style }}">
+      <article class="proj-card {% if project.preview %}proj-card--preview{% endif %} reveal" data-category="{{ project.type }}" style="--accent: {{ project.accent | default: '#2563eb' }}; --accent-rgb: {{ project.accent_rgb | default: '37, 99, 235' }};">
         {% if project.preview %}<span class="preview-badge">PREVIEW</span>{% endif %}
         <div class="proj-card__cover">
           {% if project.logo %}

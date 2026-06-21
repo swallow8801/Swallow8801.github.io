@@ -5,9 +5,6 @@ description: "LLM, RAG, Vision AI, Backend, Frontend를 연결해 실제 동작�
 ---
 
 {%- comment -%} 토큰 기반 · 라이트/다크 동시 지원 랜딩. 색은 전부 var(--*) 사용. {%- endcomment -%}
-{% assign featured = site.data.projects | where: "featured", true | first %}
-{% assign real_projects = site.data.projects | where_exp: "p", "p.preview != true" %}
-
 <style>
 /* ── Landing (lp-) — 모든 색은 디자인 토큰 사용, 테마 무관 ── */
 .lp { position: relative; overflow: hidden; background: var(--landing-canvas); }
@@ -44,44 +41,32 @@ description: "LLM, RAG, Vision AI, Backend, Frontend를 연결해 실제 동작�
 .lp-scroll__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: lpFlow 1.8s ease-in-out infinite; }
 @keyframes lpFlow { 0% { transform: translateY(0); opacity: 0 } 30% { opacity: 1 } 100% { transform: translateY(15px); opacity: 0 } }
 
-/* HERO 우측 — 대표 프로젝트 미리보기 */
-.lp-feature {
-  position: relative; display: block; border-radius: var(--radius-lg); overflow: hidden;
-  background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: var(--shadow-lg);
-  transition: transform .3s ease, box-shadow .3s ease;
+/* HERO 우측 — 포트폴리오와 기록으로 이어지는 진입점 */
+.lp-routes {
+  padding: 10px; border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent); box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
 }
-.lp-feature:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg), 0 0 0 1px rgba(var(--accent-rgb), .35); }
-.lp-feature__top {
-  /* 다크 잉크 패널 + 액센트 글로우 — 액센트 색조와 무관하게 화이트 텍스트 AA 안전 */
-  position: relative; overflow: hidden; padding: 26px 24px; color: #fff;
-  background:
-    radial-gradient(130% 150% at 85% 0%, rgba(var(--accent-rgb), .6), transparent 58%),
-    linear-gradient(140deg, #16264a, #0d1830);
+.lp-routes__head { padding: 18px 18px 14px; }
+.lp-routes__eyebrow { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--color-blue); }
+.lp-routes__title { margin-top: 8px; font-size: var(--fs-5); font-weight: 850; color: var(--color-t1); letter-spacing: -.025em; }
+.lp-routes__desc { margin-top: 7px; font-size: var(--fs-2); line-height: var(--lh-body); color: var(--color-t2); }
+.lp-route {
+  position: relative; display: grid; grid-template-columns: 42px 1fr auto; gap: 14px; align-items: center;
+  padding: 18px; border-top: 1px solid var(--color-border); border-radius: 12px;
+  transition: background .2s ease, transform .2s ease;
 }
-.lp-feature__top::after {
-  content: ''; position: absolute; inset: 0;
-  background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-.lp-feature__kick { position: relative; font-family: var(--mono); font-size: 11px; letter-spacing: 2px; opacity: .85; }
-.lp-feature__name { position: relative; font-size: var(--fs-5); font-weight: 800; letter-spacing: -.02em; margin-top: 8px; line-height: var(--lh-tight); }
-.lp-feature__body { padding: 20px 22px 22px; }
-.lp-feature__desc { font-size: var(--fs-2); color: var(--color-t2); line-height: var(--lh-body); margin-bottom: 16px; }
-.lp-feature__tags { display: flex; gap: 6px; flex-wrap: wrap; }
-.lp-feature__more { display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; font-size: var(--fs-2); font-weight: 700; color: var(--color-blue); }
-.lp-mini {
-  font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 6px;
-  background: rgba(var(--accent-rgb), .12); color: var(--color-t1); border: 1px solid rgba(var(--accent-rgb), .25);
-}
-
-/* STATS */
-.lp-stats {
-  position: relative; z-index: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 3vw, 32px);
-  border-top: 1px solid var(--color-border); padding: clamp(28px, 4vw, 44px) 0;
-}
-.lp-stat__num { font-size: clamp(2rem, 1.4rem + 2vw, 3rem); font-weight: 900; letter-spacing: -.03em; line-height: 1;
-  background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.lp-stat__lbl { font-family: var(--mono); font-size: var(--fs-1); color: var(--color-t3); text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
+.lp-route:hover { background: var(--color-surface2); transform: translateX(3px); }
+.lp-route:focus-visible { outline: 3px solid rgba(var(--blue-rgb), .24); outline-offset: 2px; }
+.lp-route__no { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; background: var(--color-blue-bg); color: var(--color-blue); font-family: var(--mono); font-size: 12px; font-weight: 800; }
+.lp-route--blog .lp-route__no { background: var(--color-purple-bg); color: var(--color-purple); }
+.lp-route__name { display: block; font-size: var(--fs-3); font-weight: 800; color: var(--color-t1); }
+.lp-route__sub { display: block; margin-top: 3px; font-size: var(--fs-1); color: var(--color-t3); line-height: 1.5; }
+.lp-route__arrow { color: var(--color-t3); font-size: 20px; transition: color .2s, transform .2s; }
+.lp-route:hover .lp-route__arrow { color: var(--color-blue); transform: translateX(3px); }
+.lp-routes__foot { padding: 14px 18px 10px; border-top: 1px solid var(--color-border); font-size: var(--fs-1); color: var(--color-t3); }
+.lp-routes__foot a { color: var(--color-t2); font-weight: 700; }
+.lp-routes__foot a:hover { color: var(--color-blue); }
 
 /* SECTION */
 .lp-sec { position: relative; z-index: 1; padding: var(--section-y) 0; }
@@ -146,12 +131,11 @@ description: "LLM, RAG, Vision AI, Backend, Frontend를 연결해 실제 동작�
   .lp-recent { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
-  .lp-stats { grid-template-columns: 1fr; gap: 22px; text-align: left; }
   .lp-skillcard { padding: 22px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .lp-scroll__dot { animation: none; opacity: 1; }
-  .lp-feature, .lp-post { transition: none; }
+  .lp-route, .lp-post { transition: none; }
   .lp-gauge__fill { transition: none; }
 }
 </style>
@@ -171,35 +155,31 @@ description: "LLM, RAG, Vision AI, Backend, Frontend를 연결해 실제 동작�
       <p class="lp-lead"><b>모델 선택부터 인프라, 화면까지</b> — 하나의 흐름으로 이어지는 AI 시스템을 설계하고 구축합니다.</p>
       <p class="lp-lead lp-lead--sub">LLM · RAG · Vision AI · Backend · Frontend를 연결해 실제 동작하는 서비스를 만듭니다.</p>
       <div class="lp-cta">
-        <a href="{{ '/portfolio' | relative_url }}" class="btn btn--primary">작업 보기 <span class="btn__arrow">→</span></a>
-        <a href="https://github.com/{{ site.author.github }}" class="btn btn--ghost" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="{{ '/portfolio' | relative_url }}" class="btn btn--primary">포트폴리오 <span class="btn__arrow">→</span></a>
+        <a href="{{ '/blog' | relative_url }}" class="btn btn--ghost">기술 블로그</a>
       </div>
       <a href="#skills-section" class="lp-scroll"><span>Scroll</span><span class="lp-scroll__dot"></span></a>
     </div>
 
-    {% if featured %}
-    <a class="lp-feature" href="{{ featured.detail | relative_url }}" style="--accent: {{ featured.accent | default: '#2563eb' }}; --accent-rgb: {{ featured.accent_rgb | default: '37, 99, 235' }};">
-      <div class="lp-feature__top">
-        <div class="lp-feature__kick">// FEATURED PROJECT</div>
-        <div class="lp-feature__name">{{ featured.name }}</div>
+    <aside class="lp-routes" aria-label="주요 페이지">
+      <div class="lp-routes__head">
+        <div class="lp-routes__eyebrow">// EXPLORE</div>
+        <div class="lp-routes__title">무엇을 먼저 볼까요?</div>
+        <p class="lp-routes__desc">완성한 작업과 그 과정에서 얻은 기술 기록을 나누어 정리했습니다.</p>
       </div>
-      <div class="lp-feature__body">
-        <p class="lp-feature__desc">{{ featured.subtitle }}</p>
-        <div class="lp-feature__tags">
-          {% for tag in featured.tags limit: 4 %}<span class="lp-mini">{{ tag.name }}</span>{% endfor %}
-        </div>
-        <span class="lp-feature__more">프로젝트 상세 <span class="btn__arrow">→</span></span>
-      </div>
-    </a>
-    {% endif %}
+      <a class="lp-route" href="{{ '/portfolio' | relative_url }}">
+        <span class="lp-route__no">01</span>
+        <span><strong class="lp-route__name">Portfolio</strong><small class="lp-route__sub">설계하고 구현한 프로젝트와 담당 역할</small></span>
+        <span class="lp-route__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="lp-route lp-route--blog" href="{{ '/blog' | relative_url }}">
+        <span class="lp-route__no">02</span>
+        <span><strong class="lp-route__name">Engineering Blog</strong><small class="lp-route__sub">AI·백엔드·인프라를 다루며 남긴 기록</small></span>
+        <span class="lp-route__arrow" aria-hidden="true">→</span>
+      </a>
+      <div class="lp-routes__foot">코드가 궁금하다면 <a href="https://github.com/{{ site.author.github }}" target="_blank" rel="noopener noreferrer">GitHub 방문 →</a></div>
+    </aside>
   </header>
-
-  <!-- STATS (실제값만) -->
-  <div class="lp-stats lp-wrap">
-    <div><div class="lp-stat__num" data-count="{{ real_projects | size }}">{{ real_projects | size }}</div><div class="lp-stat__lbl">Featured Project</div></div>
-    <div><div class="lp-stat__num" data-count="5">5</div><div class="lp-stat__lbl">AI Models Trained</div></div>
-    <div><div class="lp-stat__num" data-count="2">2</div><div class="lp-stat__lbl">Production Repos</div></div>
-  </div>
 
   <!-- SKILLS -->
   <section id="skills-section" class="lp-sec lp-wrap">

@@ -11,7 +11,7 @@
 
 - id: contracthoney
   name: "계꿀 (ContractHoney)"
-  subtitle: "AI 계약서 위법·독소조항 검출 & 요약 어시스턴트"
+  subtitle: "위험 조항 식별부터 법률 근거·요약·버전 비교까지"
   type: ai
   featured: true
   accent: "#f59e0b"
@@ -19,7 +19,7 @@
   logo: "/assets/img/portfolio/contracthoney/logo.png"
   period: "KT AIVLE School 6기 빅프로젝트 · 2025"
   role: "PM · 웹 풀스택"
-  description: "계약서의 위법·독소조항을 AI로 검출하고 위반 법령을 예측하며, 조 단위 요약·계약서 버전 비교·법령/표준계약서 자료실까지 제공하는 풀스택 서비스입니다. KoBERT·KoELECTRA로 위법/독소 조항을 식별하고 위반 법 조항을 예측, 코사인 유사도로 세부 항·호를 매칭하며, EXAONE·KoBART로 조항을 요약합니다. Next.js + FastAPI 3-Tier 구조를 Docker로 Azure에 배포했습니다. (KT AIVLE School 6기 빅프로젝트 / PM·풀스택 개발 담당)"
+  description: "PDF 계약서를 조·항·호 단위로 분석해 위법·독소 가능성과 관련 법률, 판단 설명을 제공하는 AI 어시스턴트입니다. 조항별 요약과 분석 이력, 계약서 버전 비교까지 하나의 검토 흐름으로 연결했으며 Next.js·FastAPI·Azure 기반 3-Tier 구조로 구현했습니다."
   detail: "/portfolio/contracthoney/"
   tags:
     - { name: "KoBERT", ai: true }
