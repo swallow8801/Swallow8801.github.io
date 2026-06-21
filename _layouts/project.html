@@ -8,9 +8,8 @@ front matter에서 project_id 로 _data/projects.yml 항목을 찾아 히어로�
 액센트: p.accent / p.accent_rgb 를 --accent 로 주입해 히어로·링크·hover·포인트에 적용.
 {%- endcomment -%}
 {% assign p = site.data.projects | where: "id", page.project_id | first %}
-{% capture accent_style %}--accent: {{ p.accent | default: '#2563eb' }}; --accent-rgb: {{ p.accent_rgb | default: '37, 99, 235' }};{% endcapture %}
 
-<div class="proj-hero" style="{{ accent_style }}">
+<div class="proj-hero" style="--accent: {{ p.accent | default: '#2563eb' }}; --accent-rgb: {{ p.accent_rgb | default: '37, 99, 235' }};">
   <span class="proj-hero__bar" aria-hidden="true"></span>
   <div class="proj-hero__inner">
     <a href="{{ '/portfolio/' | relative_url }}" class="proj-hero__back">← 포트폴리오</a>
@@ -52,7 +51,7 @@ front matter에서 project_id 로 _data/projects.yml 항목을 찾아 히어로�
   </div>
 </div>
 
-<article class="proj-body" style="{{ accent_style }}">
+<article class="proj-body" style="--accent: {{ p.accent | default: '#2563eb' }}; --accent-rgb: {{ p.accent_rgb | default: '37, 99, 235' }};">
   {{ content }}
 
   {%- comment -%} 이전/다음 프로젝트 (상세 페이지가 있는 프로젝트끼리) {%- endcomment -%}
