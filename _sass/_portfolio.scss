@@ -4,18 +4,15 @@
 .port-profile {
   position: relative;
   overflow: hidden;
-  background: $surface2;
+  background: var(--profile-canvas);
   border-bottom: 1px solid $border;
 }
 
 .port-profile__bg {
   position: absolute;
   inset: 0;
-  background:
-    var(--grad-mesh),
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: auto, 44px 44px, 44px 44px;
+  background: var(--ambient-glow);
+  opacity: .8;
   pointer-events: none;
 }
 
