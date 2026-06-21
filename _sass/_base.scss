@@ -26,6 +26,77 @@ button { font-family: $font; }
 
 // ── 공통 컴포넌트 ─────────────────────────────────
 
+// 모노 섹션 kicker (// OVERVIEW 류)
+.kicker { @include kicker; }
+
+// 상태/메타 pill
+.pill {
+  @include pill;
+
+  &__dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: $accent;
+    box-shadow: 0 0 0 3px #{"rgba(var(--accent-rgb),.25)"};
+  }
+}
+
+// PREVIEW 뱃지 — 실제 데이터가 아닌 플레이스홀더 표시
+.preview-badge {
+  position: absolute;
+  top: 14px; right: 14px;
+  z-index: 3;
+  font-family: $mono;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: $surface2;
+  color: $t3;
+  border: 1px dashed $border;
+}
+
+// 에디토리얼 버튼 (랜딩/포트폴리오/푸터 공용, 액센트 반응)
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-3);
+  font-weight: 700;
+  font-family: $font;
+  padding: 13px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s, border-color .18s, color .18s;
+
+  .btn__arrow { transition: transform .2s ease; }
+  &:hover .btn__arrow { transform: translateX(3px); }
+
+  // primary는 항상 화이트 텍스트 대비가 보장되는 브랜드 블루 사용.
+  // (라이트 액센트(앰버 등)를 버튼 배경에 쓰면 화이트 텍스트가 AA 미달)
+  // 액센트 정체성은 히어로/바/커버/hover 글로우 등 비텍스트 요소로 표현한다.
+  &--primary {
+    background: $blue;
+    color: #fff;
+    box-shadow: var(--shadow-md);
+    &:hover { background: $blue-h; transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: $t1;
+    border-color: $border;
+    &:hover { border-color: $blue; color: $blue; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
+  .btn:hover { transform: none; }
+}
+
 // 태그 뱃지
 .tag-badge {
   display: inline-block;

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redesign Preview — Swallow8801</title>
+<!--
+  ─────────────────────────────────────────────────────────────
+  PREVIEW MOCKUP — 빌드 제외 (방향 합의용 단일 파일)
+  실제 사이트와 동일한 토큰 이름(--color-*, --space-*, --shadow-*)을 사용해
+  나중에 _sass/_variables.scss 로 그대로 승격할 수 있게 작성했다.
+  여기 더미 카드 2장(PREVIEW 뱃지)은 실제 데이터 아님 → projects.yml에 preview:true 로 들어갈 예정.
+  ─────────────────────────────────────────────────────────────
+-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+/* ============================================================
+   1. DESIGN TOKENS  (라이트 = 기본, 다크 = [data-theme="dark"])
+   ============================================================ */
+:root{
+  --font:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono:'SF Mono','Consolas','Courier New',monospace;
+
+  /* 타입 스케일 */
+  --fs-1:clamp(.75rem,.72rem + .1vw,.8125rem);
+  --fs-2:clamp(.875rem,.85rem + .12vw,.9375rem);
+  --fs-3:clamp(.875rem,.85rem + .15vw,1rem);
+  --fs-4:clamp(1rem,.96rem + .2vw,1.125rem);
+  --fs-5:clamp(1.25rem,1.1rem + .6vw,1.625rem);
+  --fs-6:clamp(1.5rem,1.1rem + 1.6vw,2.5rem);
+  --fs-display:clamp(3.25rem,2.2rem + 5vw,6.5rem);
+
+  --lh-tight:1.08;
+  --lh-body:1.7;
+
+  /* 간격 스케일 (NEW) */
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px;
+  --space-5:24px; --space-6:32px; --space-7:48px; --space-8:64px;
+  --space-9:96px; --space-10:128px;
+  --section-y:clamp(56px,8vw,120px);   /* 섹션 수직 리듬 */
+
+  --radius:14px; --radius-lg:22px; --radius-pill:100px;
+
+  /* ── 라이트 팔레트 ── */
+  --color-bg:#eef2f7;
+  --color-surface:#ffffff;
+  --color-surface2:#f4f7fb;
+  --color-border:#d8e3f0;
+  --color-t1:#0f1f3d; --color-t2:#4a6080; --color-t3:#8fa3bf;
+  --color-blue:#2563eb; --color-blue-h:#1d4ed8;
+  --color-blue-bg:#eff6ff; --color-blue-bd:#bfdbfe;
+  --blue-rgb:37,99,235;
+
+  /* 엘리베이션 (NEW) — 라이트는 푸른 기 도는 그림자 */
+  --shadow-sm:0 1px 3px rgba(15,31,61,.06), 0 1px 2px rgba(15,31,61,.04);
+  --shadow-md:0 8px 24px rgba(37,99,235,.10), 0 2px 6px rgba(15,31,61,.05);
+  --shadow-lg:0 24px 60px rgba(37,99,235,.16), 0 8px 24px rgba(15,31,61,.08);
+
+  /* 그라디언트 (NEW) */
+  --grad-text:linear-gradient(120deg,#2563eb 10%,#7c3aed 90%);
+  --grad-mesh:
+    radial-gradient(60% 50% at 12% 8%, rgba(37,99,235,.10), transparent 60%),
+    radial-gradient(50% 60% at 92% 18%, rgba(124,58,237,.08), transparent 60%),
+    radial-gradient(70% 60% at 70% 100%, rgba(37,99,235,.06), transparent 60%);
+  --grid-line:rgba(37,99,235,.06);
+
+  /* 프로젝트 액센트 기본값 (각 카드/상세에서 --accent 로 덮어씀) */
+  --accent:#2563eb;
+  --accent-soft:rgba(37,99,235,.12);
+
+  color-scheme:light;
+}
+[data-theme="dark"]{
+  --color-bg:#0b1220;
+  --color-surface:#131b2e;
+  --color-surface2:#1a2436;
+  --color-border:#283449;
+  --color-t1:#e7edf7; --color-t2:#9aacc7; --color-t3:#5f7290;
+  --color-blue:#3b82f6; --color-blue-h:#60a5fa;
+  --color-blue-bg:#16243f; --color-blue-bd:#2d4a73;
+  --blue-rgb:59,130,246;
+
+  --shadow-sm:0 1px 3px rgba(0,0,0,.4);
+  --shadow-md:0 10px 30px rgba(0,0,0,.45), 0 0 0 1px rgba(59,130,246,.04);
+  --shadow-lg:0 28px 70px rgba(0,0,0,.55), 0 0 40px rgba(59,130,246,.10);
+
+  --grad-text:linear-gradient(120deg,#60a5fa 10%,#a78bfa 90%);
+  --grad-mesh:
+    radial-gradient(60% 50% at 12% 8%, rgba(59,130,246,.16), transparent 60%),
+    radial-gradient(50% 60% at 92% 18%, rgba(124,58,237,.13), transparent 60%),
+    radial-gradient(70% 60% at 70% 100%, rgba(59,130,246,.10), transparent 60%);
+  --grid-line:rgba(59,130,246,.07);
+
+  --accent:#60a5fa;
+  --accent-soft:rgba(96,165,250,.16);
+
+  color-scheme:dark;
+}
+
+/* ============================================================
+   2. BASE
+   ============================================================ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);
+  background:var(--color-bg);
+  color:var(--color-t1);
+  line-height:var(--lh-body);
+  -webkit-font-smoothing:antialiased;
+  transition:background .3s ease,color .3s ease;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+
+/* 모노 kicker (NEW 컴포넌트) */
+.kicker{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:var(--fs-1);font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);
+}
+.kicker::before{content:'';width:22px;height:1.5px;background:var(--accent);border-radius:2px}
+
+/* pill (NEW) */
+.pill{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:var(--fs-1);font-weight:600;
+  padding:6px 14px;border-radius:var(--radius-pill);
+  background:var(--accent-soft);color:var(--color-t1);
+  border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);
+}
+.pill__dot{width:7px;height:7px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+
+/* PREVIEW 뱃지 (NEW) */
+.preview-badge{
+  position:absolute;top:14px;right:14px;z-index:3;
+  font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1.5px;
+  padding:4px 9px;border-radius:6px;
+  background:color-mix(in srgb,var(--color-t1) 8%,transparent);
+  color:var(--color-t3);border:1px dashed var(--color-border);
+}
+
+/* ============================================================
+   3. NAV
+   ============================================================ */
+.nav{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;padding:0 clamp(20px,5vw,64px);
+  background:color-mix(in srgb,var(--color-bg) 80%,transparent);
+  backdrop-filter:saturate(140%) blur(14px);
+  border-bottom:1px solid var(--color-border);
+}
+.nav__logo{font-size:19px;font-weight:800;letter-spacing:-.5px}
+.nav__logo em{font-style:normal;color:var(--accent)}
+.nav__links{display:flex;align-items:center;gap:8px}
+.nav__link{font-size:14px;font-weight:600;color:var(--color-t2);padding:8px 14px;border-radius:8px;transition:.15s}
+.nav__link:hover{color:var(--color-t1);background:var(--color-surface2)}
+.nav__link--active{color:var(--accent)}
+.toggle{width:38px;height:38px;display:grid;place-items:center;border-radius:9px;
+  border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-t2);cursor:pointer;transition:.15s}
+.toggle:hover{color:var(--accent);border-color:var(--accent)}
+.toggle svg{width:18px;height:18px}
+[data-theme="dark"] .toggle .sun{display:block} [data-theme="dark"] .toggle .moon{display:none}
+.toggle .sun{display:none} .toggle .moon{display:block}
+
+/* ============================================================
+   4. HERO
+   ============================================================ */
+.hero{position:relative;padding:clamp(64px,11vw,150px) 0 clamp(48px,8vw,110px);overflow:hidden}
+.hero__bg{position:absolute;inset:0;z-index:0;background:var(--grad-mesh);pointer-events:none}
+.hero__grid{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:42px 42px;
+  -webkit-mask-image:radial-gradient(120% 80% at 50% 0%,#000 35%,transparent 78%);
+          mask-image:radial-gradient(120% 80% at 50% 0%,#000 35%,transparent 78%);}
+.hero__inner{position:relative;z-index:1;display:grid;grid-template-columns:1.25fr .85fr;gap:clamp(32px,5vw,72px);align-items:center}
+
+.hero__status{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+.hero__name{font-size:var(--fs-display);font-weight:900;line-height:var(--lh-tight);letter-spacing:-.045em;margin-bottom:24px}
+.hero__name .grad{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero__lead{font-size:var(--fs-4);color:var(--color-t2);max-width:30ch;margin-bottom:32px}
+.hero__lead b{color:var(--color-t1);font-weight:700}
+.hero__cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:var(--fs-3);font-weight:700;
+  padding:13px 24px;border-radius:10px;cursor:pointer;transition:.18s;border:1.5px solid transparent}
+.btn--primary{background:var(--accent);color:#fff;box-shadow:var(--shadow-md)}
+.btn--primary:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.btn--ghost{background:transparent;color:var(--color-t1);border-color:var(--color-border)}
+.btn--ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+/* 히어로 우측 — 대표 프로젝트 미리보기 카드 */
+.hero__feature{position:relative;border-radius:var(--radius-lg);overflow:hidden;
+  background:var(--color-surface);border:1px solid var(--color-border);box-shadow:var(--shadow-lg)}
+.hero__feature-top{background:linear-gradient(140deg,
+    color-mix(in srgb,var(--accent) 90%,#000),
+    color-mix(in srgb,var(--accent) 55%,#000));
+  padding:24px;color:#fff;position:relative;overflow:hidden}
+.hero__feature-top::after{content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);
+  background-size:24px 24px}
+.hero__feature-kick{font-family:var(--mono);font-size:11px;letter-spacing:2px;opacity:.8;position:relative}
+.hero__feature-name{font-size:var(--fs-5);font-weight:800;margin-top:8px;letter-spacing:-.02em;position:relative}
+.hero__feature-body{padding:20px 22px 22px}
+.hero__feature-desc{font-size:var(--fs-2);color:var(--color-t2);margin-bottom:16px}
+.hero__feature-tags{display:flex;gap:6px;flex-wrap:wrap}
+.minitag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:6px;background:var(--accent-soft);
+  color:var(--color-t1);border:1px solid color-mix(in srgb,var(--accent) 25%,transparent)}
+
+/* 통계 스트립 (카운트업) — 실제값만 */
+.stats{position:relative;z-index:1;margin-top:clamp(40px,6vw,72px);
+  display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,3vw,28px);
+  border-top:1px solid var(--color-border);padding-top:clamp(24px,4vw,40px)}
+.stat__num{font-size:clamp(2rem,1.4rem+2vw,3rem);font-weight:900;letter-spacing:-.03em;
+  background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat__lbl{font-family:var(--mono);font-size:var(--fs-1);color:var(--color-t3);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+
+/* ============================================================
+   5. PORTFOLIO SHOWCASE
+   ============================================================ */
+.section{padding:var(--section-y) 0;position:relative}
+.section__head{margin-bottom:clamp(28px,4vw,48px)}
+.section__title{font-size:var(--fs-6);font-weight:900;letter-spacing:-.03em;margin-top:12px}
+.section__sub{font-size:var(--fs-3);color:var(--color-t2);margin-top:10px;max-width:54ch}
+
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.chip{font-size:var(--fs-2);font-weight:600;padding:8px 16px;border-radius:var(--radius-pill);
+  border:1.5px solid var(--color-border);background:var(--color-surface);color:var(--color-t2);cursor:pointer;transition:.18s}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip--on{background:var(--color-t1);color:var(--color-bg);border-color:var(--color-t1)}
+
+/* Featured 풀폭 히어로 카드 */
+.feature-card{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:0;
+  border-radius:var(--radius-lg);overflow:hidden;margin-bottom:24px;
+  background:var(--color-surface);border:1px solid var(--color-border);box-shadow:var(--shadow-md);
+  transition:transform .3s,box-shadow .3s}
+.feature-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.feature-card{--accent:#f59e0b;--accent-soft:rgba(245,158,11,.14)}   /* ContractHoney = 허니 앰버 */
+.feature-card__text{padding:clamp(28px,4vw,44px)}
+.feature-card__name{font-size:clamp(1.6rem,1.1rem+1.5vw,2.4rem);font-weight:900;letter-spacing:-.03em;margin:14px 0 12px}
+.feature-card__sub{font-size:var(--fs-3);color:var(--color-t2);margin-bottom:20px}
+.feature-card__tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:24px}
+.feature-card__visual{position:relative;min-height:300px;
+  background:
+    linear-gradient(140deg,color-mix(in srgb,var(--accent) 22%,var(--color-surface)),var(--color-surface2));
+  display:grid;place-items:center;border-left:1px solid var(--color-border)}
+.feature-card__visual::before{content:'';position:absolute;inset:0;
+  background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:30px 30px;opacity:.6}
+.feature-card__logo{position:relative;width:120px;height:120px;border-radius:28px;
+  background:var(--color-surface);box-shadow:var(--shadow-md);display:grid;place-items:center;
+  font-size:54px;font-weight:900;color:var(--accent)}
+.feature-card__accent{height:5px;background:var(--accent)}
+
+/* 일반 쇼케이스 카드 그리드 */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{position:relative;display:flex;flex-direction:column;border-radius:var(--radius);overflow:hidden;
+  background:var(--color-surface);border:1px solid var(--color-border);box-shadow:var(--shadow-sm);
+  transition:transform .3s,box-shadow .3s,border-color .3s}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--accent) 40%,var(--color-border))}
+.card__cover{height:140px;position:relative;overflow:hidden;
+  background:linear-gradient(140deg,color-mix(in srgb,var(--accent) 26%,var(--color-surface)),var(--color-surface2));
+  display:grid;place-items:center}
+.card__cover::before{content:'';position:absolute;inset:0;
+  background-image:radial-gradient(var(--grid-line) 1.2px,transparent 1.2px);background-size:18px 18px}
+.card__cover-logo{position:relative;font-size:34px;font-weight:900;color:var(--accent);opacity:.85}
+.card__accent{height:3px;background:var(--accent)}
+.card__body{padding:20px;display:flex;flex-direction:column;flex:1}
+.card__type{font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--color-t3);text-transform:uppercase}
+.card__name{font-size:var(--fs-5);font-weight:800;letter-spacing:-.02em;margin:8px 0 8px}
+.card__desc{font-size:var(--fs-2);color:var(--color-t2);flex:1;margin-bottom:16px}
+.card__tags{display:flex;gap:6px;flex-wrap:wrap}
+.card--preview{border-style:dashed;opacity:.92}
+.card--preview .card__cover{filter:saturate(.7)}
+
+/* ============================================================
+   6. RESPONSIVE
+   ============================================================ */
+@media (max-width:900px){
+  .hero__inner{grid-template-columns:1fr;gap:36px}
+  .feature-card{grid-template-columns:1fr}
+  .feature-card__visual{min-height:200px;border-left:none;border-top:1px solid var(--color-border)}
+  .grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:600px){
+  .grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr;gap:18px}
+  .nav__link{padding:8px 9px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav__logo" href="#">Swallow<em>.</em>dev</a>
+  <div class="nav__links">
+    <a class="nav__link nav__link--active" href="#">Portfolio</a>
+    <a class="nav__link" href="#">Blog</a>
+    <a class="nav__link" href="#">About</a>
+    <button class="toggle" id="t" aria-label="테마 전환">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero__bg"></div>
+  <div class="hero__grid"></div>
+  <div class="wrap hero__inner">
+    <div>
+      <div class="hero__status">
+        <span class="pill"><span class="pill__dot"></span>Open to work</span>
+        <span class="pill">LLM · RAG · Full Stack</span>
+      </div>
+      <div class="kicker">// AI FULL STACK DEVELOPER</div>
+      <h1 class="hero__name">Swallow<span class="grad">8801</span></h1>
+      <p class="hero__lead">모델 선택부터 인프라, 화면까지 — <b>하나의 흐름으로 이어지는 AI 시스템</b>을 설계하고 구축합니다.</p>
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="#work">작업 보기 <span>→</span></a>
+        <a class="btn btn--ghost" href="#">GitHub</a>
+      </div>
+    </div>
+
+    <!-- 대표 프로젝트 미리보기 (실제 데이터: ContractHoney) -->
+    <a class="hero__feature" href="#" style="--accent:#f59e0b;--accent-soft:rgba(245,158,11,.14)">
+      <div class="hero__feature-top">
+        <div class="hero__feature-kick">// FEATURED PROJECT</div>
+        <div class="hero__feature-name">계꿀 (ContractHoney)</div>
+      </div>
+      <div class="hero__feature-body">
+        <p class="hero__feature-desc">계약서의 위법·독소조항을 AI로 검출·요약하는 풀스택 서비스. KoBERT·KoELECTRA·EXAONE.</p>
+        <div class="hero__feature-tags">
+          <span class="minitag">KoBERT</span><span class="minitag">FastAPI</span><span class="minitag">Next.js</span><span class="minitag">Azure</span>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- 통계 (실제값만 — 가짜 커밋수 제거) -->
+  <div class="wrap stats">
+    <div><div class="stat__num" data-count="1">0</div><div class="stat__lbl">Featured Project</div></div>
+    <div><div class="stat__num" data-count="5">0</div><div class="stat__lbl">AI Models Trained</div></div>
+    <div><div class="stat__num" data-count="2">0</div><div class="stat__lbl">Production Repos</div></div>
+  </div>
+</header>
+
+<!-- PORTFOLIO SHOWCASE -->
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="section__head">
+      <div class="kicker">// SELECTED WORK</div>
+      <h2 class="section__title">Projects</h2>
+      <p class="section__sub">직접 설계하고 구축한 프로젝트입니다. 카드를 눌러 상세 과정을 확인해 보세요.</p>
+    </div>
+
+    <div class="filters">
+      <button class="chip chip--on">전체</button>
+      <button class="chip">AI / LLM</button>
+      <button class="chip">Web App</button>
+      <button class="chip">Tool / Infra</button>
+    </div>
+
+    <!-- Featured 풀폭 히어로 카드 (액센트 = 허니 앰버, 데이터 필드 주입 예시) -->
+    <a class="feature-card" href="#">
+      <div class="feature-card__accent"></div>
+      <div class="feature-card__text">
+        <div class="kicker">// FEATURED · AI</div>
+        <div class="feature-card__name">계꿀 (ContractHoney)</div>
+        <div class="feature-card__sub">AI 계약서 위법·독소조항 검출 &amp; 요약 어시스턴트</div>
+        <div class="feature-card__tags">
+          <span class="minitag">KoBERT</span><span class="minitag">KoELECTRA</span>
+          <span class="minitag">EXAONE</span><span class="minitag">FastAPI</span><span class="minitag">Docker</span>
+        </div>
+        <span class="btn btn--primary" style="--accent:#f59e0b">프로젝트 상세 →</span>
+      </div>
+      <div class="feature-card__visual"><div class="feature-card__logo">계</div></div>
+    </a>
+
+    <!-- 일반 쇼케이스 그리드 -->
+    <div class="grid">
+      <!-- 실제 (요약 카드형) -->
+      <a class="card" href="#" style="--accent:#f59e0b;--accent-soft:rgba(245,158,11,.14)">
+        <div class="card__cover"><span class="card__cover-logo">계</span></div>
+        <div class="card__accent"></div>
+        <div class="card__body">
+          <span class="card__type">AI · PROJECT</span>
+          <span class="card__name">계꿀 (ContractHoney)</span>
+          <p class="card__desc">위법·독소조항 검출, 위반 법령 예측, 조 단위 요약까지 제공하는 풀스택 AI.</p>
+          <div class="card__tags"><span class="minitag">KoBERT</span><span class="minitag">Next.js</span></div>
+        </div>
+      </a>
+
+      <!-- PREVIEW 더미 1 -->
+      <div class="card card--preview" style="--accent:#3b82f6;--accent-soft:rgba(59,130,246,.14)">
+        <span class="preview-badge">PREVIEW</span>
+        <div class="card__cover"><span class="card__cover-logo">◇</span></div>
+        <div class="card__accent"></div>
+        <div class="card__body">
+          <span class="card__type">WEB · PLACEHOLDER</span>
+          <span class="card__name">다음 프로젝트</span>
+          <p class="card__desc">실제 데이터가 들어오면 자동으로 카드가 생성됩니다. (preview:true 더미)</p>
+          <div class="card__tags"><span class="minitag">React</span><span class="minitag">TypeScript</span></div>
+        </div>
+      </div>
+
+      <!-- PREVIEW 더미 2 -->
+      <div class="card card--preview" style="--accent:#10b981;--accent-soft:rgba(16,185,129,.14)">
+        <span class="preview-badge">PREVIEW</span>
+        <div class="card__cover"><span class="card__cover-logo">◷</span></div>
+        <div class="card__accent"></div>
+        <div class="card__body">
+          <span class="card__type">TOOL · PLACEHOLDER</span>
+          <span class="card__name">사내 자동화 도구</span>
+          <p class="card__desc">프로젝트별 액센트 색이 데이터 필드(accent)로 주입되어 톤이 자동 적용됩니다.</p>
+          <div class="card__tags"><span class="minitag">Python</span><span class="minitag">Docker</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* 테마 토글 */
+document.getElementById('t').addEventListener('click',function(){
+  var r=document.documentElement;
+  r.setAttribute('data-theme', r.getAttribute('data-theme')==='dark'?'light':'dark');
+});
+/* 카운트업 (reduced-motion 존중) */
+var rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.querySelectorAll('[data-count]').forEach(function(el){
+  var to=+el.dataset.count;
+  if(rm){el.textContent=to;return;}
+  var io=new IntersectionObserver(function(e){
+    if(!e[0].isIntersecting)return; io.disconnect();
+    var s=performance.now(),d=900;
+    (function f(t){var p=Math.min((t-s)/d,1);el.textContent=Math.round(to*(p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2));p<1&&requestAnimationFrame(f);})(s);
+  },{threshold:.6}); io.observe(el);
+});
+</script>
+</body>
+</html>

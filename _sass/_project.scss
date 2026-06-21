@@ -1,15 +1,43 @@
 // ── 프로젝트 상세 페이지 ───────────────────────────
 
-// 히어로 (네이비 그라디언트)
+// 히어로 (잉크 + 프로젝트 액센트 워시) — 다크 베이스라 화이트 텍스트 AA 안전
 .proj-hero {
-  background: $navy-grad;
-  padding: 28px $pad 40px;
+  position: relative;
+  overflow: hidden;
+  padding: 40px $pad 48px;
+  background:
+    #{"radial-gradient(70% 120% at 88% 0%, rgba(var(--accent-rgb),.42), transparent 60%)"},
+    $navy-grad;
 
-  @media (max-width: $tablet) { padding: 24px 32px 32px; }
-  @media (max-width: $mobile) { padding: 20px 20px 28px; }
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+    -webkit-mask-image: radial-gradient(120% 100% at 80% 0%, #000 30%, transparent 75%);
+            mask-image: radial-gradient(120% 100% at 80% 0%, #000 30%, transparent 75%);
+    pointer-events: none;
+  }
+
+  @media (max-width: $tablet) { padding: 32px 32px 36px; }
+  @media (max-width: $mobile) { padding: 26px 20px 30px; }
+}
+
+// 상단 액센트 바
+.proj-hero__bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: $accent;
+  z-index: 2;
 }
 
 .proj-hero__inner {
+  position: relative;
+  z-index: 1;
   max-width: $max-w;
   margin: 0 auto;
 }
@@ -47,11 +75,12 @@
 }
 
 .proj-hero__label {
+  font-family: $mono;
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 1px;
-  color: rgba(255,255,255,.5);
-  margin-bottom: 8px;
+  letter-spacing: 1.5px;
+  color: $accent;
+  margin-bottom: 10px;
 }
 
 .proj-hero__name {
@@ -131,9 +160,9 @@
 
   &--primary {
     background: #fff;
-    color: $blue-h;
+    color: #0f1f3d;
     border-color: #fff;
-    &:hover { background: rgba(255,255,255,.88); color: $blue-h; }
+    &:hover { background: rgba(255,255,255,.88); }
   }
 }
 
@@ -269,10 +298,11 @@
   &__note { font-size: 13px; color: $t2; line-height: 1.55; }
 }
 
-// 추론 예시
+// 추론 예시 (액센트 콜아웃)
 .proj-example {
   @include card;
-  border-left: 3px solid $blue;
+  border-left: 3px solid $accent;
+  background: #{"linear-gradient(90deg, rgba(var(--accent-rgb),.06), transparent 60%)"}, $surface;
   padding: 18px 20px;
   margin-top: 22px;
 
@@ -286,8 +316,12 @@
   margin: 24px 0 0;
   @include card;
   overflow: hidden;
+  transition: box-shadow .2s, border-color .2s;
 
-  img { width: 100%; height: auto; display: block; background: $surface; }
+  &:hover { border-color: #{"rgba(var(--accent-rgb),.4)"}; box-shadow: var(--shadow-md); }
+
+  img { width: 100%; height: auto; display: block; background: $surface; transition: transform .35s ease; }
+  &:hover img { transform: scale(1.012); }
 
   figcaption {
     font-size: 13px;
@@ -337,4 +371,81 @@
     border-color: $border;
     &:hover { color: $blue; border-color: $blue; background: $surface; }
   }
+}
+
+// 이전/다음 프로젝트
+.proj-pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid $border;
+
+  @media (max-width: $mobile) { grid-template-columns: 1fr; gap: 10px; }
+}
+
+.proj-pager__item {
+  @include card;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 20px;
+  transition: box-shadow .25s, transform .25s, border-color .25s;
+
+  &:hover { @include card-hover; }
+  &--next { text-align: right; align-items: flex-end; }
+
+  @media (max-width: $mobile) { &--next { text-align: left; align-items: flex-start; } }
+}
+
+.proj-pager__dir { font-family: $mono; font-size: 12px; font-weight: 600; color: $accent; letter-spacing: .5px; }
+.proj-pager__name { font-size: 16px; font-weight: 800; color: $t1; line-height: 1.3; letter-spacing: -.02em; }
+
+// 라이트박스
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(20px, 5vw, 64px);
+  background: rgba(5, 12, 26, .82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: lightboxIn .2s ease;
+
+  &[hidden] { display: none; }
+}
+
+@keyframes lightboxIn { from { opacity: 0 } to { opacity: 1 } }
+
+.lightbox__img {
+  max-width: 100%;
+  max-height: 88vh;
+  width: auto;
+  border-radius: 12px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.6);
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+.lightbox__close {
+  position: absolute;
+  top: 20px; right: 24px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background .15s;
+  &:hover { background: rgba(255,255,255,.24); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox { animation: none; }
+  .proj-figure img, .proj-figure:hover img { transition: none; transform: none; }
+  .proj-pager__item { transition: none; }
 }

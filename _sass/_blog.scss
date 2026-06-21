@@ -146,7 +146,11 @@
   animation: blogTitleIn .6s cubic-bezier(.22,.68,0,1.05) .3s both;
 }
 .blog-page-header__count {
-  font-size: 48px; font-weight: 900; color: $blue; letter-spacing: -2px; line-height: 1;
+  font-size: 48px; font-weight: 900; letter-spacing: -2px; line-height: 1;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 
   @media (max-width: $mobile) {
     font-size: 38px;

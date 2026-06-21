@@ -20,6 +20,8 @@ $blue-light: var(--color-blue-light); // skill-bar 그라디언트 끝 색
 $purple:     var(--color-purple);     // DevNotes 강조색
 $purple-bg:  var(--color-purple-bg);  // DevNotes 배경
 
+$accent: var(--accent);               // 프로젝트별 액센트 (기본 블루)
+
 // 프로필·히어로 그라디언트 (다크 전용 그라디언트, 테마 무관 유지)
 $navy-grad: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 60%, #2563eb 100%);
 
@@ -42,13 +44,25 @@ $mono: 'SF Mono', 'Consolas', 'Courier New', monospace;  // 코드 폰트 스택
   // h3 / 소제목
   --fs-5: clamp(1.25rem, calc(1.1rem + 0.6vw), 1.625rem);      // ~20 → 26px
   // h2 / 제목
-  --fs-6: clamp(1.375rem, calc(1.1rem + 1.25vw), 2.25rem);     // ~22 → 36px
+  --fs-6: clamp(1.5rem, calc(1.1rem + 1.6vw), 2.5rem);         // ~24 → 40px
   // 디스플레이 (랜딩 히어로 등 매우 큰 타이틀)
-  --fs-display: clamp(3.625rem, calc(2.6rem + 4.5vw), 5.625rem); // ~58 → 90px
+  --fs-display: clamp(3.25rem, calc(2.2rem + 5vw), 6.5rem);    // ~52 → 104px
 
   // line-height 토큰
-  --lh-body:  1.7;   // 본문
-  --lh-tight: 1.3;   // 제목
+  --lh-body:    1.7;   // 본문
+  --lh-tight:   1.3;   // 제목
+  --lh-display: 1.04;  // 디스플레이 타이틀 (꽉 찬 매거진 느낌)
+
+  // ── 간격 스케일 (Editorial Tech 수직 리듬) ────────
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --space-9: 96px; --space-10: 128px;
+  --section-y: clamp(56px, 8vw, 120px);   // 섹션 수직 리듬
+
+  // ── 라운드/형태 토큰 ─────────────────────────────
+  --radius:      14px;
+  --radius-lg:   22px;
+  --radius-pill: 100px;
 
   // 색상 토큰 (라이트 = 기본값, 현재 팔레트)
   --color-bg: #eef2f7;
@@ -68,6 +82,27 @@ $mono: 'SF Mono', 'Consolas', 'Courier New', monospace;  // 코드 폰트 스택
   --color-purple-bg: #faf5ff;
   --blue-rgb: 37, 99, 235;
   --purple-rgb: 124, 58, 237;
+
+  // ── 엘리베이션 (라이트 = 푸른 기 도는 그림자) ──────
+  --shadow-sm: 0 1px 3px rgba(15,31,61,.06), 0 1px 2px rgba(15,31,61,.04);
+  --shadow-md: 0 8px 24px rgba(37,99,235,.10), 0 2px 6px rgba(15,31,61,.05);
+  --shadow-lg: 0 24px 60px rgba(37,99,235,.16), 0 8px 24px rgba(15,31,61,.08);
+
+  // ── 그라디언트 / 텍스처 ──────────────────────────
+  --grad-text: linear-gradient(120deg, #2563eb 10%, #7c3aed 90%);
+  --grad-mesh:
+    radial-gradient(60% 50% at 12% 8%,  rgba(37,99,235,.10), transparent 60%),
+    radial-gradient(50% 60% at 92% 18%, rgba(124,58,237,.08), transparent 60%),
+    radial-gradient(70% 60% at 70% 100%, rgba(37,99,235,.06), transparent 60%);
+  --grid-line: rgba(37,99,235,.06);
+
+  // ── 네비게이션 (반투명 + blur) ───────────────────
+  --nav-bg: rgba(255,255,255,.72);
+
+  // ── 프로젝트 액센트 시스템 (기본 = 블루) ──────────
+  // 각 프로젝트가 inline style 로 --accent / --accent-rgb 를 덮어쓴다.
+  --accent: var(--color-blue);
+  --accent-rgb: var(--blue-rgb);
 
   color-scheme: light;
 }
@@ -91,6 +126,23 @@ $mono: 'SF Mono', 'Consolas', 'Courier New', monospace;  // 코드 폰트 스택
   --blue-rgb: 59, 130, 246;
   --purple-rgb: 167, 139, 250;
 
+  // ── 엘리베이션 (다크 = 깊은 그림자 + 은은한 글로우) ──
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.4);
+  --shadow-md: 0 10px 30px rgba(0,0,0,.45), 0 0 0 1px rgba(59,130,246,.04);
+  --shadow-lg: 0 28px 70px rgba(0,0,0,.55), 0 0 40px rgba(59,130,246,.10);
+
+  --grad-text: linear-gradient(120deg, #60a5fa 10%, #a78bfa 90%);
+  --grad-mesh:
+    radial-gradient(60% 50% at 12% 8%,  rgba(59,130,246,.16), transparent 60%),
+    radial-gradient(50% 60% at 92% 18%, rgba(124,58,237,.13), transparent 60%),
+    radial-gradient(70% 60% at 70% 100%, rgba(59,130,246,.10), transparent 60%);
+  --grid-line: rgba(59,130,246,.07);
+
+  --nav-bg: rgba(19,27,46,.72);
+
+  --accent: var(--color-blue);
+  --accent-rgb: var(--blue-rgb);
+
   color-scheme: dark;
 }
 
@@ -107,14 +159,49 @@ $mobile:  600px;
 @mixin card {
   background: $surface;
   border: 1px solid $border;
-  border-radius: 12px;
-  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
 }
 
 @mixin card-hover {
-  box-shadow: 0 6px 24px #{"rgba(var(--blue-rgb),.1)"};
-  transform: translateY(-2px);
-  border-color: $blue-bd;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  border-color: #{"rgba(var(--accent-rgb),.4)"};
+}
+
+// 모노스페이스 섹션 kicker (// SELECTED WORK 류)
+@mixin kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: $mono;
+  font-size: var(--fs-1);
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: $accent;
+
+  &::before {
+    content: '';
+    width: 22px;
+    height: 1.5px;
+    background: $accent;
+    border-radius: 2px;
+  }
+}
+
+// 상태/메타 pill
+@mixin pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: var(--fs-1);
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: #{"rgba(var(--accent-rgb),.12)"};
+  color: $t1;
+  border: 1px solid #{"rgba(var(--accent-rgb),.3)"};
 }
 
 @mixin btn-primary {

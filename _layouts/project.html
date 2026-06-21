@@ -5,10 +5,13 @@ layout: default
 프로젝트 상세 레이아웃.
 front matter에서 project_id 로 _data/projects.yml 항목을 찾아 히어로를 구성한다.
 본문(개요/아키텍처/AI 등)은 각 페이지의 {{ content }} 로 채운다.
+액센트: p.accent / p.accent_rgb 를 --accent 로 주입해 히어로·링크·hover·포인트에 적용.
 {%- endcomment -%}
 {% assign p = site.data.projects | where: "id", page.project_id | first %}
+{% capture accent_style %}--accent: {{ p.accent | default: '#2563eb' }}; --accent-rgb: {{ p.accent_rgb | default: '37, 99, 235' }};{% endcapture %}
 
-<div class="proj-hero">
+<div class="proj-hero" style="{{ accent_style }}">
+  <span class="proj-hero__bar" aria-hidden="true"></span>
   <div class="proj-hero__inner">
     <a href="{{ '/portfolio/' | relative_url }}" class="proj-hero__back">← 포트폴리오</a>
 
@@ -19,7 +22,7 @@ front matter에서 project_id 로 _data/projects.yml 항목을 찾아 히어로�
       </div>
       {% endif %}
       <div>
-        <div class="proj-hero__label">{{ p.type | upcase }} · PROJECT</div>
+        <div class="proj-hero__label">// {{ p.type | upcase }} · PROJECT</div>
         <h1 class="proj-hero__name">{{ p.name }}</h1>
         <p class="proj-hero__sub">{{ p.subtitle }}</p>
       </div>
@@ -49,10 +52,43 @@ front matter에서 project_id 로 _data/projects.yml 항목을 찾아 히어로�
   </div>
 </div>
 
-<article class="proj-body">
+<article class="proj-body" style="{{ accent_style }}">
   {{ content }}
+
+  {%- comment -%} 이전/다음 프로젝트 (상세 페이지가 있는 프로젝트끼리) {%- endcomment -%}
+  {% assign detailed = site.data.projects | where_exp: "dp", "dp.detail and dp.detail != '#'" %}
+  {% assign dcount = detailed | size %}
+  {% assign cur = 0 %}
+  {% for dp in detailed %}{% if dp.id == page.project_id %}{% assign cur = forloop.index0 %}{% endif %}{% endfor %}
+  {% if dcount > 1 %}
+  <nav class="proj-pager reveal">
+    {% if cur > 0 %}
+      {% assign prev_i = cur | minus: 1 %}{% assign prev_p = detailed[prev_i] %}
+      <a class="proj-pager__item proj-pager__item--prev" href="{{ prev_p.detail | relative_url }}">
+        <span class="proj-pager__dir">← 이전 프로젝트</span>
+        <span class="proj-pager__name">{{ prev_p.name }}</span>
+      </a>
+    {% else %}<span></span>{% endif %}
+    {% assign last_i = dcount | minus: 1 %}
+    {% if cur < last_i %}
+      {% assign next_i = cur | plus: 1 %}{% assign next_p = detailed[next_i] %}
+      <a class="proj-pager__item proj-pager__item--next" href="{{ next_p.detail | relative_url }}">
+        <span class="proj-pager__dir">다음 프로젝트 →</span>
+        <span class="proj-pager__name">{{ next_p.name }}</span>
+      </a>
+    {% endif %}
+  </nav>
+  {% endif %}
 
   <div class="proj-body__footer reveal">
     <a href="{{ '/portfolio/' | relative_url }}" class="proj-hero__btn">← 다른 프로젝트 보기</a>
   </div>
 </article>
+
+<!-- 이미지 라이트박스 -->
+<div class="lightbox" id="lightbox" hidden aria-hidden="true">
+  <button class="lightbox__close" type="button" aria-label="닫기">✕</button>
+  <img class="lightbox__img" id="lightboxImg" src="" alt="">
+</div>
+
+<script src="{{ '/assets/js/lightbox.js' | relative_url }}"></script>

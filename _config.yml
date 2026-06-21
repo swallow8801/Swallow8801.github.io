@@ -45,3 +45,5 @@ exclude:
   - UI_UX_PROMPTS.md     # 내부 프롬프트 모음
   - CATEGORY_LOGO_PROMPTS.md # 내부 헤더 이미지 프롬프트
   - BLOG_REVAMP_PROMPTS.md  # 내부 리뉴얼 프롬프트
+  - PORTFOLIO_REDESIGN_PROMPT.md # 내부 리디자인 프롬프트
+  - preview_mockups       # 방향 합의용 정적 목업 (빌드 제외)
