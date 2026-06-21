@@ -1,0 +1,58 @@
+---
+layout: default
+---
+{%- comment -%}
+프로젝트 상세 레이아웃.
+front matter에서 project_id 로 _data/projects.yml 항목을 찾아 히어로를 구성한다.
+본문(개요/아키텍처/AI 등)은 각 페이지의 {{ content }} 로 채운다.
+{%- endcomment -%}
+{% assign p = site.data.projects | where: "id", page.project_id | first %}
+
+<div class="proj-hero">
+  <div class="proj-hero__inner">
+    <a href="{{ '/portfolio/' | relative_url }}" class="proj-hero__back">← 포트폴리오</a>
+
+    <div class="proj-hero__head">
+      {% if p.logo %}
+      <div class="proj-hero__logo">
+        <img src="{{ p.logo | relative_url }}" alt="{{ p.name }} 로고" loading="lazy">
+      </div>
+      {% endif %}
+      <div>
+        <div class="proj-hero__label">{{ p.type | upcase }} · PROJECT</div>
+        <h1 class="proj-hero__name">{{ p.name }}</h1>
+        <p class="proj-hero__sub">{{ p.subtitle }}</p>
+      </div>
+    </div>
+
+    {% if p.period or p.role %}
+    <div class="proj-hero__meta">
+      {% if p.period %}<span><b>기간</b>{{ p.period }}</span>{% endif %}
+      {% if p.role %}<span><b>역할</b>{{ p.role }}</span>{% endif %}
+    </div>
+    {% endif %}
+
+    <div class="proj-hero__tags">
+      {% for tag in p.tags %}
+      <span class="proj-hero__tag {% unless tag.ai %}proj-hero__tag--neutral{% endunless %}">{{ tag.name }}</span>
+      {% endfor %}
+    </div>
+
+    <div class="proj-hero__links">
+      {% if p.demo != '#' %}
+      <a href="{{ p.demo }}" class="proj-hero__btn proj-hero__btn--primary" target="_blank" rel="noopener noreferrer">Live Demo</a>
+      {% endif %}
+      {% for repo in p.repos %}
+      <a href="{{ repo.url }}" class="proj-hero__btn" target="_blank" rel="noopener noreferrer">{{ repo.label }} · GitHub →</a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<article class="proj-body">
+  {{ content }}
+
+  <div class="proj-body__footer reveal">
+    <a href="{{ '/portfolio/' | relative_url }}" class="proj-hero__btn">← 다른 프로젝트 보기</a>
+  </div>
+</article>

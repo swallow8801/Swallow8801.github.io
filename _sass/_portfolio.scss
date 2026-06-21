@@ -91,6 +91,24 @@
   &:hover { background: rgba(255,255,255,.2); }
 }
 
+// 섹션 헤더
+.port-head {
+  margin-bottom: 28px;
+
+  &__title {
+    font-size: var(--fs-6);
+    font-weight: 800;
+    color: $t1;
+    letter-spacing: -.5px;
+    margin-bottom: 8px;
+  }
+  &__sub {
+    font-size: var(--fs-3);
+    color: $t2;
+    line-height: 1.6;
+  }
+}
+
 // 필터 바
 .port-filter {
   display: flex;
@@ -147,8 +165,20 @@
 }
 
 .proj-featured__head {
+  position: relative;
   background: $navy-grad;
   padding: 28px 28px 24px;
+}
+
+.proj-featured__logo {
+  position: absolute;
+  top: 24px; right: 24px;
+  width: 52px; height: 52px;
+  border-radius: 13px;
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.22);
+  padding: 7px;
+  object-fit: contain;
 }
 
 .proj-featured__label {
@@ -161,12 +191,18 @@
 }
 
 .proj-featured__name {
+  display: inline-block;
   font-size: 24px;
   font-weight: 800;
   color: #fff;
   margin-bottom: 8px;
   letter-spacing: -.3px;
+  transition: opacity .15s;
+
+  &:hover { opacity: .85; }
 }
+
+a.proj-featured__name:hover { text-decoration: underline; }
 
 .proj-featured__sub {
   font-size: 14px;
@@ -193,12 +229,20 @@
   display: flex;
   gap: 10px;
   align-items: center;
-}
+  flex-wrap: wrap;
 
-.proj-featured__stars {
-  font-size: 13px;
-  color: $t3;
-  margin-left: auto;
+  .btn-primary {
+    @include btn-primary;
+    padding: 11px 22px;
+    font-size: 14px;
+    display: inline-block;
+  }
+  .btn-secondary {
+    @include btn-secondary;
+    padding: 11px 18px;
+    font-size: 14px;
+    display: inline-block;
+  }
 }
 
 // 일반 카드
@@ -244,12 +288,16 @@
 }
 
 .proj-card__name {
+  display: block;
   font-size: 17px;
   font-weight: 700;
   color: $t1;
   margin-bottom: 8px;
   line-height: 1.3;
+  transition: color .15s;
 }
+
+a.proj-card__name:hover { color: $blue; }
 
 .proj-card__desc {
   font-size: 14px;

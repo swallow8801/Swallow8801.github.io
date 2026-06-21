@@ -1,0 +1,184 @@
+---
+layout: project
+project_id: contracthoney
+title: "계꿀 (ContractHoney) — AI 계약서 분석 어시스턴트"
+description: "KoBERT·KoELECTRA·EXAONE을 활용해 계약서의 위법·독소조항을 검출·요약하는 AI 풀스택 서비스. KT AIVLE School 6기 빅프로젝트."
+permalink: /portfolio/contracthoney/
+---
+
+{% assign base = '/assets/img/portfolio/contracthoney' %}
+
+<!-- 개요 -->
+<section class="proj-section reveal">
+  <div class="proj-section__kicker">Overview</div>
+  <h2 class="proj-section__title">한눈에 보는 계꿀</h2>
+  <p class="proj-section__lead">
+    기업이 계약서를 검토하는 데 드는 <b>시간과 비용을 줄이기 위해</b>, AI로 계약서의
+    <b>위법·독소조항을 자동 검출</b>하고 <b>위반 법령을 예측</b>하며 조 단위로 <b>요약</b>까지 제공하는
+    풀스택 웹 서비스입니다. 계약서를 업로드하면 문장 단위로 분리해 분석하고, 버전별로 변경 이력을
+    비교하며, 표준계약서·법령 자료실을 함께 제공합니다.
+  </p>
+
+  <div class="proj-stats">
+    <div class="proj-stat"><div class="proj-stat__num">3-Tier</div><div class="proj-stat__lbl">Next.js · FastAPI · Azure</div></div>
+    <div class="proj-stat"><div class="proj-stat__num">5종</div><div class="proj-stat__lbl">위법·독소·법률예측·설명·요약 AI</div></div>
+    <div class="proj-stat"><div class="proj-stat__num">7명</div><div class="proj-stat__lbl">AI 27조 (PM·웹 풀스택 담당)</div></div>
+    <div class="proj-stat"><div class="proj-stat__num">0.93</div><div class="proj-stat__lbl">요약 모델 eval accuracy</div></div>
+  </div>
+</section>
+
+<!-- 선정 배경 -->
+<section class="proj-section reveal">
+  <div class="proj-section__kicker">Background</div>
+  <h2 class="proj-section__title">왜 계약서 분석 AI인가</h2>
+  <p class="proj-section__lead">
+    계약서에는 법률을 위반하는 <b>위법조항</b>과, 한쪽 계약자에게 불리하게 작용하는 <b>독소조항</b>이
+    숨어 있는 경우가 많습니다. 프랜차이즈·온라인 플랫폼 약관의 불공정 조항, 프리랜서 계약의 독소조항 등
+    실제 피해 사례가 끊이지 않지만, 일반 사용자가 이를 일일이 식별하기는 어렵습니다.
+    계꿀은 이 진입장벽을 AI로 낮추는 것을 목표로 했습니다.
+  </p>
+  <div class="proj-callout">
+    <div class="proj-callout__item"><span class="proj-callout__tag">위법조항</span> 법률을 위반한 조항</div>
+    <div class="proj-callout__item"><span class="proj-callout__tag proj-callout__tag--alt">독소조항</span> 계약자에게 불리한 영향을 미치는 조항</div>
+  </div>
+</section>
+
+<!-- 핵심 기능 -->
+<section class="proj-section reveal">
+  <div class="proj-section__kicker">Features</div>
+  <h2 class="proj-section__title">핵심 기능</h2>
+  <div class="proj-features">
+    <div class="proj-feature">
+      <div class="proj-feature__no">01</div>
+      <div class="proj-feature__name">위법·독소조항 검출</div>
+      <p class="proj-feature__desc">문장 단위로 위법·독소 여부를 확률로 판별하고, 위반하는 법 조항(조·항·호)까지 예측합니다.</p>
+    </div>
+    <div class="proj-feature">
+      <div class="proj-feature__no">02</div>
+      <div class="proj-feature__name">계약서 요약</div>
+      <p class="proj-feature__desc">조 단위로 핵심 내용을 자연어로 요약해 긴 계약서를 빠르게 파악할 수 있습니다.</p>
+    </div>
+    <div class="proj-feature">
+      <div class="proj-feature__no">03</div>
+      <div class="proj-feature__name">버전 관리</div>
+      <p class="proj-feature__desc">계약서 버전을 저장하고 변경된 조항을 비교해 수정 이력을 추적합니다.</p>
+    </div>
+    <div class="proj-feature">
+      <div class="proj-feature__no">04</div>
+      <div class="proj-feature__name">법령·표준계약서 자료실</div>
+      <p class="proj-feature__desc">관련 법령과 공정위 표준계약서를 조회할 수 있는 자료실과 Q&A를 제공합니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 아키텍처 -->
+<section class="proj-section reveal">
+  <div class="proj-section__kicker">Architecture</div>
+  <h2 class="proj-section__title">시스템 아키텍처</h2>
+  <p class="proj-section__lead">
+    <b>3-Tier 구조</b>로 설계했습니다. 클라이언트는 <b>Next.js</b>, 애플리케이션·AI 추론은 <b>FastAPI</b>,
+    데이터는 <b>Azure Database(MySQL)</b>와 계약서 파일용 <b>Azure Storage</b>로 분리했고,
+    전체를 <b>Docker 컨테이너</b>로 Azure 서버에 배포했습니다.
+  </p>
+  <figure class="proj-figure">
+    <img src="{{ base | append: '/architecture.png' | relative_url }}" alt="계꿀 3-Tier 시스템 아키텍처" loading="lazy">
+    <figcaption>3-Tier Architecture — Next.js · FastAPI(HuggingFace 모델 로드) · Azure MySQL/Storage</figcaption>
+  </figure>
+  <figure class="proj-figure">
+    <img src="{{ base | append: '/erd.png' | relative_url }}" alt="계꿀 데이터베이스 ERD" loading="lazy">
+    <figcaption>데이터베이스 ERD — 회원·계약서·분석결과·버전·자료실 도메인</figcaption>
+  </figure>
+</section>
+
+<!-- 서비스 플로우 -->
+<section class="proj-section reveal">
+  <div class="proj-section__kicker">Service Flow</div>
+  <h2 class="proj-section__title">서비스 플로우</h2>
+  <p class="proj-section__lead">
+    이메일 인증 기반 회원가입과 <b>4시간 만료 토큰</b>으로 계정을 관리하고, 로그인 후
+    계약서를 업로드하면 AI 서버가 문장을 분리해 위법·독소조항 판별과 요약을 수행한 뒤
+    결과를 DB에 저장하고 분석 로그·버전 비교 화면으로 보여줍니다.
+  </p>
+  <figure class="proj-figure">
+    <img src="{{ base | append: '/service-flow.png' | relative_url }}" alt="계꿀 계약서 분석 서비스 플로우" loading="lazy">
+    <figcaption>계약서 업로드 → AI 분석 → 결과 저장 → 분석 로그/버전 비교</figcaption>
+  </figure>
+</section>
+
+<!-- AI 기술 -->
+<section class="proj-section reveal">
+  <div class="proj-section__kicker">AI</div>
+  <h2 class="proj-section__title">계약서 분석 AI 구성</h2>
+  <p class="proj-section__lead">
+    한국어 계약서·법률 도메인에 맞춰 여러 사전학습 모델(KLUE-BERT, KoBERT, KoELECTRA, KLUE-RoBERTa,
+    XLM-RoBERTa 등)을 비교·학습한 뒤, 작업별로 최적 모델을 선정했습니다.
+  </p>
+
+  <div class="proj-models">
+    <div class="proj-model">
+      <div class="proj-model__task">위법 식별</div>
+      <div class="proj-model__pick">KoBERT</div>
+      <p class="proj-model__note">성능이 가장 우수해 선정. 임계값 31.10%(Precision-Recall 기반).</p>
+    </div>
+    <div class="proj-model">
+      <div class="proj-model__task">독소 식별</div>
+      <div class="proj-model__pick">KoELECTRA</div>
+      <p class="proj-model__note">독소조항 판별 성능 최상위. 임계값 58.67%.</p>
+    </div>
+    <div class="proj-model">
+      <div class="proj-model__task">위반 법률 예측</div>
+      <div class="proj-model__pick">KoBERT + 코사인 유사도</div>
+      <p class="proj-model__note">위반 법 조(條) 예측 후, 코사인 유사도로 세부 항·호를 매칭.</p>
+    </div>
+    <div class="proj-model">
+      <div class="proj-model__task">요약</div>
+      <div class="proj-model__pick">EXAONE-3.5-2.4B · KoBART</div>
+      <p class="proj-model__note">두 모델을 비교 학습. eval accuracy 0.9333, perplexity 1.478.</p>
+    </div>
+  </div>
+
+  <div class="proj-example">
+    <div class="proj-example__q">“갑은 … 을의 영업 비밀이나 개인정보를 의도적으로 침해할 수 있다.”</div>
+    <div class="proj-example__a">→ 위법 확률 <b>94.31%</b> · 대규모유통업법 제15조 1항 위반으로 판단</div>
+  </div>
+
+  <figure class="proj-figure">
+    <img src="{{ base | append: '/performance.png' | relative_url }}" alt="AI 모델 성능 지표" loading="lazy">
+    <figcaption>모델별 성능 지표 비교 — 위법/독소 식별 모델 선정 근거</figcaption>
+  </figure>
+  <figure class="proj-figure proj-figure--dark">
+    <img src="{{ base | append: '/loss-graph.png' | relative_url }}" alt="AI 모델 학습 Loss 그래프" loading="lazy">
+    <figcaption>식별 모델 학습 Loss 그래프 (SageMaker · CloudWatch 모니터링)</figcaption>
+  </figure>
+</section>
+
+<!-- 시연 -->
+<section class="proj-section reveal">
+  <div class="proj-section__kicker">Demo</div>
+  <h2 class="proj-section__title">서비스 화면</h2>
+  <figure class="proj-figure">
+    <img src="{{ base | append: '/demo.png' | relative_url }}" alt="계꿀 웹 서비스 분석 결과 화면" loading="lazy">
+    <figcaption>분석 결과 화면 — 조항별 위법·독소 위험도와 설명을 함께 제공</figcaption>
+  </figure>
+  <figure class="proj-figure">
+    <img src="{{ base | append: '/uiux.png' | relative_url }}" alt="계꿀 UI/UX 설계서" loading="lazy">
+    <figcaption>UI/UX 설계 — 사용자 플로우 기반 화면 설계</figcaption>
+  </figure>
+</section>
+
+<!-- 역할 & 팀 -->
+<section class="proj-section reveal">
+  <div class="proj-section__kicker">My Role &amp; Team</div>
+  <h2 class="proj-section__title">담당 역할</h2>
+  <p class="proj-section__lead">
+    <b>PM 겸 웹 풀스택 개발자</b>로서 WEB팀 일정·업무 분배를 맡고, 계약서 분석 결과 화면과 버전 관리 페이지,
+    메인 파일 업로드·마이페이지, 회원 관리·약관 페이지를 개발했습니다. AI팀(불공정 조항·법률 매칭 모델)과
+    웹팀(FE/BE·AI API 연동)으로 나뉘어 협업했습니다.
+  </p>
+  <ul class="proj-role">
+    <li>WEB팀 일정 관리 및 업무 할당 (PM)</li>
+    <li>계약서 분석 결과 화면 · 버전 관리 페이지 개발</li>
+    <li>메인 파일 업로드 · 마이페이지 개발</li>
+    <li>회원 관리 및 약관 페이지 구현</li>
+  </ul>
+</section>

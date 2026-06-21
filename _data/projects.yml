@@ -3,13 +3,19 @@
 # featured: true 인 첫 번째 항목이 2열 Featured 카드로 표시
 # repos: 카드 하단에 표시할 GitHub 링크 목록 (label + url)
 # demo: 라이브 데모 URL ('#' 이면 버튼 숨김)
+# detail: 상세 페이지 경로 ('#' 이면 상세 버튼 숨김)
+# logo: 카드/히어로에 쓸 로고 이미지 (없으면 생략)
 
 - id: contracthoney
   name: "계꿀 (ContractHoney)"
   subtitle: "AI 계약서 위법·독소조항 검출 & 요약 어시스턴트"
   type: ai
   featured: true
+  logo: "/assets/img/portfolio/contracthoney/logo.png"
+  period: "KT AIVLE School 6기 빅프로젝트 · 2025"
+  role: "PM · 웹 풀스택"
   description: "계약서의 위법·독소조항을 AI로 검출하고 위반 법령을 예측하며, 조 단위 요약·계약서 버전 비교·법령/표준계약서 자료실까지 제공하는 풀스택 서비스입니다. KoBERT·KoELECTRA로 위법/독소 조항을 식별하고 위반 법 조항을 예측, 코사인 유사도로 세부 항·호를 매칭하며, EXAONE·KoBART로 조항을 요약합니다. Next.js + FastAPI 3-Tier 구조를 Docker로 Azure에 배포했습니다. (KT AIVLE School 6기 빅프로젝트 / PM·풀스택 개발 담당)"
+  detail: "/portfolio/contracthoney/"
   tags:
     - { name: "KoBERT", ai: true }
     - { name: "KoELECTRA", ai: true }
