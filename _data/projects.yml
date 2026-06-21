@@ -17,7 +17,7 @@
   accent: "#f59e0b"
   accent_rgb: "245, 158, 11"
   logo: "/assets/img/portfolio/contracthoney/logo.png"
-  period: "KT AIVLE School 6기 빅프로젝트 · 2025"
+  period: "2025.01 - 2025.02"
   role: "PM · 웹 풀스택"
   description: "PDF 계약서를 조·항·호 단위로 분석해 위법·독소 가능성과 관련 법률, 판단 설명을 제공하는 AI 어시스턴트입니다. 조항별 요약과 분석 이력, 계약서 버전 비교까지 하나의 검토 흐름으로 연결했으며 Next.js·FastAPI·Azure 기반 3-Tier 구조로 구현했습니다."
   detail: "/portfolio/contracthoney/"
@@ -40,10 +40,11 @@
   name: "Fraudi"
   subtitle: "실시간 이상거래 탐지와 결제 차단 시뮬레이션"
   type: ai
+  featured: true
   accent: "#2f6f4e"
   accent_rgb: "47, 111, 78"
   logo: "/assets/img/portfolio/fraudi/logo.png"
-  period: "2025.06 - 2025.09"
+  period: "2025.06 - 2025.08"
   role: "AI · Frontend"
   description: "극단적으로 불균형한 카드 거래 데이터에 OOF 타깃 인코딩과 CTGAN 증강을 적용하고, LightGBM·XGBoost·CatBoost 스태킹 모델을 구축했습니다. 추론 API를 React Native 쇼핑몰 결제 흐름에 연결해 승인과 차단 정책을 시연했습니다."
   detail: "/portfolio/fraudi/"
@@ -62,9 +63,10 @@
   name: "K-water 관망 이상 감지"
   subtitle: "미지 관망에 일반화하는 시계열·그래프 이상 탐지"
   type: ai
+  featured: true
   accent: "#1473e6"
   accent_rgb: "20, 115, 230"
-  period: "2024.11 - 2024.12"
+  period: "2024.11 - 2024.11"
   role: "팀장 · AI 모델링"
   description: "서로 다른 구조의 상수도 관망에서도 T+1분 이상 시점을 탐지하기 위해 시계열 EDA, 관망 그래프화, 불균형 완화와 LSTM·GNN AutoEncoder를 실험한 K-water AI 경진대회 프로젝트입니다."
   detail: "/portfolio/water-network/"

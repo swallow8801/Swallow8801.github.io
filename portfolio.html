@@ -42,6 +42,33 @@ permalink: /portfolio/
 </header>
 
 <div class="page-wrap">
+  <!-- 프로젝트 한눈에 보기 -->
+  <section class="port-summary reveal" aria-labelledby="project-summary-title">
+    <div class="port-summary__head">
+      <div>
+        <div class="kicker">// PROJECT OVERVIEW</div>
+        <h2 id="project-summary-title">프로젝트 한눈에 보기</h2>
+      </div>
+      <span>{{ real_projects | size }} projects</span>
+    </div>
+    <div class="port-summary__list">
+      {% for project in real_projects %}
+      <a class="port-summary__item" href="{{ project.detail | relative_url }}" style="--accent: {{ project.accent | default: '#2563eb' }}; --accent-rgb: {{ project.accent_rgb | default: '37, 99, 235' }};">
+        <span class="port-summary__no">0{{ forloop.index }}</span>
+        <span class="port-summary__project">
+          <b>{{ project.name }}</b>
+          <small>{{ project.subtitle }}</small>
+        </span>
+        <span class="port-summary__meta">
+          <b>{{ project.period }}</b>
+          <small>{{ project.role }}</small>
+        </span>
+        <span class="port-summary__arrow" aria-hidden="true">→</span>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
   <!-- 섹션 헤더 -->
   <div class="port-head reveal">
     <div class="kicker">// SELECTED WORK</div>
@@ -65,6 +92,7 @@ permalink: /portfolio/
           <div class="proj-featured__name">{{ project.name }}</div>
           {% endif %}
           <div class="proj-featured__sub">{{ project.subtitle }}</div>
+          {% if project.period %}<div class="proj-featured__period"><span aria-hidden="true">◷</span> {{ project.period }}</div>{% endif %}
           <p class="proj-featured__desc">{{ project.description }}</p>
           <div class="proj-featured__tags">
             {% for tag in project.tags %}
@@ -111,6 +139,7 @@ permalink: /portfolio/
           {% else %}
           <div class="proj-card__name">{{ project.name }}</div>
           {% endif %}
+          {% if project.period %}<div class="proj-card__period">{{ project.period }}</div>{% endif %}
           <p class="proj-card__desc">{{ project.description }}</p>
           <div class="proj-card__foot">
             {% if project.repos %}
