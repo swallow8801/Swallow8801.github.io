@@ -36,6 +36,46 @@
     - { label: "Web · FE/BE", url: "https://github.com/swallow8801/ContractHoney" }
     - { label: "AI Server", url: "https://github.com/swallow8801/ContractHoney_AI" }
 
+- id: fraudi
+  name: "Fraudi"
+  subtitle: "실시간 이상거래 탐지와 결제 차단 시뮬레이션"
+  type: ai
+  accent: "#2f6f4e"
+  accent_rgb: "47, 111, 78"
+  logo: "/assets/img/portfolio/fraudi/logo.png"
+  period: "2025.06 - 2025.09"
+  role: "AI · Frontend"
+  description: "극단적으로 불균형한 카드 거래 데이터에 OOF 타깃 인코딩과 CTGAN 증강을 적용하고, LightGBM·XGBoost·CatBoost 스태킹 모델을 구축했습니다. 추론 API를 React Native 쇼핑몰 결제 흐름에 연결해 승인과 차단 정책을 시연했습니다."
+  detail: "/portfolio/fraudi/"
+  tags:
+    - { name: "CTGAN", ai: true }
+    - { name: "LightGBM", ai: true }
+    - { name: "XGBoost", ai: true }
+    - { name: "CatBoost", ai: true }
+    - { name: "FastAPI", ai: false }
+    - { name: "React Native", ai: false }
+    - { name: "Spring Boot", ai: false }
+    - { name: "AWS", ai: false }
+  demo: "#"
+
+- id: water-network
+  name: "K-water 관망 이상 감지"
+  subtitle: "미지 관망에 일반화하는 시계열·그래프 이상 탐지"
+  type: ai
+  accent: "#1473e6"
+  accent_rgb: "20, 115, 230"
+  period: "2024.11 - 2024.12"
+  role: "팀장 · AI 모델링"
+  description: "서로 다른 구조의 상수도 관망에서도 T+1분 이상 시점을 탐지하기 위해 시계열 EDA, 관망 그래프화, 불균형 완화와 LSTM·GNN AutoEncoder를 실험한 K-water AI 경진대회 프로젝트입니다."
+  detail: "/portfolio/water-network/"
+  tags:
+    - { name: "LSTM AutoEncoder", ai: true }
+    - { name: "GNN", ai: true }
+    - { name: "SMOTE", ai: true }
+    - { name: "PyTorch", ai: false }
+    - { name: "Time Series", ai: false }
+  demo: "#"
+
 # ── PREVIEW 플레이스홀더 ──────────────────────────────
 # 실제 데이터가 아닌 더미. 카드에 PREVIEW 뱃지가 붙고 상세/링크는 비활성.
 # 새 프로젝트가 생기면 이 항목을 실제 데이터로 교체하거나 preview 항목을 추가하면

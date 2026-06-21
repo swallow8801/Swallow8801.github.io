@@ -71,6 +71,31 @@ permalink: /portfolio/contracthoney/
   </div>
 </section>
 
+<!-- 제품 UI -->
+<section class="proj-section reveal">
+  <div class="proj-section__kicker">Product UI</div>
+  <h2 class="proj-section__title">조항을 읽고, 위험을 확인하고, 변경점을 비교하는 한 흐름</h2>
+  <p class="proj-section__lead">
+    분석 모델의 출력값을 그대로 나열하지 않고 실제 계약 검토 순서에 맞춰 화면을 설계했습니다.
+    먼저 조별 요약으로 문서 전체를 훑은 뒤, <b>위법·독소조항 탭에서 위험도와 판단 근거</b>를 확인하고,
+    계약서가 수정되면 버전 비교 화면에서 달라진 조항을 추적할 수 있습니다.
+  </p>
+  <div class="proj-ui-grid proj-ui-grid--wide">
+    <figure class="proj-ui-shot">
+      <img src="{{ base | append: '/ui-summary.png' | relative_url }}" alt="계꿀 계약서 조별 요약 화면" loading="lazy">
+      <figcaption><b>조별 요약</b><span>긴 계약서의 구조와 핵심 내용을 빠르게 파악</span></figcaption>
+    </figure>
+    <figure class="proj-ui-shot">
+      <img src="{{ base | append: '/ui-risk.png' | relative_url }}" alt="계꿀 위법 및 독소조항 분석 화면" loading="lazy">
+      <figcaption><b>위험조항 분석</b><span>위험도, 관련 법령, 판별 설명을 한 화면에 제공</span></figcaption>
+    </figure>
+    <figure class="proj-ui-shot">
+      <img src="{{ base | append: '/ui-version.png' | relative_url }}" alt="계꿀 계약서 버전 비교 화면" loading="lazy">
+      <figcaption><b>버전 관리</b><span>수정 전후 조항을 비교해 변경 지점을 시각화</span></figcaption>
+    </figure>
+  </div>
+</section>
+
 <!-- 시스템 구조 -->
 <section class="proj-section reveal">
   <div class="proj-section__kicker">Architecture</div>

@@ -1,0 +1,64 @@
+---
+layout: project
+project_id: water-network
+title: "K-water 상수도 관망 이상 감지 AI"
+description: "미지의 관망 구조에서도 이상 시점과 누수 구간을 찾는 범용 이상 탐지 알고리즘 공모전 프로젝트"
+permalink: /portfolio/water-network/
+---
+
+{% assign base = '/assets/img/portfolio/water-network' %}
+
+<section class="proj-section reveal">
+  <div class="proj-section__kicker">Competition</div>
+  <h2 class="proj-section__title">보지 못한 관망에서도 다음 1분의 이상을 탐지하다</h2>
+  <p class="proj-section__lead">
+    2024 제4회 K-water AI 경진대회에서 상수도 관망의 이상 시점과 누수 발생 구간을 찾는 범용 알고리즘을 개발했습니다.
+    학습 데이터는 A·B 관망, 평가는 구조가 다른 C·D 관망으로 진행됐고, 비식별 시계열을 이용해 <b>T+1분 시점의 이상 여부</b>를 예측해야 했습니다.
+  </p>
+  <div class="proj-stats">
+    <div class="proj-stat"><div class="proj-stat__num">29위</div><div class="proj-stat__lbl">Private Leaderboard</div></div>
+    <div class="proj-stat"><div class="proj-stat__num">33위</div><div class="proj-stat__lbl">Public Leaderboard</div></div>
+    <div class="proj-stat"><div class="proj-stat__num">T+1</div><div class="proj-stat__lbl">1분 선행 이상 탐지</div></div>
+    <div class="proj-stat"><div class="proj-stat__num">Team Lead</div><div class="proj-stat__lbl">분석·실험 방향 총괄</div></div>
+  </div>
+  <figure class="proj-figure"><img src="{{ base | append: '/overview.png' | relative_url }}" alt="K-water 상수도 관망 이상 감지 공모전 개요" loading="lazy"><figcaption>대회 목표와 평가 조건, 최종 리더보드 결과</figcaption></figure>
+</section>
+
+<section class="proj-section reveal">
+  <div class="proj-section__kicker">Analysis</div>
+  <h2 class="proj-section__title">시계열과 관망 구조를 함께 이해하는 전처리</h2>
+  <p class="proj-section__lead">
+    유량·압력 센서의 시계열과 상관관계를 분석하고 모터 간 이변량 패턴을 확인했습니다.
+    관망의 연결 관계를 그래프로 변환해 GNN 입력 구조를 만들었으며, 매우 적은 이상 구간은 SMOTE로 보강했습니다.
+    학습·평가 관망의 구조가 서로 다르기 때문에 특정 센서 번호보다 <b>시간 변화와 노드 간 관계에 일반화되는 표현</b>을 만드는 데 집중했습니다.
+  </p>
+  <div class="proj-features">
+    <div class="proj-feature"><div class="proj-feature__no">01</div><div class="proj-feature__name">유량·압력 분석</div><p class="proj-feature__desc">시계열 추이, 상관관계 히트맵과 모터 간 이변량 패턴을 탐색했습니다.</p></div>
+    <div class="proj-feature"><div class="proj-feature__no">02</div><div class="proj-feature__name">관망 그래프화</div><p class="proj-feature__desc">배관 연결 정보를 노드와 엣지로 변환해 구조적 관계를 학습에 반영했습니다.</p></div>
+    <div class="proj-feature"><div class="proj-feature__no">03</div><div class="proj-feature__name">불균형 완화</div><p class="proj-feature__desc">희소한 이상 시점을 SMOTE로 오버샘플링해 탐지 학습 신호를 보강했습니다.</p></div>
+    <div class="proj-feature"><div class="proj-feature__no">04</div><div class="proj-feature__name">범용성 검증</div><p class="proj-feature__desc">A·B에서 학습한 표현이 C·D 관망에도 적용되도록 센서 종속성을 줄였습니다.</p></div>
+  </div>
+  <figure class="proj-figure"><img src="{{ base | append: '/analysis.png' | relative_url }}" alt="상수도 관망 데이터 분석과 그래프화 및 SMOTE 전처리" loading="lazy"><figcaption>시계열 EDA, 관망 그래프 변환, 불균형 데이터 오버샘플링</figcaption></figure>
+</section>
+
+<section class="proj-section reveal">
+  <div class="proj-section__kicker">Model</div>
+  <h2 class="proj-section__title">재구성 오차를 이상 판단의 근거로 사용했습니다</h2>
+  <p class="proj-section__lead">
+    LSTM AutoEncoder와 GNN AutoEncoder를 비교해 시계열 패턴과 관망 연결 구조를 각각 학습했습니다.
+    Validation Loss를 기준으로 후보 모델을 비교하고, 정상 데이터의 재구성 오차 분포에서 백분위 임계값을 계산해
+    이상 여부를 판정했습니다. 고정된 클래스 출력 대신 오차와 임계값을 함께 남겨 판단 과정을 설명할 수 있게 했습니다.
+  </p>
+  <figure class="proj-figure proj-figure--dark"><img src="{{ base | append: '/model.png' | relative_url }}" alt="LSTM AutoEncoder와 이상 탐지 임계값 구현" loading="lazy"><figcaption>LSTM AutoEncoder 재구성 모델과 백분위 기반 임계값 계산</figcaption></figure>
+</section>
+
+<section class="proj-section reveal">
+  <div class="proj-section__kicker">Retrospective</div>
+  <h2 class="proj-section__title">모델보다 먼저 데이터가 가진 구조를 읽어야 했습니다</h2>
+  <p class="proj-section__lead">
+    관망이 바뀌면 센서의 개수와 연결 관계도 달라지므로, 일반적인 표 형태 전처리만으로는 평가 환경에 일반화하기 어려웠습니다.
+    이 경험을 통해 GNN의 구조적 귀납 편향과 시계열 이상 탐지의 임계값 설계를 익혔고,
+    무엇보다 도메인의 물리 구조를 데이터 표현에 반영하는 전처리 전략의 중요성을 배웠습니다.
+  </p>
+</section>
+
