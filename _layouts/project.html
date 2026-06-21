@@ -56,7 +56,7 @@ front matter에서 project_id 로 _data/projects.yml 항목을 찾아 히어로�
   {{ content }}
 
   {%- comment -%} 이전/다음 프로젝트 (상세 페이지가 있는 프로젝트끼리) {%- endcomment -%}
-  {% assign detailed = site.data.projects | where_exp: "dp", "dp.detail and dp.detail != '#'" %}
+  {% assign detailed = site.data.projects | where_exp: "dp", "dp.detail != '#'" %}
   {% assign dcount = detailed | size %}
   {% assign cur = 0 %}
   {% for dp in detailed %}{% if dp.id == page.project_id %}{% assign cur = forloop.index0 %}{% endif %}{% endfor %}
