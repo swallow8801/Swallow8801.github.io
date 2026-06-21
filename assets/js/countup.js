@@ -11,9 +11,14 @@
   const reduced = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // 모션 최소화 환경: 스크롤 없이도 즉시 최종값을 보여준다 (0으로 비우지 않음)
+  if (reduced) {
+    els.forEach(function (el) { el.textContent = el.dataset.count; });
+    return;
+  }
+
   function run(el) {
     const target = parseFloat(el.dataset.count) || 0;
-    if (reduced) { el.textContent = target; return; }
 
     const dur = 1000;
     const start = performance.now();
