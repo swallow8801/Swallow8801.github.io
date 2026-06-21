@@ -148,10 +148,12 @@
 
 .port-overview__tabs {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   border-top: 1px solid $border;
   border-bottom: 1px solid $border;
   background: $surface;
+
+  @media (max-width: $tablet) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
   @media (max-width: $mobile) {
     display: flex;
@@ -217,7 +219,7 @@
 .port-overview__panel {
   position: relative;
   display: grid;
-  grid-template-columns: 150px minmax(0, 1fr) auto;
+  grid-template-columns: 190px minmax(0, 1fr) auto;
   gap: 28px;
   align-items: center;
   min-height: 260px;
@@ -260,8 +262,21 @@
 
   img { width: 100%; height: 100%; object-fit: contain; }
   > span { color: $accent; font-size: 48px; font-weight: 900; }
+  > .port-overview__monogram--word { font-size: 29px; letter-spacing: -.04em; }
 
   @media (max-width: $mobile) { width: 72px; height: 72px; padding: 12px; border-radius: 18px; }
+}
+
+.port-overview__visual--wide {
+  width: 180px;
+  height: 112px;
+  padding: 22px 18px;
+  border-radius: 20px;
+  background: #fff;
+
+  img { object-fit: contain; }
+
+  @media (max-width: $mobile) { width: 72px; height: 72px; padding: 10px; border-radius: 16px; }
 }
 
 .port-overview__content {
@@ -289,6 +304,8 @@
   small { color: $t3; font-family: $mono; font-size: 9px; letter-spacing: .8px; }
   b { color: $t1; font-size: 12px; }
 }
+
+.port-overview__status { color: #16a34a !important; }
 
 .port-overview__tags {
   display: flex;
@@ -330,6 +347,18 @@
 
   @media (max-width: $tablet) { flex-direction: row; }
   @media (max-width: $mobile) { a { flex: 1; padding-inline: 8px; } }
+}
+
+.port-overview__actions--pending {
+  min-width: 116px;
+  padding: 13px 14px;
+  border: 1px dashed #{"rgba(var(--accent-rgb),.35)"};
+  border-radius: 8px;
+  background: #{"rgba(var(--accent-rgb),.05)"};
+  text-align: center;
+
+  span { color: $t3; font-family: $mono; font-size: 8px; letter-spacing: .8px; }
+  b { color: $accent; font-size: 11px; }
 }
 
 // 섹션 헤더

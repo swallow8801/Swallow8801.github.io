@@ -1,0 +1,109 @@
+# 포트폴리오 상단 "프로젝트 한눈에 보기" 전용 항목
+# 상세 카드/페이지에는 노출하지 않는다.
+
+- id: samsung-safety-control
+  name: "삼성중공업 통합 안전 관제 시스템"
+  company: "삼성중공업"
+  type: "산업 AI"
+  period: "2026.02 - 진행 중"
+  status: "진행 중"
+  role: "Vision AI"
+  logo: "/assets/img/portfolio/overview/samsung-heavy-point.png"
+  logo_wide: true
+  accent: "#1261c9"
+  accent_rgb: "18, 97, 201"
+  subtitle: "CCTV 기반 통합 안전 관제와 실시간 위험 상황 탐지"
+  description: "CCTV 영상에서 화재·낙상·개인보호구 등 현장 위험 요소를 탐지하고, GIS 관제 화면과 실시간 알림으로 연결하는 안전 관제 시스템을 개발하고 있습니다."
+  tags:
+    - { name: "YOLO" }
+    - { name: "CLIP" }
+    - { name: "RTSP" }
+    - { name: "Socket.IO" }
+    - { name: "React" }
+    - { name: "Node.js" }
+    - { name: "GIS" }
+    - { name: "AI Server" }
+
+- id: hd-weld-inspection
+  name: "HD현대중공업 용접 비드 외관 결함 검사"
+  company: "HD현대중공업"
+  type: "제조 AI"
+  period: "2026.03 - 진행 중"
+  status: "진행 중"
+  role: "Vision AI"
+  logo: "/assets/img/portfolio/overview/hd-hhi.svg"
+  logo_wide: true
+  accent: "#00823d"
+  accent_rgb: "0, 130, 61"
+  subtitle: "LNG 탱크 내부 용접 비드의 외관 결함 분류와 검사 자동화"
+  description: "용접 비드 이미지를 전처리하고 분류 모델을 비교해 현장 결함 검사를 자동화하는 비전 AI 파이프라인을 개발하고 있습니다."
+  tags:
+    - { name: "YOLO26m-cls" }
+    - { name: "EfficientNet-B0" }
+    - { name: "ConvNeXt-Tiny" }
+    - { name: "ResNet18" }
+    - { name: "CLAHE" }
+    - { name: "Python" }
+
+- id: hd-worker-location-chatbot
+  name: "HD현대중공업 야드 작업자 위치 확인 챗봇"
+  company: "HD현대중공업"
+  type: "현장 챗봇"
+  period: "2026.07 - 진행 중"
+  status: "진행 중"
+  role: "기획 · 데이터 · API"
+  logo: "/assets/img/portfolio/overview/hd-hhi.svg"
+  logo_wide: true
+  accent: "#00823d"
+  accent_rgb: "0, 130, 61"
+  subtitle: "자연어 질문으로 야드 작업자의 현재 위치를 조회하는 현장 챗봇"
+  description: "작업자 위치 데이터와 업무 DB를 연동하고, 사용자의 자연어 질의를 구조화된 조회 요청으로 변환하는 RAG·API 흐름을 설계하고 있습니다."
+  tags:
+    - { name: "LLM" }
+    - { name: "RAG" }
+    - { name: "DB 연동" }
+    - { name: "API 설계" }
+    - { name: "자연어 질의 처리" }
+
+- id: kriso-lng-bunkering
+  name: "KRISO LNG Bunkering Platform/System"
+  company: "KRISO 선박해양플랜트연구소"
+  type: "관제 플랫폼"
+  period: "2026.05 - 진행 중"
+  status: "진행 중"
+  role: "Full-stack"
+  logo: "/assets/img/portfolio/overview/kriso.png"
+  logo_wide: true
+  accent: "#087ac1"
+  accent_rgb: "8, 122, 193"
+  subtitle: "GIS·CCTV 기반 LNG 벙커링 통합 모니터링 플랫폼"
+  description: "현장 GIS와 CCTV 스트림, AI 분석 서버를 하나의 관제 화면으로 통합하는 LNG 벙커링 모니터링 플랫폼을 구축하고 있습니다."
+  tags:
+    - { name: "React" }
+    - { name: "Node.js" }
+    - { name: "FastAPI" }
+    - { name: "RTSP" }
+    - { name: "Media Server" }
+    - { name: "GIS" }
+    - { name: "AI Server" }
+
+- id: worker-risk-sllm
+  name: "sLLM 기반 작업자 위험도 평가"
+  company: "Industrial AI"
+  type: "sLLM"
+  period: "2026.03 - 진행 중"
+  status: "진행 중"
+  role: "산업 AI 서비스"
+  monogram: "sLLM"
+  accent: "#7c3aed"
+  accent_rgb: "124, 58, 237"
+  subtitle: "작업자 상태와 현장 상황을 종합하는 위험도 평가 서비스"
+  description: "작업자 상태와 현장 맥락을 sLLM·VLM으로 구조화하고, 검색된 안전 지식과 위험도 평가 로직을 결합하는 산업 AI 서비스를 개발하고 있습니다."
+  tags:
+    - { name: "sLLM" }
+    - { name: "LLM" }
+    - { name: "RAG" }
+    - { name: "VLM" }
+    - { name: "Vector DB" }
+    - { name: "JSON" }
+    - { name: "위험도 평가" }

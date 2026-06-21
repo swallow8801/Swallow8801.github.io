@@ -7,6 +7,7 @@ permalink: /portfolio/
 
 {%- comment -%} 실제 프로젝트(preview 아닌 것)만 카운트해 가짜 지표를 피한다 {%- endcomment -%}
 {% assign real_projects = site.data.projects | where_exp: "p", "p.preview != true" %}
+{% assign overview_projects = real_projects | concat: site.data.overview_projects %}
 
 <!-- 프로필 헤더 (에디토리얼) -->
 <header class="port-profile">
@@ -50,11 +51,11 @@ permalink: /portfolio/
         <h2 id="project-overview-title">프로젝트 한눈에 보기</h2>
         <p>탭을 선택해 프로젝트의 기간, 역할과 핵심 기술을 빠르게 확인하세요.</p>
       </div>
-      <span class="port-overview__count">{{ real_projects | size | prepend: '0' }} PROJECTS</span>
+      <span class="port-overview__count">{{ overview_projects | size | prepend: '0' }} PROJECTS</span>
     </div>
 
     <div class="port-overview__tabs" role="tablist" aria-label="프로젝트 선택">
-      {% for project in real_projects %}
+      {% for project in overview_projects %}
       <button class="port-overview__tab{% if forloop.first %} is-active{% endif %}" type="button" role="tab"
         id="project-tab-{{ project.id }}" aria-controls="project-panel-{{ project.id }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
         tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
@@ -66,33 +67,40 @@ permalink: /portfolio/
     </div>
 
     <div class="port-overview__panels">
-      {% for project in real_projects %}
+      {% for project in overview_projects %}
       <article class="port-overview__panel{% if forloop.first %} is-active{% endif %}" role="tabpanel"
         id="project-panel-{{ project.id }}" aria-labelledby="project-tab-{{ project.id }}" {% unless forloop.first %}hidden{% endunless %}
         style="--accent: {{ project.accent | default: '#2563eb' }}; --accent-rgb: {{ project.accent_rgb | default: '37, 99, 235' }};">
-        <div class="port-overview__visual">
+        <div class="port-overview__visual{% if project.logo_wide %} port-overview__visual--wide{% endif %}">
           {% if project.logo %}
           <img src="{{ project.logo | relative_url }}" alt="" loading="lazy">
+          {% elsif project.monogram %}
+          <span class="port-overview__monogram--word">{{ project.monogram }}</span>
           {% else %}
           <span>{{ project.name | slice: 0, 1 }}</span>
           {% endif %}
         </div>
         <div class="port-overview__content">
-          <div class="port-overview__eyebrow">{{ project.type | upcase }} PROJECT</div>
+          <div class="port-overview__eyebrow">{{ project.company | default: project.type }} · {{ project.type | upcase }}</div>
           <h3>{{ project.name }}</h3>
-          <p>{{ project.subtitle }}</p>
+          <p>{{ project.description | default: project.subtitle }}</p>
           <div class="port-overview__meta">
             <span><small>PERIOD</small><b>{{ project.period }}</b></span>
             <span><small>ROLE</small><b>{{ project.role }}</b></span>
+            {% if project.status %}<span><small>STATUS</small><b class="port-overview__status">● {{ project.status }}</b></span>{% endif %}
           </div>
           <div class="port-overview__tags">
-            {% for tag in project.tags limit: 5 %}<span>{{ tag.name }}</span>{% endfor %}
+            {% for tag in project.tags limit: 8 %}<span>{{ tag.name }}</span>{% endfor %}
           </div>
         </div>
+        {% if project.detail and project.detail != '#' %}
         <div class="port-overview__actions">
           <a href="#project-{{ project.id }}">아래 카드 보기 ↓</a>
           <a class="port-overview__detail" href="{{ project.detail | relative_url }}">프로젝트 상세 →</a>
         </div>
+        {% else %}
+        <div class="port-overview__actions port-overview__actions--pending"><span>OVERVIEW ONLY</span><b>상세 준비 중</b></div>
+        {% endif %}
       </article>
       {% endfor %}
     </div>
