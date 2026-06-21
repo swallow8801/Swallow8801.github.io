@@ -231,6 +231,18 @@
 
 .proj-card__stars { font-size: 13px; color: $t3; }
 
+.proj-card__repos {
+  display: inline-flex;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 600;
+
+  a {
+    color: $blue;
+    &:hover { text-decoration: underline; }
+  }
+}
+
 .proj-card__name {
   font-size: 17px;
   font-weight: 700;

@@ -1,103 +1,26 @@
 # 포트폴리오 프로젝트 데이터
 # type: ai | web | tool (필터 카테고리)
 # featured: true 인 첫 번째 항목이 2열 Featured 카드로 표시
+# repos: 카드 하단에 표시할 GitHub 링크 목록 (label + url)
+# demo: 라이브 데모 URL ('#' 이면 버튼 숨김)
 
-- id: codereview-ai
-  name: "CodeReview AI"
-  subtitle: "LLM 기반 GitHub PR 자동 코드 리뷰 시스템"
+- id: contracthoney
+  name: "계꿀 (ContractHoney)"
+  subtitle: "AI 계약서 위법·독소조항 검출 & 요약 어시스턴트"
   type: ai
   featured: true
-  description: "Claude API Tool Use + GitHub Actions로 PR 생성 시 자동 코드 리뷰가 달리는 시스템. 팀 코딩 컨벤션을 학습해 맞춤 피드백을 제공하며, 보안 취약점·로직 오류·개선안을 구조적으로 분석합니다."
+  description: "계약서의 위법·독소조항을 AI로 검출하고 위반 법령을 예측하며, 조 단위 요약·계약서 버전 비교·법령/표준계약서 자료실까지 제공하는 풀스택 서비스입니다. KoBERT·KoELECTRA로 위법/독소 조항을 식별하고 위반 법 조항을 예측, 코사인 유사도로 세부 항·호를 매칭하며, EXAONE·KoBART로 조항을 요약합니다. Next.js + FastAPI 3-Tier 구조를 Docker로 Azure에 배포했습니다. (KT AIVLE School 6기 빅프로젝트 / PM·풀스택 개발 담당)"
   tags:
-    - { name: "Claude API", ai: true }
-    - { name: "Tool Use", ai: true }
-    - { name: "LangChain", ai: true }
-    - { name: "FastAPI", ai: false }
-    - { name: "GitHub Actions", ai: false }
-  demo: "#"
-  github: "#"
-  stars: 312
-
-- id: documind
-  name: "DocuMind"
-  subtitle: "RAG 문서 어시스턴트"
-  type: ai
-  featured: false
-  description: "사내 문서에 질문하면 정확한 답변을 찾아주는 RAG 시스템. pgvector + Claude로 구축. 청킹 전략 최적화로 hallucination 최소화."
-  tags:
-    - { name: "RAG", ai: true }
-    - { name: "pgvector", ai: true }
-    - { name: "FastAPI", ai: false }
-  demo: "#"
-  github: "#"
-  stars: 187
-
-- id: semantic-search
-  name: "SemanticSearch"
-  subtitle: "임베딩 기반 벡터 검색 엔진"
-  type: ai
-  featured: false
-  description: "임베딩 기반 시맨틱 검색 엔진. Pinecone·pgvector·Weaviate 직접 벤치마킹 후 최적 구성 제안."
-  tags:
-    - { name: "Embeddings", ai: true }
-    - { name: "HNSW", ai: false }
-    - { name: "Python", ai: false }
-  demo: "#"
-  github: "#"
-  stars: 143
-
-- id: promptlab
-  name: "PromptLab"
-  subtitle: "프롬프트 버전 관리 및 A/B 테스트 도구"
-  type: tool
-  featured: false
-  description: "팀에서 프롬프트를 체계적으로 관리하고 A/B 테스트하는 웹 도구. 성능 지표와 비용 추적 포함."
-  tags:
-    - { name: "Prompt Eng.", ai: true }
-    - { name: "React", ai: false }
-    - { name: "Node.js", ai: false }
-  demo: "#"
-  github: "#"
-  stars: 165
-
-- id: ai-dashboard
-  name: "AI Analytics Dashboard"
-  subtitle: "ML 예측 + 실시간 데이터 대시보드"
-  type: web
-  featured: false
-  description: "ML 예측 모델 + 실시간 데이터 결합 대시보드. 이상 감지 알고리즘으로 주요 지표 변동 자동 알림."
-  tags:
+    - { name: "KoBERT", ai: true }
+    - { name: "KoELECTRA", ai: true }
+    - { name: "EXAONE", ai: true }
+    - { name: "KoBART", ai: true }
     - { name: "Next.js", ai: false }
-    - { name: "Python ML", ai: true }
-    - { name: "PostgreSQL", ai: false }
-  demo: "#"
-  github: "#"
-  stars: 94
-
-- id: mlserve
-  name: "MLServe"
-  subtitle: "ML 모델 프로덕션 서빙 보일러플레이트"
-  type: tool
-  featured: false
-  description: "ML 모델 프로덕션 배포용 FastAPI 템플릿. A/B 테스트, 모니터링, 자동 스케일링 내장."
-  tags:
     - { name: "FastAPI", ai: false }
     - { name: "Docker", ai: false }
-    - { name: "AWS", ai: false }
+    - { name: "Azure", ai: false }
+    - { name: "MySQL", ai: false }
   demo: "#"
-  github: "#"
-  stars: 218
-
-- id: ecoshop
-  name: "EcoShop"
-  subtitle: "AI 추천 엔진 탑재 풀스택 커머스"
-  type: web
-  featured: false
-  description: "협업 필터링 + LLM 설명 기반 추천 엔진 탑재 커머스. 구매 전환율 23% 개선 달성."
-  tags:
-    - { name: "Next.js", ai: false }
-    - { name: "Rec. System", ai: true }
-    - { name: "MongoDB", ai: false }
-  demo: "#"
-  github: "#"
-  stars: 76
+  repos:
+    - { label: "Web · FE/BE", url: "https://github.com/swallow8801/ContractHoney" }
+    - { label: "AI Server", url: "https://github.com/swallow8801/ContractHoney_AI" }
