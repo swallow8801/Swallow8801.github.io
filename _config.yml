@@ -15,10 +15,10 @@ google_analytics: "G-65N9HGZF19"
 # Comments — giscus (GitHub Discussions). repo_id·category_id 입력 시 댓글 활성
 comments:
   giscus:
-    repo: "swallow8801/swallow8801.github.io"
-    repo_id: ""        # giscus.app 에서 발급
+    repo: "swallow8801/Swallow8801.github.io"
+    repo_id: "R_kgDOSt4CNA"
     category: "Announcements"
-    category_id: ""     # giscus.app 에서 발급
+    category_id: "DIC_kwDOSt4CNM4C_zJe"
 
 # Build
 markdown: kramdown
