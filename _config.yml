@@ -9,6 +9,9 @@ author:
   github: "swallow8801"
   linkedin: "swallow8801"
 
+# Analytics — GA4 측정 ID(G-XXXXXXXXXX) 입력 시 프로덕션 빌드에서만 추적 로드
+google_analytics: "G-65N9HGZF19"
+
 # Build
 markdown: kramdown
 highlighter: rouge

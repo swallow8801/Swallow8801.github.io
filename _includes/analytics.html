@@ -1,0 +1,16 @@
+{%- comment -%}
+Google Analytics 4.
+- _config.yml 의 google_analytics 값(G-XXXXXXXXXX)이 있을 때만 로드.
+- 프로덕션 빌드(JEKYLL_ENV=production, GitHub Pages 기본값)에서만 작동 →
+  로컬 `jekyll serve` 중인 내 방문은 집계에 잡히지 않음.
+{%- endcomment -%}
+{% if site.google_analytics and jekyll.environment == "production" %}
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ site.google_analytics }}');
+</script>
+{% endif %}
