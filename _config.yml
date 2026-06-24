@@ -12,6 +12,14 @@ author:
 # Analytics — GA4 측정 ID(G-XXXXXXXXXX) 입력 시 프로덕션 빌드에서만 추적 로드
 google_analytics: "G-65N9HGZF19"
 
+# Comments — giscus (GitHub Discussions). repo_id·category_id 입력 시 댓글 활성
+comments:
+  giscus:
+    repo: "swallow8801/swallow8801.github.io"
+    repo_id: ""        # giscus.app 에서 발급
+    category: "Announcements"
+    category_id: ""     # giscus.app 에서 발급
+
 # Build
 markdown: kramdown
 highlighter: rouge

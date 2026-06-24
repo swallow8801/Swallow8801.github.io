@@ -483,6 +483,25 @@
   .related-posts { margin-top: 28px; }
 }
 
+// 댓글 (giscus)
+.post-comments {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid $border;
+
+  @media (max-width: $mobile) {
+    margin-top: 36px;
+    padding-top: 24px;
+  }
+}
+
+.post-comments__title {
+  font-size: 15px;
+  font-weight: 800;
+  color: $t1;
+  margin: 0 0 16px;
+}
+
 .related-posts__title {
   font-size: 15px;
   font-weight: 800;
